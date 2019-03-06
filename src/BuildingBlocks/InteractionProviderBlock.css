@@ -1,0 +1,59 @@
+.interactionBlock {
+  border: 1px solid #ccc;
+  max-width: 400px;
+}
+
+.interactionBlock .title {
+  background: orangered;
+  color: #fff;
+  padding: 0.25rem 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.interactionBlock .title h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.15rem;
+}
+.interactionBlock .title .delete {
+  margin-left: 0.15rem;
+  color: #fff;
+}
+
+.interactionBlock .inputFields {
+  display: flex;
+  flex-direction: row;
+}
+.interactionBlock .unboundNotice {
+  padding: 0.15rem 0.25rem;
+  border: 1px dashed #fff;
+  color: #fff;
+  margin: 0 0.1rem;
+}
+.interactionBlock .dropArea.jtk-drag-active ~ .unboundNotice {
+  display: none;
+}
+.interactionBlock .dropArea {
+  width: 5.2rem;
+  height: 1.25rem;
+}
+
+.interactionBlock .buildingBlock.node.data {
+  border: none;
+  background: transparent;
+  color: #fff;
+}
+
+.interactionBlock .body {
+  padding: 0.25rem 1rem;
+  background: #fff;
+  color: #aaa;
+}
+.interactionBlock .body .outputMappings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

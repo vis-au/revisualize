@@ -1,0 +1,25 @@
+.datasetPreview {
+  margin: 1rem 0;
+  overflow-x: scroll;
+}
+.datasetPreview h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: bold;
+}
+.datasetPreview table {
+  border-collapse: collapse;
+}
+.datasetPreview td {
+  padding: 0.15rem;
+}
+.datasetPreview thead td {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.datasetPreview tbody tr.even {
+  background: #eee;
+  border: none;
+  margin: 0;
+}

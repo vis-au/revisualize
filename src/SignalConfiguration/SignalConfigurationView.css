@@ -1,0 +1,66 @@
+#signalComponent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  height: 100%;
+}
+#signalComponentBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  height: 100%;
+}
+
+#signalCenterView {
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+#signalCenterView article h2 {
+  margin: 0;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+#signalsBody {
+  flex-grow: 10;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#signalsList {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  justify-items: flex-start;
+  align-items: center;
+}
+#signalsList .signalWrapper {
+  margin: 0 1rem;
+  padding: 0.5rem 0;
+}
+#signalsList .signal.buildingBlock {
+  box-shadow: 0 2px 2px #ccc;
+  padding: 0.75rem;
+  transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+#signalsList .signalWrapper.selected .signal.buildingBlock {
+  box-shadow: 0 4px 12px #aaa;
+}
+#signalsList .signal.buildingBlock .delete {
+  margin-left: 1rem;
+}
+
+button#newSignal {
+  margin-left: 2rem;
+  background: salmon;
+}

@@ -1,0 +1,17 @@
+.buildingBlock {
+  position: relative;
+  margin: 0.25rem 0.25rem;
+  list-style: none;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.buildingBlock .delete {
+  color: #555;
+}
+.buildingBlock.jtk-drag {
+  opacity: 0.5;
+}

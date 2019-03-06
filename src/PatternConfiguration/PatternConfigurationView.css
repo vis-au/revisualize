@@ -1,0 +1,18 @@
+#patternConfiguration {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  transition: flex 0.4s;
+}
+#patternConfigurationBody {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 5;
+}
+button#addNewPattern {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  background: teal;
+}

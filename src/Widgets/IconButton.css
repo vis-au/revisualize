@@ -1,0 +1,20 @@
+.iconButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.1rem 0.2rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.iconButton .material-icons {
+  margin-right: 0.5rem;
+  max-width: 1rem;
+  height: 0.5rem;
+  font-size: 1rem;
+}
+.iconButton button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}

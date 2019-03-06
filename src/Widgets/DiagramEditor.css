@@ -1,0 +1,14 @@
+.diagram {
+  transform: translate(0,0) scale(1);
+  height: 100%;
+}
+.diagramContainer {
+  overflow: hidden;
+  background: #fafafa;
+  width: 100%;
+  flex-grow: 1;
+}
+svg.jtk-dragging path {
+  stroke-opacity: 0.53;
+  stroke-dasharray: 4 4;
+}

@@ -1,0 +1,26 @@
+#miniPreviewWindow {
+  position: absolute;
+  right: 5px;
+  bottom: 4rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px #ccc;
+  flex-grow: 0;
+}
+
+#toggleMiniPreview {
+  background: steelblue;
+  color: #fff;
+  border: 1px solid steelblue;
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#toggleMiniPreview.active {
+  background: #fff;
+  border-color: steelblue;
+  color: steelblue;
+}

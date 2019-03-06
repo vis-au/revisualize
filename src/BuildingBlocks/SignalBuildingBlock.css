@@ -1,0 +1,12 @@
+.buildingBlock.signal {
+  background: salmon;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem 0.25rem;
+  line-height: 1;
+  border-radius: 4px;
+}
+.buildingBlock.signal .delete {
+  color: #fff;
+  margin-left: 0.15rem;
+}

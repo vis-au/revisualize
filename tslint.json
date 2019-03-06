@@ -1,0 +1,21 @@
+{
+  "tslint.options": {
+    "project": "tsconfig.json",
+    "typeCheck": true
+  },
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "quotemark": [true, "single", "jsx-double"],
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
+    "member-ordering": false,
+    "arrow-return-shorthand": true,
+    "arrow-parens": false,
+    "whitespace": true,
+    "jsx-alignment": false,
+    "jsx-no-lambda": false,
+    "jsx-no-bind": false,
+    "jsx-curly-spacing": "always"
+  }
+}

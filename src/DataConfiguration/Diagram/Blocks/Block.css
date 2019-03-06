@@ -1,0 +1,70 @@
+.component {
+  position: absolute;
+  min-width: 100px;
+  background: #fff;
+  box-shadow: 0 2px 2px #ccc;
+  border: 1px solid #ccc;
+  cursor: grab;
+  transition: box-shadow 0.2s;
+}
+.component.jtk-drag {
+  box-shadow: 0px 4px 10px #ccc;
+  cursor: grabbing;
+}
+.component.invalid {
+  border-color: firebrick;
+  border-width: 1px;
+}
+.component.invalid.focus {
+  border-width: 2px;
+}
+
+.component .header {
+  padding: 0.5rem 1rem;
+}
+.component h2 {
+  font-family: 'Roboto Condensed';
+  font-size: 1.2rem;
+  margin: 0;
+}
+.component h2 .delete {
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  float: right;
+}
+
+.component div.body {
+  padding: 0 1rem 0.5rem;
+}
+
+.component ul.options {
+  display: none;
+  position: absolute;
+  left: 0.5rem;
+  bottom: -25px;
+  height: 16px;
+  margin: 0;
+  padding: 0 0 0.2em 0.5rem;
+  background: steelblue;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+.component ul.options:empty {
+  visibility: hidden;
+}
+.component.focus ul.options {
+  display: block;
+}
+.component ul.options li {
+  list-style: none;
+  color: #fff;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.component .footer {
+  padding: 0.15rem 1rem;
+}

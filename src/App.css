@@ -1,0 +1,54 @@
+.App {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: stretch;
+  transition: flex 0.4s;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.delete {
+  color: #ccc;
+  cursor: pointer;
+}
+.delete::before {
+  content: '✕';
+}
+.delete:hover {
+  color: #555;
+}
+
+button.floatingAddButton {
+  font-weight: normal;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  box-sizing: border-box;
+  color: #fff;
+  background: steelblue;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  padding-bottom: 0px;
+  padding-bottom: 0.15rem;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 4px #ccc;
+}
+
+.draggable,
+.jtk-draggable {
+  cursor: grab;
+}
+.dragging,
+.jtk-draggable.jtk-drag > * {
+  cursor: grabbing;
+}
+.katavorio-clone-drag {
+  z-index: 100;
+}

@@ -1,0 +1,40 @@
+#patternTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+}
+#patternTitle h2 {
+  display: flex;
+  font-family: 'Roboto Condensed';
+  flex-direction: row;
+  align-items: center;
+  font-weight: normal;
+  margin: 0;
+  cursor: pointer;
+}
+#patternTitle .material-icons {
+  font-size: 14px;
+  margin-left: 0.25rem;
+  color: #888;
+  cursor: pointer;
+}
+#patternTitle h2 .material-icons {
+  display: none;
+}
+#patternTitle h2:hover .material-icons {
+  display: block;
+}
+#patternTitle h2.material-icons:hover {
+  color: #555;
+}
+#patternTitle input {
+  width: 100%;
+}
+#patternTitle .material-icons.save {
+  font-size: 17px;
+}
+#patternTitle .hidden {
+  display: none;
+}

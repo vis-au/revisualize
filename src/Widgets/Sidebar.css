@@ -1,0 +1,71 @@
+.sidebar {
+  position: absolute;
+  flex-grow: 1;
+  width: 30%;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 2;
+}
+.sidebar.right {
+  border-left: 1px solid #ccc;
+  right: 0;
+}
+.sidebar.left {
+  border-right: 1px solid #ccc;
+  left: 0;
+}
+.sidebar.hidden {
+  width: 0%;
+  visibility: visible;
+  padding: 0;
+}
+
+.sidebar .sidebarBody {
+  overflow: hidden;
+  padding: 0;
+}
+.sidebar.hidden .sidebarBody {
+  width: 0%;
+}
+
+.sidebar .toggleButtonWrapper {
+  position: absolute;
+  left: -1.5rem;
+  top: 2.5rem;
+  background: steelblue;
+  padding: 0.5rem;
+  height: 3rem;
+  width: 1.5rem;
+  box-sizing: border-box;
+  border: none;
+  border-top-left-radius: 5rem;
+  border-bottom-left-radius: 5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+}
+.sidebar .toggleButtonWrapper.disabled {
+  opacity: 0.35;
+}
+
+.sidebar button.show {
+  color: #fff;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  border: none;
+  width: 0;
+  background: transparent;
+  height: 3rem;
+  width: 3rem;
+  transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.sidebar button.show.left {
+  transform: rotate(90deg);
+}
+.sidebar button.show.right {
+  transform: rotate(-90deg);
+}

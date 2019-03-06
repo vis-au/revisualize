@@ -1,0 +1,83 @@
+#dataFlowSidebar {
+  max-width: 350px;
+}
+
+#dataflowSidebarTitle .hidden {
+  display: none;
+}
+#dataflowSidebarTitle {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid steelblue;
+}
+#dataflowSidebarTitle h2 {
+  font-size: 18px;
+  padding: 0.5rem 1.5rem;
+  margin: 0;
+}
+#dataflowSidebarTitle h2 .focusedNodeTitle {
+  font-family: 'Roboto Condensed';
+}
+#dataflowSidebarTitle input {
+  font-size: 18px;
+  margin: 0.5rem 1.5rem;
+  font-size: 16px;
+}
+#dataflowSidebarTitle .focusedNodeType {
+  font-size: 16px;
+  color: #888;
+  vertical-align: middle;
+}
+#dataflowSidebarTitle .focusedNodeType::before {
+  content: ' :: ';
+  padding-left: 0.3rem;
+}
+
+#dataflowSidebarTransformNodeConfiguration {
+  padding: 0.5rem;
+}
+#dataflowSidebarTransformNodeConfiguration textarea {
+  width: 100%;
+  height: 400px;
+  font-size: 1rem;
+  resize: vertical;
+  border: none;
+}
+#dataflowSidebarTransformNodeConfiguration textarea.hidden {
+  display: none;
+}
+textarea#dataflowSidebarEdit {
+  border: 2px solid steelblue;
+  transition: border-color 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+textarea#dataflowSidebarEdit.hidden {
+  border: 2px solid transparent;
+}
+
+div#dataflowSidebarDatasetNodeConfiguration {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1.5rem;
+}
+div#dataflowSidebarDatasetNodeConfiguration .datasetNodeConfigurationEntry {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+div#dataflowSidebarDatasetNodeConfiguration .datasetNodeConfigurationEntry * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+div#dataflowSidebarDatasetNodeConfiguration .datasetNodeConfigurationEntry .key{
+  margin-right: 1.5rem;
+  width: 25%;
+}
+
+button#addNewDataset {
+  position: absolute;
+  top: 95%;
+  left: -3rem;
+  background: steelblue;
+}

@@ -1,0 +1,39 @@
+#scalesContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  background: #fff;
+  flex-grow: 1;
+}
+
+#scales {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  overflow-y: auto;
+  box-sizing: content-box;
+}
+
+#scales .scaleWrapper .scale {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px #ddd;
+  transition: 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+#scales .scaleWrapper .scale.selected {
+  box-shadow: 0 4px 6px #aaa;
+}
+#scales .scaleWrapper .scale .delete {
+  margin-left: 0.25rem;
+}
+
+button#addNewScale {
+  position: relative;
+  margin-left: 2rem;
+}

@@ -1,0 +1,17 @@
+.dropArea.jtk-droppable {
+  min-width: 2rem;
+  min-height: 1rem;
+  display: none;
+
+  border: 2px dashed #ccc;
+  transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.dropArea.jtk-drag-active {
+  display: block;
+}
+.dropArea.jtk-drag-hover {
+  background: #efefef;
+}
+.dropArea.hidden {
+  display: none;
+}

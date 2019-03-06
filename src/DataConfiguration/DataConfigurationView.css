@@ -1,0 +1,11 @@
+#dataFlowComponent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: flex 0.4s;
+}
+#dataFlowBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

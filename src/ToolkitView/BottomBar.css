@@ -1,0 +1,20 @@
+#bottomBar {
+  max-height: 5rem;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  padding: 0.5rem 0.2rem;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.reusableBlockList.buildingBlock.node.leaf {
+  background: orange;
+  color: #fff;
+}
+.reusableBlockList.buildingBlock.node.custom {
+  background: steelblue;
+  color: #fff;
+}

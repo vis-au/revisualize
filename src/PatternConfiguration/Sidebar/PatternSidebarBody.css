@@ -1,0 +1,68 @@
+#patternSidebarBody {
+  font-size: 14px;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+}
+#patternSidebarBody .patternSidebarGroup {
+  padding: 0.25rem 0.75rem 0.5rem;
+  border-top: 1px solid #ccc;
+}
+#patternSidebarBody h3 {
+  font-size: 16px;
+  font-family: 'Roboto Condensed';
+  margin: 0.5rem 0 0.25rem;
+}
+#patternSidebarBody .unboundPropertyNotice {
+  border: 1px dashed #ccc;
+  color: #888;
+  background: '#fff';
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+#patternSidebarBody .noChildNodesNotice {
+  border: 1px solid #555;
+  color: #555;
+  font-weight: bold;
+  background: '#fff';
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+#patternSidebarBuildingBlocks {
+  overflow-y: auto;
+}
+.patternSidebarBuildingBlockColumn {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+.patternSidebarBuildingBlockRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+.patternSidebarBuildingBlock {
+  padding: 0.15rem 0.35rem;
+  margin: 0.15rem 0.25rem 0 0;
+  border: 1px solid #ccc;
+}
+
+#patternSidebar .patternSidebarGroup button {
+  color: #888;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 0.15rem 0.5rem;
+  margin: 0.15rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

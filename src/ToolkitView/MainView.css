@@ -1,0 +1,17 @@
+#mainViews {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+  flex-grow: 1;
+  align-content: flex-start;
+  overflow-y: hidden;
+}
+#mainViews .view {
+  height: 100%;
+  display: none;
+  flex-grow: 10;
+}
+#mainViews .view.active {
+  display: flex;
+}

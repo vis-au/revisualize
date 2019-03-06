@@ -1,0 +1,36 @@
+#datasetSelectionComponent {
+  min-width: 75px;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+}
+#datasetSelectionComponent h2 {
+  font-size: 15px;
+  margin: 0.75rem 0.25rem;
+}
+
+#datasetSelectionList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 250px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#datasetSelectionList .branch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#datasetSelectionList .branch .availableDatasetChildNodes {
+  margin-left: 1rem;
+}
+
+#noDatasetNotice {
+  font-size: 12px;
+  color: #888;
+  padding: 0.25rem 0.5rem;
+  border: 2px dashed #ccc;
+  border-radius: 3px;
+  margin: 0 0.15rem 0.5rem;
+}
