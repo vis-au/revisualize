@@ -25,7 +25,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
   private templateConnectionsMap: Map<string, Connection[]>;
   private connectionTemplateMap: Map<string, Template[]>;
 
-
   constructor(props: Props) {
     super(props);
 
@@ -233,6 +232,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   public componentDidMount() {
     this.props.templates.forEach(this.renderTemplateLinks.bind(this));
-    this.dragPlumbing.repaintEverything();
+    window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
   }
 }

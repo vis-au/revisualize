@@ -1,8 +1,8 @@
 import Template from "./Template";
 import { Mark } from "vega-lite/build/src/mark";
 
-export default class VisualMark extends Template {
-  constructor(visualElement: Mark, parent: Template) {
+export default class VisualMarkTemplate extends Template {
+  constructor(public type: Mark, parent: Template) {
     super([], null, parent);
   }
 }

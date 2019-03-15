@@ -7,7 +7,7 @@ import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import TemplateEditor from './TemplateEditor';
 
 import './TemplateConfigurationView.css';
-import VisualMark from './TemplateModel/VisualMark';
+import VisualMarkTemplate from './TemplateModel/VisualMark';
 
 interface State {
   templates: Template[];
@@ -25,12 +25,15 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
 
 
-    const atomicTemplate = new VisualMark("bar", null);
-    const compositeTemplate = new CompositeTemplate(null, [atomicTemplate], null);
-    atomicTemplate.parent = compositeTemplate;
+    const compositeTemplate = new CompositeTemplate(null, [], null);
+    const compositeTemplate2 = new CompositeTemplate(null, [], compositeTemplate);
+    const atomicTemplate = new VisualMarkTemplate("circle", compositeTemplate2);
+    const atomicTemplate2 = new VisualMarkTemplate("bar", compositeTemplate2);
+    compositeTemplate.visualElements.push(compositeTemplate2);
+    compositeTemplate2.visualElements.push(atomicTemplate)
 
     this.state = {
-      templates: [compositeTemplate, atomicTemplate]
+      templates: [compositeTemplate, compositeTemplate2, atomicTemplate, atomicTemplate2]
     };
   }
 

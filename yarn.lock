@@ -6784,7 +6784,14 @@ react-scripts@1.1.4:
   optionalDependencies:
     fsevents "^1.1.3"
 
-react-vega@^4.0.2:
+react-vega-lite@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-vega-lite/-/react-vega-lite-2.0.2.tgz#9fd4b6f486d626a2017686aec5c7bb78df66decb"
+  integrity sha512-P1qim/ZQoB1aYZ28gy4ycsybMZAuzbDR83z9WjvRwQU1CGePV8ZdLmu1wiYh54p91m2yUnth2sFNXEWrXZmNiA==
+  dependencies:
+    react-vega "^4.0.1"
+
+react-vega@^4.0.1, react-vega@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/react-vega/-/react-vega-4.0.2.tgz#3f2713c3efcc8fbf30e094e5c1ea0035ccea41d6"
   dependencies:

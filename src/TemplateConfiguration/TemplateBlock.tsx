@@ -1,14 +1,13 @@
 import * as React from 'react';
 
 import Template from './TemplateModel/Template';
-
-import './TemplateBlock.css';
 import VisualElementMarkBlock from './VisualElementMarkBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
-import VisualMark from './TemplateModel/VisualMark';
+import VisualMarkTemplate from './TemplateModel/VisualMark';
 import CompositeVisualElementBlock from './CompositeVisualElementBlock';
 import LayoutBlock from './LayoutBlock';
-import { jsPlumbInstance, Connection } from 'jsplumb';
+
+import './TemplateBlock.css';
 
 interface Props {
   key: string;
@@ -54,15 +53,9 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderVisualElement(visualElement: Template) {
-    if (visualElement instanceof CompositeTemplate) {
+    if (this.props.template instanceof CompositeTemplate) {
       return (
         <CompositeVisualElementBlock
-          key={ visualElement.id }
-          visualElement={ visualElement }/>
-      );
-    } else if (visualElement instanceof VisualMark) {
-      return (
-        <VisualElementMarkBlock
           key={ visualElement.id }
           visualElement={ visualElement }/>
       );
@@ -70,11 +63,20 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderVisualElements() {
-    return (
-      <div className="visualElementContainer">
-        { this.props.template.visualElements.map(this.renderVisualElement) }
-      </div>
-    );
+    if (this.props.template instanceof CompositeTemplate) {
+      return (
+        <div className="visualElementContainer">
+          { this.props.template.visualElements.map(this.renderVisualElement) }
+        </div>
+      );
+    } else if (this.props.template instanceof VisualMarkTemplate) {
+      return (
+        <div className="visualElementContainer">
+          <VisualElementMarkBlock
+            visualElement={ this.props.template }/>
+        </div>
+      );
+    }
   }
 
   public render() {

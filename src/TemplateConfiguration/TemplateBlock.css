@@ -82,5 +82,6 @@ div.template .body .layoutContainer {
   justify-content: space-between;
   flex-wrap: wrap;
   min-width: 50px;
-  background: lightsteelblue;
+  background: #fff;
+  border: 1px solid #ccc;
 }
