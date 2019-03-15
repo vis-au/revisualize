@@ -1,0 +1,86 @@
+div.template {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 0px 4px #ccc;
+  transition:
+    box-shadow 0.25s cubic-bezier(0.075, 0.82, 0.165, 1),
+    border-color 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+div.template.focus {
+  box-shadow: 0 4px 4px #ccc;
+}
+div.template.focus .templateHeader {
+  background: teal;
+}
+
+div.template .templateHeader {
+  padding: 0.25rem 1rem;
+  margin: 0;
+  border-bottom: teal;
+  background: teal;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+div.template .templateHeader .delete {
+  margin-left: 0.5rem;
+  color: #fff;
+}
+div.template .templateHeader h2 {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto Condensed';
+  font-size: 1.15rem;
+  color: #fff;
+}
+div.template .templateHeader .dataSource {
+  margin: 0 0.25rem;
+}
+div.template .templateHeader .dataSource .buildingBlock.dataset {
+  color: #fff;
+  font-size: 12px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  margin-right: 0;
+  background: transparent;
+  border-color: #fff;
+  border-radius: 3px;
+}
+
+div.template .unboundNotice {
+  border: 1px dashed #ccc;
+  color: #aaa;
+}
+div.template .body .dropArea {
+  border-color: teal;
+}
+div.template .unboundNotice,
+div.template .dropArea {
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem 0.25rem;
+}
+div.template .dropArea.jtk-drag-active + .unboundNotice {
+  display: none;
+}
+div.template .templateNoDataset .unboundNotice {
+  color: #fff;
+  border-color: #fff;
+}
+
+div.template .body {
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.template .body .visualElementContainer,
+div.template .body .layoutContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  min-width: 50px;
+  background: lightsteelblue;
+}

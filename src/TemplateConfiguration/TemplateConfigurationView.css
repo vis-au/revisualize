@@ -1,0 +1,6 @@
+button#addNewTemplate {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  background: teal;
+}

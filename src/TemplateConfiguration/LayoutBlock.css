@@ -1,0 +1,8 @@
+div.layout {
+  width: 50px;
+  height: 50px;
+  background: steelblue;
+}
+div.layout.null {
+  background: lightcoral;
+}

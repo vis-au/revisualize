@@ -1,0 +1,6 @@
+div.visualElement {
+  min-width: 50px;
+  min-height: 50px;
+  background: #eee;
+  border: 1px solid #ccc;
+}
