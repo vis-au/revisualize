@@ -11,7 +11,7 @@ interface Props {
   onNewConnection: (newConnection: any) => void;
   onDetachedConnection: (oldConnection: any) => void;
   onDiagramClicked: (event: any) => void;
-  renderBlocks: () => React.Component;
+  renderBlocks: () => JSX.Element[];
 }
 
 export default class DiagramEditor extends React.Component<Props, {}> {
@@ -22,10 +22,6 @@ export default class DiagramEditor extends React.Component<Props, {}> {
     super(props);
 
     this.lastTransform = d3.zoomIdentity;
-
-    setTimeout(() => {
-      this.props.dragPlumbing.ready(this.configurePlumbing.bind(this));
-    }, 0);
   }
 
   private configurePlumbing() {
@@ -84,5 +80,9 @@ export default class DiagramEditor extends React.Component<Props, {}> {
         </div>
       </article>
     );
+  }
+
+  public componentDidMount() {
+    this.props.dragPlumbing.ready(this.configurePlumbing.bind(this));
   }
 }

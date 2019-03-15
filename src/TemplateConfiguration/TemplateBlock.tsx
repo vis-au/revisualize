@@ -4,16 +4,18 @@ import Template from './TemplateModel/Template';
 
 import './TemplateBlock.css';
 import VisualElementMarkBlock from './VisualElementMarkBlock';
-import { VisualElementType } from './TemplateModel/VisualElementType';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import VisualMark from './TemplateModel/VisualMark';
 import CompositeVisualElementBlock from './CompositeVisualElementBlock';
 import LayoutBlock from './LayoutBlock';
+import { jsPlumbInstance, Connection } from 'jsplumb';
 
 interface Props {
   key: string;
   dragPlumbing: any;
-  template: Template
+  template: Template;
+  toggleChildTemplate: (template: Template) => void;
+  delete: () => void
 }
 interface State {
 
@@ -23,8 +25,9 @@ export default class TemplateBlock extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    this.toggleChildTemplates = this.toggleChildTemplates.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.onDeleteTemplate = this.onDeleteTemplate.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     this.renderVisualElement = this.renderVisualElement.bind(this);
   }
 
@@ -32,8 +35,14 @@ export default class TemplateBlock extends React.Component<Props, State> {
     // find something that makes sense
   }
 
-  private onDeleteTemplate() {
-    return;
+  private onDelete() {
+    this.props.delete();
+  }
+
+  private toggleChildTemplates() {
+    this.props.template.visualElements.forEach((template) => {
+      this.props.toggleChildTemplate(template);
+    });
   }
 
   private renderLayout() {
@@ -44,14 +53,18 @@ export default class TemplateBlock extends React.Component<Props, State> {
     );
   }
 
-  private renderVisualElement(visualElement: VisualElementType) {
+  private renderVisualElement(visualElement: Template) {
     if (visualElement instanceof CompositeTemplate) {
       return (
-        <CompositeVisualElementBlock key={ visualElement.id } visualElement={ visualElement }/>
+        <CompositeVisualElementBlock
+          key={ visualElement.id }
+          visualElement={ visualElement }/>
       );
     } else if (visualElement instanceof VisualMark) {
       return (
-        <VisualElementMarkBlock key={ visualElement.id } visualElement={ visualElement }/>
+        <VisualElementMarkBlock
+          key={ visualElement.id }
+          visualElement={ visualElement }/>
       );
     }
   }
@@ -73,20 +86,22 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
         <div className="templateHeader">
           <h2>{ this.props.template.id }</h2>
-          <div className="delete" onClick={ this.onDeleteTemplate } />
+          <button className="expand" onClick={ this.toggleChildTemplates }>subtree</button>
+          <div className="delete" onClick={ this.onDelete } />
         </div>
         <div className="body">
           { this.renderLayout() }
           { this.renderVisualElements() }
         </div>
-
       </div>
     );
   }
 
   private addPlumbing() {
-    const bodySelector = document.querySelector(`#${this.props.template.id} .body`);
-    const visualElementSelector = document.querySelector(`#${this.props.template.id} .body .visualElementContainer`);
+    const bodySelector =
+      document.querySelector(`#${this.props.template.id} .body`);
+    const visualElementSelector =
+      document.querySelector(`#${this.props.template.id} .body .visualElementContainer`);
 
     const plumbingConfig = {
       paintStyle: { fill: 'teal', radius: 5 },

@@ -79,7 +79,7 @@ div.template .body .visualElementContainer,
 div.template .body .layoutContainer {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   min-width: 50px;
   background: lightsteelblue;

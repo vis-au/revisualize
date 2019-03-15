@@ -12,6 +12,7 @@ import Tab from './ToolkitView/Tab';
 import TabNavigation from './ToolkitView/TabNavigation';
 
 import './App.css';
+import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 
 interface State {
   activeTab: Tab;
@@ -30,9 +31,10 @@ export default class App extends React.Component<{}, State> {
     this.tabs = [
       new Tab('Data'),
       // new Tab('Scales'),
-      new Tab('Interactions'),
-      new Tab('Patterns'),
-      new Tab('Dashboard')
+      new Tab('Templates'),
+      // new Tab('Interactions'),
+      // new Tab('Patterns'),
+      // new Tab('Dashboard')
     ];
 
     const patternGraph = new PatternGraph();
@@ -41,7 +43,7 @@ export default class App extends React.Component<{}, State> {
     patternGraph.globalDatasets = DEFAULT_DATA_GRAPH.getDatasetNodes();
 
     this.state = {
-      activeTab: this.tabs[0],
+      activeTab: this.tabs[1],
       dataGraph: DEFAULT_DATA_GRAPH,
       height: window.innerHeight,
       patternGraph,
@@ -87,29 +89,32 @@ export default class App extends React.Component<{}, State> {
         />
 
         <MainView height={ this.state.height - 100 }>
-          <PatternConfigurationView
+          {/* <PatternConfigurationView
             activeTab={ this.state.activeTab }
             patternGraph={ this.state.patternGraph }
             datasetGraph={ this.state.dataGraph }
             onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
-          />
-          <InteractionConfigurationView
+          /> */}
+          {/* <InteractionConfigurationView
             activeTab={ this.state.activeTab }
             datasetGraph={ this.state.dataGraph }
             patternGraph={ this.state.patternGraph }
             onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
-          />
+          /> */}
           <DataFlowConfigurationView
             activeTab={ this.state.activeTab }
             graph={ this.state.dataGraph }
             onDataGraphChanged={ this.updateDataGraph.bind(this) }
           />
-          <PreviewComponentView
+          <TemplateConfigurationView
+            activeTab={ this.state.activeTab }
+          />
+          {/* <PreviewComponentView
             activeTab={ this.state.activeTab }
             width={ this.state.width - 100 }
             height={ this.state.height - 100 }
             patternGraph={ this.state.patternGraph }
-          />
+          /> */}
         </MainView>
       </div>
     );
