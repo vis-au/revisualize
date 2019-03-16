@@ -1,34 +1,38 @@
 import * as React from 'react';
 
-import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import VegaRenderer from '../Model/Renderer/VegaRenderer';
+import Layout from './TemplateModel/Layout';
 import SpecCompiler from './TemplateModel/SpecCompiler';
+import Template from './TemplateModel/Template';
 
 import './CompositeVisualElementBlock.css';
 
 interface Props {
-  visualElement: CompositeTemplate;
+  templates: Template[];
+  layout: Layout;
 }
 interface State {
 
 }
 
 export default class CompositeVisualElementBlock extends React.Component<Props, State> {
+  private specCompiler: SpecCompiler;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.specCompiler = new SpecCompiler();
+  }
+
   private renderVisualElements() {
-    if (this.props.visualElement instanceof CompositeTemplate) {
-      return null;
-    }
-
-    const specCompiler = new SpecCompiler();
-    const spec = specCompiler.getVegaSpecification(this.props.visualElement);
-
-    console.log(spec)
+    const spec = this.specCompiler.getVegaSpecification(this.props.templates, this.props.layout);
 
     return (
       <VegaRenderer
+        id={ this.props.templates.map(t => t.id).join('_') }
         showExportOptions={ true }
-        width={ 500 }
-        height={ 300 }
+        width={ 125 }
+        height={ 100 }
         schema={ spec }
       />
     );

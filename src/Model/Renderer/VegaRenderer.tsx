@@ -21,19 +21,14 @@ export default class VegaRenderer extends React.Component<Props, {}> {
   }
 
   private renderWithEmbed() {
-    console.log('kenobi')
     return (
       <div className="vegaContainer" id={ `vegaContainer${ this.props.id }` }></div>
     );
   }
 
   private renderAsComponent() {
-    if (this.props.schema['$schema'].indexOf('vega-lite') > -1) {
-      return
-    }
-
-    console.log(this.props.schema['$schema'])
-    if (this.props.schema['$schema'].indexOf('vega-lite') > -1) {
+    console.log(this.props.schema.$schema)
+    if (this.props.schema.$schema.indexOf('vega-lite') > -1) {
       return <VegaLite
         width={ this.props.width }
         height={ this.props.height }

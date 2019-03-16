@@ -1,9 +1,9 @@
+import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 import DiagramEditor from '../Widgets/DiagramEditor';
-import Template from './TemplateModel/Template';
-import { jsPlumb, jsPlumbInstance, Connection } from 'jsplumb';
 import TemplateBlock from './TemplateBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
+import Template from './TemplateModel/Template';
 
 interface Props {
   templates: Template[],
@@ -193,7 +193,23 @@ export default class TemplateEditor extends React.Component<Props, State> {
   }
 
   private onDetachedConnection(event: any) {
+    const connection: Connection = event.connection;
+
+    const templates = this.connectionTemplateMap.get(connection.id);
+    const sourceTemplate = templates[0];
+    const targetTemplate = templates[1];
+
+    const indexInSource = sourceTemplate.visualElements.indexOf(targetTemplate);
+    sourceTemplate.visualElements.splice(indexInSource, 1);
+
+    targetTemplate.parent = null;
+
+    console.log(sourceTemplate, targetTemplate);
+
     this.deleteConnectionFromMaps(event.connection);
+
+    this.dragPlumbing.repaintEverything();
+    this.props.onTemplatesChanged();
   }
 
   private renderTemplateLinks(template: Template) {

@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import ViewContainer from '../ToolkitView/ViewContainer';
 import Tab from '../ToolkitView/Tab';
-import Template from './TemplateModel/Template';
-import CompositeTemplate from './TemplateModel/CompositeTemplate';
+import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplateEditor from './TemplateEditor';
+import CompositeTemplate from './TemplateModel/CompositeTemplate';
+import Template from './TemplateModel/Template';
 
 import './TemplateConfigurationView.css';
+import Layout from './TemplateModel/Layout';
 import VisualMarkTemplate from './TemplateModel/VisualMark';
 
 interface State {
@@ -24,11 +25,16 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.deleteTemplate = this.deleteTemplate.bind(this);
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
 
+    const repeatLayout = new Layout('repeat');
+    const histogramLayout = new Layout('histogram');
+    const cartesianLayout = new Layout('cartesian');
 
-    const compositeTemplate = new CompositeTemplate(null, [], null);
-    const compositeTemplate2 = new CompositeTemplate(null, [], compositeTemplate);
-    const atomicTemplate = new VisualMarkTemplate("circle", compositeTemplate2);
-    const atomicTemplate2 = new VisualMarkTemplate("bar", compositeTemplate2);
+    const compositeTemplate = new CompositeTemplate(repeatLayout, [], null);
+    const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+
+    const atomicTemplate = new VisualMarkTemplate('circle', compositeTemplate2);
+    const atomicTemplate2 = new VisualMarkTemplate('bar', compositeTemplate2);
+
     compositeTemplate.visualElements.push(compositeTemplate2);
     compositeTemplate2.visualElements.push(atomicTemplate)
 

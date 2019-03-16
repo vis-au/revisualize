@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import Template from './TemplateModel/Template';
-import VisualElementMarkBlock from './VisualElementMarkBlock';
-import CompositeTemplate from './TemplateModel/CompositeTemplate';
-import VisualMarkTemplate from './TemplateModel/VisualMark';
 import CompositeVisualElementBlock from './CompositeVisualElementBlock';
 import LayoutBlock from './LayoutBlock';
+import CompositeTemplate from './TemplateModel/CompositeTemplate';
+import Template from './TemplateModel/Template';
+import VisualMarkTemplate from './TemplateModel/VisualMark';
+import VisualElementMarkBlock from './VisualElementMarkBlock';
 
 import './TemplateBlock.css';
 
@@ -27,7 +27,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.toggleChildTemplates = this.toggleChildTemplates.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.renderVisualElement = this.renderVisualElement.bind(this);
+    this.renderVisualElements = this.renderVisualElements.bind(this);
   }
 
   private onClick() {
@@ -45,6 +45,10 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderLayout() {
+    if (this.props.template.layout === null) {
+      return <span>no layout</span>
+    }
+
     return (
       <div className="layoutStructureContainer">
         <LayoutBlock layout={ this.props.template.layout } />
@@ -52,21 +56,14 @@ export default class TemplateBlock extends React.Component<Props, State> {
     );
   }
 
-  private renderVisualElement(visualElement: Template) {
-    if (this.props.template instanceof CompositeTemplate) {
-      return (
-        <CompositeVisualElementBlock
-          key={ visualElement.id }
-          visualElement={ visualElement }/>
-      );
-    }
-  }
-
   private renderVisualElements() {
     if (this.props.template instanceof CompositeTemplate) {
       return (
         <div className="visualElementContainer">
-          { this.props.template.visualElements.map(this.renderVisualElement) }
+          <CompositeVisualElementBlock
+            key={ this.props.template.visualElements.map(v => v.id).join('_') }
+            layout={ this.props.template.layout }
+            templates={ this.props.template.visualElements }/>
         </div>
       );
     } else if (this.props.template instanceof VisualMarkTemplate) {
