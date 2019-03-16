@@ -77,6 +77,10 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   public render() {
+    const label = this.props.template.layout === null
+     ? this.props.template.id
+     : this.props.template.layout.type.charAt(0).toUpperCase() + this.props.template.layout.type.slice(1);
+
     return (
       <div
         id={ this.props.template.id }
@@ -84,7 +88,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
         onClick={ this.onClick }>
 
         <div className="templateHeader">
-          <h2>{ this.props.template.id }</h2>
+          <h2>{ label }</h2>
           <button className="expand" onClick={ this.toggleChildTemplates }>subtree</button>
           <div className="delete" onClick={ this.onDelete } />
         </div>
