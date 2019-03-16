@@ -83,7 +83,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
         nextTemplate = workingSet.pop();
       }
 
-      exploredSubtree.forEach(template => hiddenTemplatesMap.set(template.id, true));
+      exploredSubtree.forEach(t => hiddenTemplatesMap.set(t.id, true));
     }
 
     this.setState({ hiddenTemplatesMap });
@@ -203,8 +203,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
     sourceTemplate.visualElements.splice(indexInSource, 1);
 
     targetTemplate.parent = null;
-
-    console.log(sourceTemplate, targetTemplate);
 
     this.deleteConnectionFromMaps(event.connection);
 

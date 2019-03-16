@@ -25,14 +25,18 @@ export default class CompositeVisualElementBlock extends React.Component<Props, 
   }
 
   private renderVisualElements() {
-    const spec = this.specCompiler.getVegaSpecification(this.props.templates, this.props.layout);
+    let spec = this.specCompiler.getVegaSpecification(this.props.templates, this.props.layout);
+
+    if (spec === null) {
+      spec = {} as any;
+    }
 
     return (
       <VegaRenderer
         id={ this.props.templates.map(t => t.id).join('_') }
         showExportOptions={ true }
-        width={ 125 }
-        height={ 100 }
+        width={ 50 }
+        height={ 50 }
         schema={ spec }
       />
     );
