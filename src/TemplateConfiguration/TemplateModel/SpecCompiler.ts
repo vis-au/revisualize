@@ -248,7 +248,6 @@ export default class SpecCompiler {
       schema.layer = individualViewAbstractions;
     }
 
-    console.log(layout, schema)
     return schema;
   }
 
