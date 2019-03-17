@@ -2,13 +2,14 @@ import { TopLevelSpec } from 'vega-lite';
 
 import CompositeTemplate from './CompositeTemplate';
 import Layout from './Layout';
+import { LayoutType } from './LayoutType';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
 
 export default class SpecCompiler {
 
-  private applyVisualMarkTemplate(spec: any, template: VisualMarkTemplate) {
-    spec = {
+  private applyVisualMarkTemplate(schema: any, template: VisualMarkTemplate) {
+    schema = {
       '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
       'description': 'A simple bar chart with embedded data.',
       'data': {
@@ -21,23 +22,23 @@ export default class SpecCompiler {
       'mark': template.type
     }
 
-    return spec;
+    return schema;
   }
 
-  private isAtomicSpec(spec: any): boolean {
-    return spec.mark !== undefined;
+  private isAtomicSchema(schema: any): boolean {
+    return schema.mark !== undefined;
   }
 
-  private isOverlaySpec(spec: any): boolean {
-    return spec.layer !== undefined;
+  private isOverlaySchema(schema: any): boolean {
+    return schema.layer !== undefined;
   }
 
-  private isRepeatSpec(spec: any): boolean {
-    return spec.repeat !== undefined;
+  private isRepeatSchema(schema: any): boolean {
+    return schema.repeat !== undefined;
   }
 
-  private isConcatenateSpec(spec: any): boolean {
-    return spec.concat !== undefined || spec.hconcat !== undefined || spec.vconcat !== undefined;
+  private isConcatenateSchema(schema: any): boolean {
+    return schema.concat !== undefined || schema.hconcat !== undefined || schema.vconcat !== undefined;
   }
 
   private abstractOverlay(schema: any) {
@@ -83,43 +84,49 @@ export default class SpecCompiler {
     };
   }
 
-  private abstractCompositions(schema: any, compositionProperty: string, composeInsideArray: boolean = true): TopLevelSpec {
+  private abstractAtomic(schema: any, compositionProperty: string) {
+    const abstraction = {
+      mark: JSON.parse(JSON.stringify(schema.mark)),
+      encoding: JSON.parse(JSON.stringify(schema.encoding))
+    };
+
+    delete schema.mark;
+    delete schema.encoding;
+
+    if (compositionProperty === 'spec') {
+      abstraction.encoding.x = {
+          field: { repeat: 'column' },
+          type: 'ordinal'
+      };
+    }
+
+    return abstraction;
+  }
+
+  private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
     let abstraction: any = null;
 
-    if (this.isOverlaySpec(schema)) {
+    if (this.isAtomicSchema(schema)) {
+      abstraction = this.abstractAtomic(schema, compositionProperty);
+    } else if (this.isOverlaySchema(schema)) {
       abstraction = this.abstractOverlay(schema)
-    } else if (this.isRepeatSpec(schema)) {
+    } else if (this.isRepeatSchema(schema)) {
       abstraction = this.abstractRepeat(schema);
-    } else if (this.isConcatenateSpec(schema)) {
+    } else if (this.isConcatenateSchema(schema)) {
       abstraction = this.abstractConcat(schema);
     }
 
-    if (composeInsideArray) {
-      schema[compositionProperty] =  [ abstraction ];
-    } else {
+    if (compositionProperty === 'spec') {
       schema[compositionProperty] = abstraction;
+    } else {
+      schema[compositionProperty] =  [ abstraction ];
     }
 
     return schema;
   }
 
   private applyRepeatLayout(schema: any): TopLevelSpec {
-    if (this.isAtomicSpec(schema)) {
-      schema.spec = {
-        mark: JSON.parse(JSON.stringify(schema.mark)),
-        encoding: JSON.parse(JSON.stringify(schema.encoding))
-      }
-
-      delete schema.mark;
-      delete schema.encoding;
-
-      schema.spec.encoding.x = {
-          field: { repeat: 'column' },
-          type: 'ordinal'
-      };
-    } else {
-      schema = this.abstractCompositions(schema, 'spec', false);
-    }
+    schema = this.abstractCompositions(schema, 'spec');
 
     schema.repeat = {
       'column': ['a', 'c']
@@ -129,71 +136,31 @@ export default class SpecCompiler {
   }
 
   private applyConcatLayout(schema: any): TopLevelSpec {
-    // if (this.isAtomicSpec(schema)) {
-    //   schema.concat = [
-    //     {
-    //       mark: JSON.parse(JSON.stringify(schema.mark)),
-    //       encoding: JSON.parse(JSON.stringify(schema.encoding))
-    //     }
-    //   ];
-
-    //   delete schema.mark;
-    //   delete schema.encoding;
-    // } else {
-    //   schema = this.applyCompositionLayout(schema, 'concat');
-    // }
-
-    return schema;
+    return this.abstractCompositions(schema, 'concat');
   }
 
   private applyOverlayLayout(schema: any): TopLevelSpec {
-    if (this.isAtomicSpec(schema)) {
-      schema.layer = [
-        {
-          mark: JSON.parse(JSON.stringify(schema.mark)),
-          encoding: JSON.parse(JSON.stringify(schema.encoding))
-        }
-      ];
+    return this.abstractCompositions(schema, 'layer');
+  }
 
-      delete schema.mark;
-      delete schema.encoding;
-    } else {
-      schema = this.abstractCompositions(schema, 'layer');
+  private applyCompositionLayout(schema: any, layout: Layout): TopLevelSpec {
+    if (layout.type === 'repeat') {
+      this.applyRepeatLayout(schema);
+    } else if (layout.type === 'concatenate') {
+      this.applyConcatLayout(schema);
+    } else if (layout.type === 'overlay') {
+      this.applyOverlayLayout(schema);
     }
 
     return schema;
   }
 
-  private applyCompositeLayout(spec: any, layout: Layout): TopLevelSpec {
-    // TODO: requires transpilation to vega first
-    if (['cartesian', 'histogram'].indexOf(layout.type) > -1) {
-      return spec;
-    }
-
-    if (layout.type === 'repeat') {
-      this.applyRepeatLayout(spec);
-    } else if (layout.type === 'concatenate') {
-      this.applyConcatLayout(spec);
-    } else if (layout.type === 'overlay') {
-      this.applyOverlayLayout(spec);
-    }
-
-    return spec;
-  }
-
-  private applyVisualMarkLayout(spec: any, layout: Layout): TopLevelSpec {
-    if (spec === null) {
-      return spec;
-    }
-    if (layout === null) {
-      return spec;
-    }
-
-    spec.encoding = {};
+  private applyPositionLayout(schema: any, layout: Layout): TopLevelSpec {
+    schema.encoding = {};
 
     // apply basic positioning for x and y coordinates, without a layouting type
     if (['cartesian', 'histogram'].indexOf(layout.type) > -1) {
-      spec.encoding = {
+      schema.encoding = {
         'x': {'field': 'a'},
         'y': {'field': 'b'}
       };
@@ -201,43 +168,61 @@ export default class SpecCompiler {
 
     // set the encodings for the marks, based on the layout type
     if (layout.type === 'cartesian') {
-      spec.encoding.x.type = 'quantitative';
-      spec.encoding.y.type = 'quantitative';
+      schema.encoding.x.type = 'quantitative';
+      schema.encoding.y.type = 'quantitative';
     } else if (layout.type === 'histogram') {
-      spec.encoding.x.type = 'ordinal';
-      spec.encoding.y.type = 'quantitative';
-    } else if (layout.type === 'repeat') {
-
+      schema.encoding.x.type = 'ordinal';
+      schema.encoding.y.type = 'quantitative';
     }
 
-    return spec;
+    return schema;
+  }
+
+  private applyLayout(schema: any, layout: Layout) {
+    if (schema === null) {
+      return schema;
+    }
+    if (layout === null) {
+      return schema;
+    }
+
+    const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
+    const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
+
+    if (positioningLayouts.indexOf(layout.type) > -1) {
+      schema = this.applyPositionLayout(schema, layout);
+    } else if (compositionLayouts.indexOf(layout.type) > -1) {
+      schema = this.applyCompositionLayout(schema, layout);
+    }
+
+    return schema;
   }
 
   public getVegaSpecification(templates: Template[], layout: Layout): TopLevelSpec {
 
-    let spec: any = null;
+    let schema: any = null;
 
     if (templates.length === 0) {
-      return spec;
+      return schema;
     }
 
     const template = templates[0];
 
     if (template instanceof VisualMarkTemplate) {
-      spec = this.applyVisualMarkTemplate(spec, template);
-      spec = this.applyVisualMarkLayout(spec, layout);
+      schema = this.applyVisualMarkTemplate(schema, template);
+      schema = this.applyLayout(schema, layout);
 
     } else if (template instanceof CompositeTemplate) {
 
-      spec = this.getVegaSpecification(template.visualElements, template.layout);
+      schema = this.getVegaSpecification(template.visualElements, template.layout);
 
-      if (spec !== null) {
-        spec = this.applyCompositeLayout(spec, layout);
+      if (schema !== null) {
+        schema = this.applyLayout(schema, layout);
       }
     }
 
-    console.log(spec)
+    console.log(schema)
 
-    return spec;
+    return schema;
   }
 }

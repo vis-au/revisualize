@@ -37,6 +37,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
     this.renderTemplateLinks = this.renderTemplateLinks.bind(this);
     this.toggleTemplateBlockVisibility = this.toggleTemplateBlockVisibility.bind(this);
     this.deleteConnectionFromMaps = this.deleteConnectionFromMaps.bind(this);
+    this.renderTemplateLinks = this.renderTemplateLinks.bind(this)
 
     this.dragPlumbing = jsPlumb.getInstance();
     this.templateConnectionsMap = new Map();
@@ -245,7 +246,10 @@ export default class TemplateEditor extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.props.templates.forEach(this.renderTemplateLinks.bind(this));
+    this.props.templates
+      .filter(t => t.parent === null)
+      .forEach(this.renderTemplateLinks);
+
     window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
   }
 }
