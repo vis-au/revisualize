@@ -1,0 +1,38 @@
+#templateToolbar {
+  margin: 0;
+  padding: 0.25rem 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+#templateToolbar .buildingBlock {
+  margin: 0 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  color: #333;
+  box-shadow: 0 1px 2px #ccc;
+}
+#templateToolbar .buildingBlock:hover {
+  background: #eee;
+  color: #000;
+}
+
+#templateToolbar h2 {
+  margin: 0 1rem;
+  font-family: 'Roboto Condensed';
+  font-size: 15px;
+}
+
+#templateToolbarVisualMarks,
+#templateToolbarLayouts,
+#templatePresets {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 1rem;
+}
