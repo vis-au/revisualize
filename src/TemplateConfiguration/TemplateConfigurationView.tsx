@@ -5,10 +5,9 @@ import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplateEditor from './TemplateEditor';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
+import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
-import Layout from './TemplateModel/Layout';
-import VisualMarkTemplate from './TemplateModel/VisualMark';
 
 interface State {
   templates: Template[];
@@ -22,43 +21,28 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     super(props);
 
     this.addTemplate = this.addTemplate.bind(this);
+    this.addTemplates = this.addTemplates.bind(this);
     this.deleteTemplate = this.deleteTemplate.bind(this);
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
 
-    const repeatLayout = new Layout('repeat');
-    const overlayLayout = new Layout('overlay');
-    const histogramLayout = new Layout('histogram');
-    const concatenateLayout = new Layout('concatenate');
-    const cartesianLayout = new Layout('cartesian');
-
-    const compositeTemplate = new CompositeTemplate(repeatLayout, [], null);
-    const compositeTemplate2 = new CompositeTemplate(repeatLayout, [], compositeTemplate);
-    const compositeTemplate3 = new CompositeTemplate(overlayLayout, [], compositeTemplate2);
-    const compositeTemplate4 = new CompositeTemplate(histogramLayout, [], compositeTemplate3);
-
-    compositeTemplate.id = 'compos1';
-    compositeTemplate2.id = 'compos2';
-    compositeTemplate3.id = 'compos3';
-    compositeTemplate3.id = 'compos4';
-
-    const atomicTemplate = new VisualMarkTemplate('circle', compositeTemplate4);
-    const atomicTemplate2 = new VisualMarkTemplate('bar', null);
-
-    compositeTemplate.visualElements.push(compositeTemplate2);
-    compositeTemplate2.visualElements.push(compositeTemplate3);
-    compositeTemplate3.visualElements.push(compositeTemplate4);
-    compositeTemplate4.visualElements.push(atomicTemplate);
-
     this.state = {
-      templates: [compositeTemplate, compositeTemplate2, compositeTemplate3, compositeTemplate4, atomicTemplate, atomicTemplate2]
+      templates: []
     };
   }
 
-  private addTemplate() {
+  private addTemplate(template?: Template) {
     const templates = this.state.templates;
-    const newTemplate = new CompositeTemplate(null, [], null);
+    const newTemplate = template === undefined
+      ? new CompositeTemplate(null, [], null)
+      : template;
 
     templates.push(newTemplate);
+    this.onTemplatesChanged();
+  }
+
+  private addTemplates(templates: Template[]) {
+    const currentTemplates = this.state.templates;
+    currentTemplates.push(...templates);
     this.onTemplatesChanged();
   }
 
@@ -94,18 +78,24 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         name="Templates"
         activeContainerName={ this.props.activeTab.name }>
 
-        <TemplateEditor
-          templates={ this.state.templates }
-          onTemplatesChanged={ this.onTemplatesChanged }
-          deleteTemplate={ this.deleteTemplate }/>
+        <TemplateConfigurationToolbar
+          addTemplate={ this.addTemplate }
+          addTemplates={ this.addTemplates } />
 
-        <button
-          className="floatingAddButton"
-          id="addNewTemplate"
-          onClick={ this.addTemplate }>
+        <div id="templateConfigurationBody">
+          <TemplateEditor
+            templates={ this.state.templates }
+            onTemplatesChanged={ this.onTemplatesChanged }
+            deleteTemplate={ this.deleteTemplate }/>
 
-          +
-        </button>
+          <button
+            className="floatingAddButton"
+            id="addNewTemplate"
+            onClick={ () => this.addTemplate() }>
+
+            +
+          </button>
+        </div>
 
       </ViewContainer>
     );

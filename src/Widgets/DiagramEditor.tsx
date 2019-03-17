@@ -9,6 +9,7 @@ interface Props {
   dragPlumbing: any;
   plumbingConfig: any;
   onNewConnection: (newConnection: any) => void;
+  onConnectionMoved?: (connection: any) => void;
   onDetachedConnection: (oldConnection: any) => void;
   onDiagramClicked: (event: any) => void;
   renderBlocks: () => JSX.Element[];
@@ -29,6 +30,7 @@ export default class DiagramEditor extends React.Component<Props, {}> {
 
     plumbing.bind('connection', (event: any) => this.props.onNewConnection(event));
     plumbing.bind('connectionDetached', (event: any) => this.props.onDetachedConnection(event));
+    plumbing.bind('connectionMoved', (event: any) => this.props.onConnectionMoved(event));
 
     const container = document.querySelector(`#${this.props.id} .diagram`);
 

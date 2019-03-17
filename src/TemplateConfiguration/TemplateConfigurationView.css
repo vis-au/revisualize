@@ -1,3 +1,15 @@
+#templateConfiguration {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  transition: flex 0.4s;
+}
+#templateConfigurationBody {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 5;
+}
 button#addNewTemplate {
   position: absolute;
   right: 25px;

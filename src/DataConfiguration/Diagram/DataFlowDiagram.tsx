@@ -59,6 +59,10 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
     this.props.updateGraph(this.props.graph);
   }
 
+  private onConnectionMoved(event: any) {
+
+  }
+
   private onDetachedConnection(event: any) {
     const link = this.props.graph.links.find((l: DatasetLink) => l.connection === event.connection);
     this.props.graph.removeLink(link);
@@ -116,6 +120,7 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
         dragPlumbing={ this.dragPlumbing }
         plumbingConfig={ dataflowDiagramPlumbingConfig }
         onNewConnection={ this.onNewConnection.bind(this) }
+        onConnectionMoved={ this.onConnectionMoved.bind(this) }
         onDetachedConnection={ this.onDetachedConnection.bind(this) }
         onDiagramClicked={ this.props.deselectFocusedNode.bind(this) }
         renderBlocks={ this.renderNodesAsBlocks.bind(this) }

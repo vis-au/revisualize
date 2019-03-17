@@ -6,10 +6,13 @@ import { LayoutType } from './LayoutType';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
 
+const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
+const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
+
 export default class SpecCompiler {
 
-  private applyVisualMarkTemplate(schema: any, template: VisualMarkTemplate) {
-    schema = {
+  private getBasicSchema() {
+    return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
       'description': 'A simple bar chart with embedded data.',
       'data': {
@@ -18,10 +21,15 @@ export default class SpecCompiler {
           {'a': 'D','b': 91, 'c': 'X'}, {'a': 'E','b': 81, 'c': 'X'}, {'a': 'F','b': 53, 'c': 'Y'},
           {'a': 'G','b': 19, 'c': 'X'}, {'a': 'H','b': 87, 'c': 'X'}, {'a': 'I','b': 52, 'c': 'Z'}
         ]
-      },
-      'mark': template.type,
-      'encoding': {}
-    }
+      }
+    };
+  }
+
+  private applyVisualMarkTemplate(schema: any, template: VisualMarkTemplate) {
+    schema = this.getBasicSchema();
+
+    schema.mark = template.type;
+    schema.encoding = {};
 
     return schema;
   }
@@ -104,7 +112,7 @@ export default class SpecCompiler {
     return abstraction;
   }
 
-  private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
+  private getAbstraction(schema: any, compositionProperty: string): any {
     let abstraction: any = null;
 
     if (this.isAtomicSchema(schema)) {
@@ -117,6 +125,11 @@ export default class SpecCompiler {
       abstraction = this.abstractConcat(schema);
     }
 
+    return abstraction;
+  }
+
+  private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
+    const abstraction: any = this.getAbstraction(schema, compositionProperty);
 
     if (compositionProperty === 'spec') {
       schema[compositionProperty] = abstraction;
@@ -164,7 +177,11 @@ export default class SpecCompiler {
     if (['cartesian', 'histogram'].indexOf(layout.type) > -1) {
       schema.encoding = {
         'x': {'field': 'a'},
-        'y': {'field': 'b'}
+        'y': {'field': 'b'},
+        'text': {
+          'field': 'b',
+          'type': 'nominal'
+        }
       };
     }
 
@@ -188,9 +205,6 @@ export default class SpecCompiler {
       return schema;
     }
 
-    const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
-    const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
-
     if (positioningLayouts.indexOf(layout.type) > -1) {
       schema = this.applyPositionLayout(schema, layout);
     } else if (compositionLayouts.indexOf(layout.type) > -1) {
@@ -200,15 +214,8 @@ export default class SpecCompiler {
     return schema;
   }
 
-  public getVegaSpecification(templates: Template[], layout: Layout): TopLevelSpec {
-
+  private getSingleLayerSpec(template: Template, layout: Layout): TopLevelSpec {
     let schema: any = null;
-
-    if (templates.length === 0) {
-      return schema;
-    }
-
-    const template = templates[0];
 
     if (template instanceof VisualMarkTemplate) {
       schema = this.applyVisualMarkTemplate(schema, template);
@@ -221,6 +228,40 @@ export default class SpecCompiler {
       if (schema !== null) {
         schema = this.applyLayout(schema, layout);
       }
+    }
+
+    return schema;
+  }
+
+  private getMultiLayerSpec(templates: Template[], layout: Layout): TopLevelSpec {
+    const schema: any = this.getBasicSchema();
+
+    const individualSchemas = templates.map(t => this.getSingleLayerSpec(t, t.layout));
+    const individualViewAbstractions = individualSchemas.map(s => {
+      return this.getAbstraction(s, null);
+    });
+
+
+    if (layout.type === 'concatenate') {
+      schema.concat = individualViewAbstractions;
+    } else if (layout.type === 'overlay') {
+      schema.layer = individualViewAbstractions;
+    }
+
+    console.log(layout, schema)
+    return schema;
+  }
+
+  public getVegaSpecification(templates: Template[], layout: Layout): TopLevelSpec {
+
+    let schema: any = null;
+
+    if (templates.length === 0) {
+      return schema;
+    } else if (templates.length === 1) {
+      schema = this.getSingleLayerSpec(templates[0], layout);
+    } else if (templates.length > 1) {
+      schema = this.getMultiLayerSpec(templates, layout);
     }
 
     console.log(schema)

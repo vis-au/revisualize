@@ -31,6 +31,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
     this.renderTemplateBlocks = this.renderTemplateBlocks.bind(this);
     this.onDiagramClicked = this.onDiagramClicked.bind(this);
     this.onNewConnection = this.onNewConnection.bind(this);
+    this.onConnectionMoved = this.onConnectionMoved.bind(this);
     this.onDetachedConnection = this.onDetachedConnection.bind(this);
     this.render = this.render.bind(this);
     this.renderTemplateBlock = this.renderTemplateBlock.bind(this);
@@ -193,6 +194,27 @@ export default class TemplateEditor extends React.Component<Props, State> {
     this.props.onTemplatesChanged();
   }
 
+  private onConnectionMoved(event: any) {
+    const connection: any = event.connection;
+    const templates = this.connectionTemplateMap.get(connection.id);
+
+    const targetIndexInSource = templates[0].visualElements.indexOf(templates[1]);
+    templates[0].visualElements.splice(targetIndexInSource, 1);
+    templates[1].parent = null;
+
+    this.deleteConnectionFromMaps(connection);
+
+    const source = this.props.templates
+      .find(template => template.id === connection.source.parentNode.parentNode.id);
+
+    const target = this.props.templates
+      .find(template => template.id === connection.target.parentNode.id);
+
+    this.connectionTemplateMap.set(connection.id, [source, target]);
+    this.dragPlumbing.repaintEverything();
+    this.props.onTemplatesChanged();
+  }
+
   private onDetachedConnection(event: any) {
     const connection: Connection = event.connection;
 
@@ -240,6 +262,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
         plumbingConfig={ templateEditorPlumbingConfig }
         onDiagramClicked={ this.onDiagramClicked }
         onDetachedConnection={ this.onDetachedConnection }
+        onConnectionMoved={ this.onConnectionMoved }
         onNewConnection={ this.onNewConnection }
         renderBlocks={ () => this.renderTemplateBlocks(this.props.templates) } />
     );
@@ -251,5 +274,27 @@ export default class TemplateEditor extends React.Component<Props, State> {
       .forEach(this.renderTemplateLinks);
 
     window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
+  }
+
+  public componentDidUpdate() {
+    // this.props.templates
+    //   .filter(template => {
+    //     let connectionsInData = template.visualElements.length;
+
+    //     if (template.parent !== null) {
+    //       connectionsInData += 1;
+    //     }
+
+    //     const mapEntry = this.templateConnectionsMap.get(template.id);
+
+    //     if (mapEntry === undefined) {
+    //       return true;
+    //     }
+
+    //     const connectionsInView = mapEntry.length;
+
+    //     return connectionsInData !== connectionsInView;
+    //   })
+    //   .forEach(this.renderTemplateLinks);
   }
 }
