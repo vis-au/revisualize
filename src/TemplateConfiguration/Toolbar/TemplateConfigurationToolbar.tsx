@@ -30,6 +30,24 @@ function getScatterplotMatrixPreset(): Template {
   return compositeTemplate;
 }
 
+function getLineChartPreset(): Template {
+  const histogramLayout = new Layout('histogram');
+  const overlayLayout = new Layout('overlay');
+
+  const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
+  const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+  const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+
+  const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
+  const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
+
+  compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
+  compositeTemplate2.visualElements.push(atomicTemplate);
+  compositeTemplate3.visualElements.push(atomicTemplate2);
+
+  return compositeTemplate;
+}
+
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
   private templatePresets: Map<string, Template>;
 
@@ -39,7 +57,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.onMarkClicked = this.onMarkClicked.bind(this);
 
     this.templatePresets = new Map();
-    this.templatePresets.set('Scatterplot Matrix', getScatterplotMatrixPreset())
+    this.templatePresets.set('Scatterplot Matrix', getScatterplotMatrixPreset());
+    this.templatePresets.set('Line Chart', getLineChartPreset());
   }
 
   private onMarkClicked(mark: Mark) {
@@ -102,7 +121,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   }
 
   public render() {
-    const DEFAULT_MARK_ICONS: Mark[] = ['area', 'bar', 'point', 'text', 'rect'];
+    const DEFAULT_MARK_ICONS: Mark[] = ['area', 'bar', 'point', 'text', 'rect', 'line'];
     const DEFAULT_LAYOUT_ICONS: LayoutType[] = ['cartesian', 'concatenate', 'histogram', 'overlay', 'repeat'];
 
     return (
