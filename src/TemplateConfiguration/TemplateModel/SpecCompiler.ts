@@ -77,11 +77,11 @@ export default class SpecCompiler {
     let currentConcat: any = null;
     let concatProp: string = null;
 
-    if (schema.concat !== null) {
+    if (schema.concat !== undefined) {
       concatProp = 'concat';
-    } else if (schema.hconcat !== null)  {
+    } else if (schema.hconcat !== undefined)  {
       concatProp = 'hconcat';
-    } else if (schema.vconcat !== null) {
+    } else if (schema.vconcat !== undefined) {
       concatProp = 'vconcat';
     }
 
@@ -105,6 +105,10 @@ export default class SpecCompiler {
     if (compositionProperty === 'spec') {
       abstraction.encoding.x = {
           field: { repeat: 'column' },
+          type: 'ordinal'
+      };
+      abstraction.encoding.y = {
+          field: { repeat: 'row' },
           type: 'ordinal'
       };
     }
@@ -144,14 +148,15 @@ export default class SpecCompiler {
     schema = this.abstractCompositions(schema, 'spec');
 
     schema.repeat = {
-      'column': ['a', 'c']
+      'column': ['a', 'c'],
+      'row': ['a', 'c']
     }
 
     return schema;
   }
 
   private applyConcatLayout(schema: any): TopLevelSpec {
-    return this.abstractCompositions(schema, 'concat');
+    return this.abstractCompositions(schema, 'hconcat');
   }
 
   private applyOverlayLayout(schema: any): TopLevelSpec {
@@ -236,14 +241,13 @@ export default class SpecCompiler {
   private getMultiLayerSpec(templates: Template[], layout: Layout): TopLevelSpec {
     const schema: any = this.getBasicSchema();
 
-    const individualSchemas = templates.map(t => this.getSingleLayerSpec(t, t.layout));
+    const individualSchemas = templates.map(t => this.getVegaSpecification(t.visualElements, t.layout));
     const individualViewAbstractions = individualSchemas.map(s => {
       return this.getAbstraction(s, null);
     });
 
-
     if (layout.type === 'concatenate') {
-      schema.concat = individualViewAbstractions;
+      schema.vconcat = individualViewAbstractions;
     } else if (layout.type === 'overlay') {
       schema.layer = individualViewAbstractions;
     }
