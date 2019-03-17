@@ -19,7 +19,8 @@ export default class SpecCompiler {
           {'a': 'G','b': 19, 'c': 'X'}, {'a': 'H','b': 87, 'c': 'X'}, {'a': 'I','b': 52, 'c': 'Z'}
         ]
       },
-      'mark': template.type
+      'mark': template.type,
+      'encoding': {}
     }
 
     return schema;
@@ -115,6 +116,7 @@ export default class SpecCompiler {
     } else if (this.isConcatenateSchema(schema)) {
       abstraction = this.abstractConcat(schema);
     }
+
 
     if (compositionProperty === 'spec') {
       schema[compositionProperty] = abstraction;
