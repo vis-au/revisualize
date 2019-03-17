@@ -45,10 +45,10 @@ export default class SpecCompiler {
   private abstractOverlay(schema: any) {
     const currentLayers = JSON.parse(JSON.stringify(schema.layer));
 
-    delete schema.layers;
+    delete schema.layer;
 
     return {
-      layers: currentLayers
+      layer: currentLayers
     }
   }
 
