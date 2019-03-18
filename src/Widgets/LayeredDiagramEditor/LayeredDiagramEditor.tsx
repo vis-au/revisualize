@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui/ui/widgets/draggable';
 
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
@@ -134,9 +135,20 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
   }
 
   private makeTemplatesSortable() {
-    $(`#${this.props.id} .templateContainer`).sortable({
-      placeholder: 'templatePlaceholder',
-      handle: '.templateHeader'
+    // $(`#${this.props.id} .templateContainer`).sortable({
+    //   placeholder: 'templatePlaceholder',
+    //   handle: '.templateHeader',
+
+    // });
+
+    $(`#${this.props.id} .templateContainer .template`).draggable({
+      // placeholder: 'templatePlaceholder',
+      handle: '.templateHeader',
+      containment: 'parent',
+      zIndex: 100,
+      drag: (event, ui) => {
+        this.props.dragPlumbing.repaintEverything();
+      },
     });
   }
 
