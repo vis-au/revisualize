@@ -7,6 +7,9 @@
   transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
   z-index: 2;
 }
+.sidebar.supersize {
+  width: 90%;
+}
 .sidebar.right {
   border-left: 1px solid #ccc;
   right: 0;
@@ -46,6 +49,14 @@
   flex-direction: row;
   align-items: center;
   overflow: hidden;
+}
+.sidebar.left .toggleButtonWrapper {
+  left: auto;
+  right: -1.5rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 5rem;
+  border-bottom-right-radius: 5rem;
 }
 .sidebar .toggleButtonWrapper.disabled {
   opacity: 0.35;

@@ -6,6 +6,7 @@ interface Props {
   id: string;
   hidden: boolean;
   height?: number;
+  width?: number;
   positionLeft?: boolean;
 }
 interface State {
@@ -34,11 +35,16 @@ export default class Sidebar extends React.Component<Props, State> {
     // hidden by the parent component, because nothing is displayed
     const isHidden = this.props.hidden ? 'hidden' : '';
 
-    return `sidebar ${position} ${isHidden} ${isMinimized}`;
+    const isSupersized = this.props.width > 200 ? 'supersize' : '';
+
+    return `sidebar ${position} ${isHidden} ${isMinimized} ${isSupersized}`;
   }
 
   private getButtonDirection() {
-    const direction = this.state.hidden || this.props.hidden ? 'right' : 'left';
+    const direction = this.props.positionLeft
+    ? this.state.hidden || this.props.hidden ? 'left' : 'right'
+    : this.state.hidden || this.props.hidden ? 'right' : 'left';
+
     return `${direction}`;
   }
 

@@ -2,17 +2,16 @@ import * as React from 'react';
 
 import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView';
 import { DEFAULT_DATA_GRAPH, DEFAULT_SCALES, DEFAULT_SIGNALS } from './DefaultValueFactories/DefaultValueFactory';
-import InteractionConfigurationView from './InteractionConfiguration/InteractionConfigurationView';
 import DataflowGraph from './Model/DataFlowGraph/DataflowGraph';
 import PatternGraph from './Model/Pattern/PatternGraph';
-import PatternConfigurationView from './PatternConfiguration/PatternConfigurationView';
-import PreviewComponentView from './PreviewComponent/PreviewComponentView';
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
 import TabNavigation from './ToolkitView/TabNavigation';
+import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 
 import './App.css';
-import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
+import TemplateConfigurationSidebar from './TemplateConfiguration/TemplateConfigurationSidebar';
+import DataflowSidebar from './TemplateConfiguration/DataflowSidebar';
 
 interface State {
   activeTab: Tab;
@@ -82,13 +81,13 @@ export default class App extends React.Component<{}, State> {
         className="App"
         style={{ height: this.state.height }}>
 
-        <TabNavigation
+        {/* <TabNavigation
           tabs={ this.tabs }
           updateActiveTab={ this.updateActiveTab.bind(this) }
           getActiveTab={ this.getActiveTab.bind(this) }
-        />
+        /> */}
 
-        <MainView height={ this.state.height - 100 }>
+        <MainView height={ this.state.height }>
           {/* <PatternConfigurationView
             activeTab={ this.state.activeTab }
             patternGraph={ this.state.patternGraph }
@@ -101,14 +100,17 @@ export default class App extends React.Component<{}, State> {
             patternGraph={ this.state.patternGraph }
             onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
           /> */}
-          <DataFlowConfigurationView
-            activeTab={ this.state.activeTab }
-            graph={ this.state.dataGraph }
-            onDataGraphChanged={ this.updateDataGraph.bind(this) }
-          />
+          <DataflowSidebar>
+            <DataFlowConfigurationView
+              activeTab={ new Tab('Data') }
+              graph={ this.state.dataGraph }
+              onDataGraphChanged={ this.updateDataGraph.bind(this) }
+            />
+          </DataflowSidebar>
           <TemplateConfigurationView
             activeTab={ this.state.activeTab }
           />
+          <TemplateConfigurationSidebar />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }
             width={ this.state.width - 100 }
