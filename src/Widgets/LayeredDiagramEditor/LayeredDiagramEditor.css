@@ -14,20 +14,32 @@
 .layeredDiagramEditor .layer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-top: 1px solid #ccc;
   background: #fff;
   box-shadow: 0 2px 2px #ccc;
+  padding: 1rem;
+  margin: 1rem;
+  min-width: 100px;
+  min-height: 100px;
 }
 .layeredDiagramEditor .layer h2 {
-  width: 2rem;
+  font-size: 15px;
+  margin-bottom: 0;
 }
-.layeredDiagramEditor .layeredDiagramContainer .layer .templateContainer {
+.layeredDiagramContainer .layer .templateContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  min-width: 100px;
+  min-height: 100px;
+}
+.layeredDiagramContainer .layer .templateContainer .templatePlaceholder {
+  border: 1px dashed #333;
+  background: #eee;
+  background: #fff;
+  height: 100px;
   width: 100%;
 }
 .layeredDiagramContainer .layer .templateContainer .template {

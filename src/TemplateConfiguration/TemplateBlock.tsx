@@ -126,9 +126,9 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.props.dragPlumbing.makeTarget(bodySelector, plumbingConfig);
     this.props.dragPlumbing.makeSource(visualElementSelector, plumbingConfig, sourceConfig);
 
-    this.props.dragPlumbing.draggable(this.props.template.id, {
-      filter: '.body,.body *'
-    });
+    // this.props.dragPlumbing.draggable(this.props.template.id, {
+    //   filter: '.body,.body *'
+    // });
   }
 
   public componentDidMount() {

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as $ from 'jquery';
+import 'jquery-ui/ui/widgets/sortable';
 
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
@@ -74,20 +76,20 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
-  private renderLayer(layerNumber: number, templatesOnLayer: Template[]) {
+  private renderLayer(layerNumber: number, templatesOnLayer: Template[] = []) {
     const even = layerNumber % 2 === 0 ? 'even' : 'uneven';
 
     return (
       <div key={ layerNumber } className={ `layer ${even}` }>
-        <h2>{ layerNumber }</h2>
         <div className="templateContainer">
           { templatesOnLayer.map(this.renderTemplate) }
         </div>
+        <h2>{ layerNumber }</h2>
       </div>
     );
   }
 
-  private renderLayers() {
+  private renderLazyLayers() {
     const layerMap = this.getTemplatesPerLayer();
     // to ensure the order in which the layers appear
     const layers: any[][] = [];
@@ -107,17 +109,42 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return layers.map(l => l[1]);
   }
 
+  private renderAllLayers() {
+    const layerMap = this.getTemplatesPerLayer();
+    // to ensure the order in which the layers appear
+    const layers: any[] = [];
+
+    for (let i=3; i >= 0; i--) {
+      const nextLayer = this.renderLayer(i, layerMap.get(i));
+      layers.push(nextLayer);
+    }
+
+    return layers;
+  }
+
   public render() {
     return (
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
-          { this.renderLayers() }
+          {/* { this.renderLazyLayers() } */}
+          { this.renderAllLayers() }
         </div>
       </div>
     );
   }
 
+  private makeTemplatesSortable() {
+    $(`#${this.props.id} .templateContainer`).sortable({
+      placeholder: 'templatePlaceholder',
+      handle: '.templateHeader'
+    });
+  }
+
   public componentDidMount() {
     this.configurePlumbing();
+  }
+
+  public componentDidUpdate() {
+    this.makeTemplatesSortable();
   }
 }

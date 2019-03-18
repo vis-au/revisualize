@@ -226,7 +226,10 @@ export default class SpecCompiler {
   private getMultiLayerSpec(templates: Template[], layout: Layout): TopLevelSpec {
     const schema: any = this.getBasicSchema();
 
-    const individualSchemas = templates.map(t => this.getVegaSpecification(t.visualElements, t.layout));
+    const individualSchemas = templates
+      .map(t => this.getVegaSpecification(t.visualElements, t.layout))
+      .filter(t => t !== null);
+
     const individualViewAbstractions = individualSchemas.map(s => {
       return this.getAbstraction(s, null);
     });
