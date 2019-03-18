@@ -8,6 +8,7 @@ import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
+import SpecDecompiler from './TemplateModel/SpecDecompiler';
 
 interface State {
   templates: Template[];
@@ -46,6 +47,30 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.onTemplatesChanged();
   }
 
+  private addTemplateFromSpec() {
+    const decompiler = new SpecDecompiler();
+
+    const spec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+      "description": "A simple bar chart with embedded data.",
+      "data": {
+        "values": [
+          {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
+          {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
+          {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
+        ]
+      },
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "a", "type": "ordinal"},
+        "y": {"field": "b", "type": "quantitative"}
+      }
+    };
+
+    const decompilation = decompiler.decompile(spec);
+    this.addTemplates(decompilation.getFlatHierarchy());
+  }
+
   private deleteTemplate(template: Template) {
     const templates = this.state.templates;
     const indexInTemplates = templates.indexOf(template);
@@ -68,7 +93,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
   }
 
   private onTemplatesChanged() {
-    this.setState({ templates: this.state.templates })
+    this.setState({ templates: this.state.templates });
   }
 
   public render() {
@@ -91,7 +116,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           <button
             className="floatingAddButton"
             id="addNewTemplate"
-            onClick={ () => this.addTemplate() }>
+            onClick={ () => this.addTemplateFromSpec() }>
 
             +
           </button>
