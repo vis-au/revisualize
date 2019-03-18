@@ -3,6 +3,7 @@ import { TopLevelSpec } from 'vega-lite';
 import CompositeTemplate from './CompositeTemplate';
 import Layout from './Layout';
 import { LayoutType } from './LayoutType';
+import { isAtomicSchema, isOverlaySchema, isRepeatSchema, isConcatenateSchema } from './SpecUtils';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
 
@@ -32,22 +33,6 @@ export default class SpecCompiler {
     schema.encoding = {};
 
     return schema;
-  }
-
-  private isAtomicSchema(schema: any): boolean {
-    return schema.mark !== undefined;
-  }
-
-  private isOverlaySchema(schema: any): boolean {
-    return schema.layer !== undefined;
-  }
-
-  private isRepeatSchema(schema: any): boolean {
-    return schema.repeat !== undefined;
-  }
-
-  private isConcatenateSchema(schema: any): boolean {
-    return schema.concat !== undefined || schema.hconcat !== undefined || schema.vconcat !== undefined;
   }
 
   private abstractOverlay(schema: any) {
@@ -119,13 +104,13 @@ export default class SpecCompiler {
   private getAbstraction(schema: any, compositionProperty: string): any {
     let abstraction: any = null;
 
-    if (this.isAtomicSchema(schema)) {
+    if (isAtomicSchema(schema)) {
       abstraction = this.abstractAtomic(schema, compositionProperty);
-    } else if (this.isOverlaySchema(schema)) {
+    } else if (isOverlaySchema(schema)) {
       abstraction = this.abstractOverlay(schema)
-    } else if (this.isRepeatSchema(schema)) {
+    } else if (isRepeatSchema(schema)) {
       abstraction = this.abstractRepeat(schema);
-    } else if (this.isConcatenateSchema(schema)) {
+    } else if (isConcatenateSchema(schema)) {
       abstraction = this.abstractConcat(schema);
     }
 
