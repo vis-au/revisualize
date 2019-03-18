@@ -1,9 +1,10 @@
 import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
-import DiagramEditor from '../Widgets/DiagramEditor';
+
 import TemplateBlock from './TemplateBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
+import LayeredDiagramEditor from '../Widgets/LayeredDiagramEditor/LayeredDiagramEditor';
 
 interface Props {
   templates: Template[],
@@ -12,6 +13,7 @@ interface Props {
 }
 interface State {
   hiddenTemplatesMap: Map<string, boolean>,
+  connectionTemplateMap: Map<string, Template[]>
 }
 
 const templateEditorPlumbingConfig = {
@@ -23,7 +25,6 @@ const templateEditorPlumbingConfig = {
 export default class TemplateEditor extends React.Component<Props, State> {
   private dragPlumbing: jsPlumbInstance;
   private templateConnectionsMap: Map<string, Connection[]>;
-  private connectionTemplateMap: Map<string, Template[]>;
 
   constructor(props: Props) {
     super(props);
@@ -33,6 +34,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
     this.onNewConnection = this.onNewConnection.bind(this);
     this.onConnectionMoved = this.onConnectionMoved.bind(this);
     this.onDetachedConnection = this.onDetachedConnection.bind(this);
+    this.onDeleteTemplate = this.onDeleteTemplate.bind(this);
     this.render = this.render.bind(this);
     this.renderTemplateBlock = this.renderTemplateBlock.bind(this);
     this.renderTemplateLinks = this.renderTemplateLinks.bind(this);
@@ -42,10 +44,10 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
     this.dragPlumbing = jsPlumb.getInstance();
     this.templateConnectionsMap = new Map();
-    this.connectionTemplateMap = new Map();
 
     this.state = {
-      hiddenTemplatesMap: new Map()
+      hiddenTemplatesMap: new Map(),
+      connectionTemplateMap: new Map()
     }
 
     this.hideAllChildTemplates();
@@ -119,6 +121,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
     return (
       <TemplateBlock
         key={ template.id }
+        level={ 0 }
         dragPlumbing={ this.dragPlumbing }
         template={ template }
         toggleChildTemplate={ this.toggleTemplateBlockVisibility }
@@ -132,7 +135,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   private saveConnectionToMaps(source: Template, target: Template, connection: Connection) {
     const templateMap = this.templateConnectionsMap;
-    const connectionMap = this.connectionTemplateMap;
+    const connectionMap = this.state.connectionTemplateMap;
 
     if (templateMap.get(source.id) === undefined) {
       templateMap.set(source.id, [])
@@ -152,7 +155,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   private deleteConnectionFromMaps(connection: Connection) {
     const templateMap = this.templateConnectionsMap;
-    const connectionMap = this.connectionTemplateMap;
+    const connectionMap = this.state.connectionTemplateMap;
 
     // FIXME: connections drawn when mounting the component are not saved yet
     if (connectionMap.get(connection.id) === undefined) {
@@ -196,7 +199,8 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   private onConnectionMoved(event: any) {
     const connection: any = event.connection;
-    const templates = this.connectionTemplateMap.get(connection.id);
+    const templates = this.state.connectionTemplateMap.get(connection.id);
+    const connectionTemplateMap = this.state.connectionTemplateMap;
 
     const targetIndexInSource = templates[0].visualElements.indexOf(templates[1]);
     templates[0].visualElements.splice(targetIndexInSource, 1);
@@ -210,15 +214,17 @@ export default class TemplateEditor extends React.Component<Props, State> {
     const target = this.props.templates
       .find(template => template.id === connection.target.parentNode.id);
 
-    this.connectionTemplateMap.set(connection.id, [source, target]);
+    connectionTemplateMap.set(connection.id, [source, target]);
+
     this.dragPlumbing.repaintEverything();
     this.props.onTemplatesChanged();
+    this.setState({ connectionTemplateMap });
   }
 
   private onDetachedConnection(event: any) {
     const connection: Connection = event.connection;
 
-    const templates = this.connectionTemplateMap.get(connection.id);
+    const templates = this.state.connectionTemplateMap.get(connection.id);
     const sourceTemplate = templates[0];
     const targetTemplate = templates[1];
 
@@ -256,15 +262,23 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   public render() {
     return (
-      <DiagramEditor
-        id="templateDiagram"
-        dragPlumbing={ this.dragPlumbing }
-        plumbingConfig={ templateEditorPlumbingConfig }
-        onDiagramClicked={ this.onDiagramClicked }
-        onDetachedConnection={ this.onDetachedConnection }
+      // <DiagramEditor
+      //   id="templateDiagram"
+      //   dragPlumbing={ this.dragPlumbing }
+      //   plumbingConfig={ templateEditorPlumbingConfig }
+      //   onDiagramClicked={ this.onDiagramClicked }
+      //   onDetachedConnection={ this.onDetachedConnection }
+      //   onConnectionMoved={ this.onConnectionMoved }
+      //   onNewConnection={ this.onNewConnection }
+      //   renderBlocks={ () => this.renderTemplateBlocks(this.props.templates) } />
+      <LayeredDiagramEditor
+        id={ 'layeredTemplateDiagramEditor' }
+        templates={ this.props.templates }
+        deleteTemplate={ this.onDeleteTemplate }
         onConnectionMoved={ this.onConnectionMoved }
+        onDetachedConnection={ this.onDetachedConnection }
         onNewConnection={ this.onNewConnection }
-        renderBlocks={ () => this.renderTemplateBlocks(this.props.templates) } />
+        dragPlumbing={ this.dragPlumbing } />
     );
   }
 

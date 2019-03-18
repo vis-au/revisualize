@@ -7,6 +7,9 @@ export default abstract class Template {
     this.id = `template${Math.round(Math.random() * 10000)}`
   }
 
+  /**
+   * Returns the flattened hierarchy of templates succeeding this one.
+   */
   public getFlatHierarchy(): Template[] {
     const successors: Template[] = [];
 
@@ -17,5 +20,20 @@ export default abstract class Template {
     });
 
     return successors;
+  }
+
+  /**
+   * Returns the hierarchy level of this template, starting at 0.
+   */
+  public getHierarchyLevel(): number {
+    // since the template may have visual elements from different leves, output the highest value
+    // between all sub-hierarchies
+    if (this.visualElements.length === 0) {
+      return 0;
+    }
+
+    const subHierarchies = this.visualElements.map(v => v.getHierarchyLevel());
+
+    return Math.max(...subHierarchies) + 1;
   }
 }

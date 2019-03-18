@@ -27,7 +27,6 @@ export default class VegaRenderer extends React.Component<Props, {}> {
   }
 
   private renderAsComponent() {
-    console.log(this.props.schema.$schema)
     if (this.props.schema.$schema.indexOf('vega-lite') > -1) {
       return <VegaLite
         width={ this.props.width }
@@ -60,10 +59,10 @@ export default class VegaRenderer extends React.Component<Props, {}> {
   private embed() {
     const exportActions: Actions = {
       export: {
-        svg: true,
-        png: true
+        svg: this.props.showExportOptions,
+        png: this.props.showExportOptions
       },
-      source: true,
+      source: this.props.showExportOptions,
       compiled: false,
       editor: false,
     };

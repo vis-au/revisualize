@@ -13,6 +13,7 @@ interface Props {
   key: string;
   dragPlumbing: any;
   template: Template;
+  level: number;
   toggleChildTemplate: (template: Template) => void;
   delete: () => void
 }
