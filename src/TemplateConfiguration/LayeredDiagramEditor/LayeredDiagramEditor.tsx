@@ -102,7 +102,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
   private renderLayerWidget(index: number) {
     return (
       <div className="layer">
-        <h2>{ index }</h2>
+        {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }
           addTemplate={ this.props.addTemplate }
@@ -120,7 +120,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
 
     return (
-      <div className="templateGroup widgets">
+      <div className="widgets">
         { layerWidgets }
       </div>
     );
