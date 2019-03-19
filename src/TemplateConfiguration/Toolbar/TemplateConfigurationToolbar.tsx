@@ -49,7 +49,7 @@ function getLineChartPreset(): Template {
 }
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
-  private templatePresets: Map<string, Template>;
+  private templatePresets: Map<string, () => Template>;
 
   constructor(props: Props) {
     super(props);
@@ -58,8 +58,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.addTemplateFromSpec = this.addTemplateFromSpec.bind(this);
 
     this.templatePresets = new Map();
-    this.templatePresets.set('Scatterplot Matrix', getScatterplotMatrixPreset());
-    this.templatePresets.set('Line Chart', getLineChartPreset());
+    this.templatePresets.set('Scatterplot Matrix', getScatterplotMatrixPreset);
+    this.templatePresets.set('Line Chart', getLineChartPreset);
   }
 
   private addTemplateFromSpec() {
@@ -93,13 +93,13 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   }
 
   private onPresetClicked(id: string) {
-    const preset = this.templatePresets.get(id);
+    const presetCallback = this.templatePresets.get(id);
 
-    if (preset === undefined || preset === null) {
+    if (presetCallback === undefined || presetCallback === null) {
       return;
     }
 
-    const flatTemplateHierarchy = preset.getFlatHierarchy();
+    const flatTemplateHierarchy = presetCallback().getFlatHierarchy();
     this.props.addTemplates(flatTemplateHierarchy);
   }
 

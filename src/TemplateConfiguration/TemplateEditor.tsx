@@ -193,6 +193,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
       targetTemplate.parent = sourceTemplate;
 
       sourceTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
+      targetTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
 
       this.saveConnectionToMaps(sourceTemplate, targetTemplate, event.connection);
     }
