@@ -84,3 +84,16 @@
 .layeredDiagramContainer .layer .container .template .vega-actions-wrapper {
   display: none;
 }
+.layeredDiagramEditor .layer .addTemplateWidget {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), opacity 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.layeredDiagramEditor .placeholder .layer .addTemplateWidget {
+  visibility: visible;
+  opacity: 1;
+}
+.layeredDiagramEditor .layer:hover .addTemplateWidget {
+  visibility: visible;
+  opacity: 1;
+}

@@ -92,6 +92,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     return (
       <div key={ layerNumber } className={ `layer ${even}` }>
+        { this.renderLayerWidget(layerNumber) }
         <div className="container">
           { templatesOnLayer.map(this.renderTemplate) }
         </div>
@@ -101,27 +102,13 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderLayerWidget(index: number) {
     return (
-      <div className="layer" key={ index }>
+      <div className="layerWidget" key={ index }>
         {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }
           addTemplate={ this.props.addTemplate }
           buttonObserver={ this.buttonObserver }
         />
-      </div>
-    );
-  }
-
-  private renderLayerWidgets(numberOfLayers: number) {
-    const layerWidgets: JSX.Element[] = [];
-
-    for (let i = 0; i < numberOfLayers; i++) {
-      layerWidgets.push(this.renderLayerWidget(i))
-    }
-
-    return (
-      <div className="widgets">
-        { layerWidgets }
       </div>
     );
   }
@@ -196,7 +183,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
           <div className="column">
-            { this.renderLayerWidgets(numberOfLayers) }
             { this.renderLayersLazy(numberOfLayers) }
           </div>
           <div className="column placeholder" style={{ height: window.innerHeight - 100 }}>
