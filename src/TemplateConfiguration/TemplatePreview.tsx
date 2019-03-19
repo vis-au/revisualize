@@ -29,14 +29,27 @@ export default class TemplatePreview extends React.Component<Props, State> {
 
     if (template instanceof VisualMarkTemplate) {
       spec = this.specCompiler.getBasicSchema() as any;
+      spec.data = {
+          values: [
+          {a: 0, b: 0, c: 'x'},
+          {a: 1, b: 2, c: 'y'},
+          {a: 2, b: 1, c: 'z'},
+        ]
+      }
       spec.mark = template.type;
+      spec.encoding = {
+        x: { field: 'a', type: 'quantitative', axis: { labels: false, title: null, domain: false, range: false, ticks: false, grid: false } },
+        y: { field: 'b', type: 'quantitative', axis: { labels: false, title: null, domain: false, range: false, ticks: false, grid: false } },
+        text: { field: 'c', type: 'nominal' },
+      };
+
     } else if (spec === null) {
       spec = {} as any;
     }
 
     return (
       <VegaRenderer
-        id={ template.visualElements.map(t => t.id).join('_') }
+        id={ `renderer${this.props.template.id}` }
         showExportOptions={ false }
         width={ 50 }
         height={ 50 }
