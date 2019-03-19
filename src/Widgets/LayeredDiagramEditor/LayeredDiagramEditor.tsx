@@ -7,6 +7,7 @@ import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
 
 import './LayeredDiagramEditor.css';
+import AddTemplateButton from './AddTemplateButton';
 
 interface Props {
   id: string,
@@ -44,14 +45,12 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     plumbing.setContainer(container);
     plumbing.importDefaults(plumbingConfig);
-
-    // this.addZoomBehavior();
   }
 
-  private getTemplatesPerLayer(): Map<number, Template[]> {
+  private getTemplatesPerLayer(templates: Template[] = this.props.templates): Map<number, Template[]> {
     const templatePerLayerMap = new Map<number, Template[]>();
 
-    this.props.templates.forEach(template => {
+    templates.forEach(template => {
       const layer = template.getHierarchyLevel();
 
       if (templatePerLayerMap.get(layer) === undefined) {
@@ -82,17 +81,16 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     return (
       <div key={ layerNumber } className={ `layer ${even}` }>
-        <div className="templateContainer">
+        <div className="container">
           { templatesOnLayer.map(this.renderTemplate) }
         </div>
-        <h2>{ layerNumber }</h2>
       </div>
     );
   }
 
-  private renderLazyLayers() {
-    const layerMap = this.getTemplatesPerLayer();
-    // to ensure the order in which the layers appear
+  private renderTemplateSubtree(template: Template) {
+    const templatesInSubtree = template.getFlatHierarchy();
+    const layerMap = this.getTemplatesPerLayer(templatesInSubtree);
     const layers: any[][] = [];
 
     layerMap.forEach((value, key) => {
@@ -104,52 +102,80 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       return layerB[0] - layerA[0];
     });
 
-    const emptyLayer = this.renderLayer(layers.length, []);
-    layers.unshift([layers.length, emptyLayer]);
+    layers.sort((a, b) => a[0] - b[0]);
 
-    return layers.map(l => l[1]);
+    return (
+      <div className="templateGroup">
+        { layers.map(l => l[1]) }
+      </div>
+    );
   }
 
-  private renderAllLayers() {
-    const layerMap = this.getTemplatesPerLayer();
-    // to ensure the order in which the layers appear
-    const layers: any[] = [];
+  private renderTemplateSubtrees() {
+    const rootTemplates = this.props.templates.filter(t => t.parent === null);
 
-    for (let i=3; i >= 0; i--) {
-      const nextLayer = this.renderLayer(i, layerMap.get(i));
-      layers.push(nextLayer);
+    return (
+      <div className="templateGroups">
+        { rootTemplates.map(this.renderTemplateSubtree.bind(this)) }
+      </div>
+    );
+  }
+
+  private renderLayerWidget(index: number) {
+    return (
+      <div className="layer">
+        <h2>{ index }</h2>
+        <AddTemplateButton />
+      </div>
+    );
+  }
+
+  private renderLayerWidgets() {
+    const layerWidgets: JSX.Element[] = [];
+    const layerMap = this.getTemplatesPerLayer();
+    let numberOfLayers = 0;
+
+    layerMap.forEach((value, key) => {
+      numberOfLayers++;
+    });
+
+    for (let i = 0; i < numberOfLayers; i++) {
+      layerWidgets.push(this.renderLayerWidget(i))
     }
 
-    return layers;
+    return (
+      <div className="templateGroup widgets">
+        { layerWidgets }
+      </div>
+    );
   }
 
   public render() {
     return (
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
-          {/* { this.renderLazyLayers() } */}
-          { this.renderAllLayers() }
+          { this.renderTemplateSubtrees() }
+          { this.renderLayerWidgets() }
         </div>
       </div>
     );
   }
 
   private makeTemplatesSortable() {
-    // $(`#${this.props.id} .templateContainer`).sortable({
-    //   placeholder: 'templatePlaceholder',
-    //   handle: '.templateHeader',
-
-    // });
-
-    $(`#${this.props.id} .templateContainer .template`).draggable({
-      // placeholder: 'templatePlaceholder',
+    $(`#${this.props.id} .container`).sortable({
+      placeholder: 'templatePlaceholder',
       handle: '.templateHeader',
-      containment: 'parent',
-      zIndex: 100,
-      drag: (event, ui) => {
-        this.props.dragPlumbing.repaintEverything();
-      },
     });
+
+    // $(`#${this.props.id} .container .template`).draggable({
+    //   // placeholder: 'templatePlaceholder',
+    //   handle: '.templateHeader',
+    //   containment: 'parent',
+    //   zIndex: 100,
+    //   drag: (event, ui) => {
+    //     this.props.dragPlumbing.repaintEverything();
+    //   },
+    // });
   }
 
   public componentDidMount() {
