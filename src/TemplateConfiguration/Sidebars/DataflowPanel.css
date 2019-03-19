@@ -2,7 +2,7 @@
   box-shadow: 0 2px 4px #ccc;
 }
 #templateDataflowSidebar > .toggleButtonWrapper {
-  top: 4.75rem;
+  top: 50%;
   background: teal;
   opacity: 1;
 }

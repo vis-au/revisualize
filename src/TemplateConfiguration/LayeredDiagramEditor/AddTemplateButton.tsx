@@ -11,8 +11,8 @@ import './AddTemplateButton.css';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 interface Props {
-  id: string;
   addTemplate: (template: Template) => void;
+  layer: number;
   buttonObserver: AddTemplateButtonObserver
 }
 interface State {
@@ -52,6 +52,7 @@ export default class AddTemplateButton extends React.Component<Props, State> {
 
   private onMarkClicked(mark: Mark) {
     const newVisualMark = new VisualMarkTemplate(mark, null);
+    newVisualMark.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newVisualMark);
   }
@@ -59,6 +60,7 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   private onLayoutClicked(type: LayoutType) {
     const newLayout = new Layout(type);
     const newCompositeTemplate = new CompositeTemplate(newLayout, [], null);
+    newCompositeTemplate.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newCompositeTemplate);
   }

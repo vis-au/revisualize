@@ -143,7 +143,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       <div className="layer">
         <h2>{ index }</h2>
         <AddTemplateButton
-          id={ index.toString() }
+          layer={ index }
           addTemplate={ this.props.addTemplate }
           buttonObserver={ this.buttonObserver }
         />
@@ -165,6 +165,45 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
+  private renderLayersLazy() {
+    const layerMap = this.getTemplatesPerLayer();
+    // to ensure the order in which the layers appear
+    const layers: any[][] = [];
+
+    layerMap.forEach((value, key) => {
+      const nextLayer = this.renderLayer(key, value);
+      layers.push([key, nextLayer]);
+    });
+
+    layers.sort((layerA, layerB) => {
+      return layerA[0] - layerB[0];
+    });
+
+    return (
+      <div className="layers">
+        { layers.map(l => l[1]) }
+      </div>
+    );
+  }
+
+  private renderLayersEager() {
+    const layerMap = this.getTemplatesPerLayer();
+    // to ensure the order in which the layers appear
+    const layers: any[] = [];
+
+    for (let i=3; i >= 0; i--) {
+      const nextLayer = this.renderLayer(i, layerMap.get(i));
+      layers.push(nextLayer);
+    }
+
+    return (
+      <div className="layers">
+        { layers }
+      </div>
+    );
+  }
+
+
   public render() {
     let numberOfLayers = 0;
     const layerMap = this.getTemplatesPerLayer();
@@ -176,8 +215,9 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return (
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
-          { this.renderTemplateSubtrees(numberOfLayers) }
           { this.renderLayerWidgets(numberOfLayers) }
+          {/* { this.renderTemplateSubtrees(numberOfLayers) } */}
+          { this.renderLayersLazy() }
         </div>
       </div>
     );

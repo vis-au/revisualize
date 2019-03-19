@@ -17,6 +17,11 @@
   flex-direction: row;
   justify-content: center;
 }
+.layeredDiagramEditor .layers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .layeredDiagramEditor .layer {
   width: 100%;
   display: flex;
@@ -61,4 +66,7 @@
 }
 .layeredDiagramContainer .layer .container .template {
   margin: 0.5rem;
+}
+.layeredDiagramContainer .layer .container .template .vega-actions-wrapper {
+  display: none;
 }

@@ -4,6 +4,7 @@
   top: 40px;
 }
 #templateConfigurationSidebar .toggleButtonWrapper {
+  top: 50%;
   background: teal;
   opacity: 1;
 }
