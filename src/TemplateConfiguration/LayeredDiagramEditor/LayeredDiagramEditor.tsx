@@ -126,23 +126,31 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
-  private renderLayersLazy() {
+  private renderLayersLazy(numberOfLayers: number) {
     const layerMap = this.getTemplatesPerLayer();
     // to ensure the order in which the layers appear
-    const layers: any[][] = [];
+    const layers: any[] = [];
 
-    layerMap.forEach((value, key) => {
-      const nextLayer = this.renderLayer(key, value);
-      layers.push([key, nextLayer]);
-    });
+    for (let i = 0; i < numberOfLayers; i++) {
+      let templatesOnThatLayer = layerMap.get(i);
+      if (templatesOnThatLayer === undefined) {
+        templatesOnThatLayer = [];
+      }
+      layers.push(this.renderLayer(i, templatesOnThatLayer));
+    }
 
-    layers.sort((layerA, layerB) => {
-      return layerA[0] - layerB[0];
-    });
+    // layerMap.forEach((value, key) => {
+    //   const nextLayer = this.renderLayer(key, value);
+    //   layers.push([key, nextLayer]);
+    // });
+
+    // layers.sort((layerA, layerB) => {
+    //   return layerA[0] - layerB[0];
+    // });
 
     return (
       <div className="layers">
-        { layers.map(l => l[1]) }
+        { layers }
       </div>
     );
   }
@@ -164,6 +172,18 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
+  private renderPlaceholderLayer(numberOfLayers: number) {
+    return (
+      <div className="layer">
+        <AddTemplateButton
+          layer={ numberOfLayers }
+          addTemplate={ this.props.addTemplate }
+          buttonObserver={ this.buttonObserver }
+        />
+      </div>
+    );
+  }
+
   public render() {
     let numberOfLayers = 0;
     const layerMap = this.getTemplatesPerLayer();
@@ -175,8 +195,13 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return (
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
-          { this.renderLayerWidgets(numberOfLayers) }
-          { this.renderLayersLazy() }
+          <div className="column">
+            { this.renderLayerWidgets(numberOfLayers) }
+            { this.renderLayersLazy(numberOfLayers) }
+          </div>
+          <div className="column placeholder" style={{ height: window.innerHeight - 100 }}>
+            { this.renderPlaceholderLayer(numberOfLayers) }
+          </div>
         </div>
       </div>
     );

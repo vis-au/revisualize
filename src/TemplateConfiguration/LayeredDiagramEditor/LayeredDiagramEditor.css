@@ -6,10 +6,22 @@
 }
 .layeredDiagramEditor {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: stretch;
   margin-top: 0.5rem;
+  height: 100%;
+  padding: 0 1rem;
+}
+.layeredDiagramEditor .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+}
+.layeredDiagramEditor .column.placeholder {
+  margin: 0 1rem;
+  width: 5rem;
   height: 100%;
 }
 .layeredDiagramEditor .templateGroup {
@@ -34,6 +46,11 @@
   margin: 0;
   min-width: 100px;
   min-height: 100px;
+}
+.layeredDiagramEditor .column.placeholder .layer {
+  min-height: auto;
+  justify-content: flex-start;
+  height: 100%;
 }
 .layeredDiagramEditor .templateGroup.widgets .layer {
   display: flex;

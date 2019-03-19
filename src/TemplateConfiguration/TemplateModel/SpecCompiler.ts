@@ -88,14 +88,18 @@ export default class SpecCompiler {
     delete schema.encoding;
 
     if (compositionProperty === 'spec') {
-      abstraction.encoding.x = {
-          field: { repeat: 'column' },
-          type: 'ordinal'
-      };
-      abstraction.encoding.y = {
-          field: { repeat: 'row' },
-          type: 'ordinal'
-      };
+      if (abstraction.encoding.x !== undefined) {
+        abstraction.encoding.x = {
+            field: { repeat: 'column' },
+            type: 'ordinal'
+        };
+      }
+      if (abstraction.encoding.y !== undefined) {
+        abstraction.encoding.y = {
+            field: { repeat: 'row' },
+            type: 'ordinal'
+        };
+      }
     }
 
     return abstraction;

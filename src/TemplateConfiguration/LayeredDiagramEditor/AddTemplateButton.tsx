@@ -6,9 +6,9 @@ import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 import Layout from '../TemplateModel/Layout';
+import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 import './AddTemplateButton.css';
-import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 interface Props {
   addTemplate: (template: Template) => void;

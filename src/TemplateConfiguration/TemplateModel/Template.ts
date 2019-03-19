@@ -40,6 +40,7 @@ export default abstract class Template {
 
     const subHierarchies = this.visualElements.map(v => v.getHierarchyLevel());
 
-    return Math.max(...subHierarchies) + 1;
+    this.hierarchyLevel = Math.max(...subHierarchies) + 1;
+    return this.hierarchyLevel;
   }
 }
