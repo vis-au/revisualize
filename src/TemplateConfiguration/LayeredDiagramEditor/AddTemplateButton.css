@@ -1,0 +1,28 @@
+.addTemplateWidget {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.addTemplateWidget .templateLists {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+  margin-top: 2rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px #ccc;
+}
+.addTemplateWidget .templateLists ul {
+  margin: 0;
+  padding: 0;
+}
+.addTemplateWidget .templateLists ul li {
+  list-style: none;
+  margin: 0;
+}
+.addTemplateWidget button.addTemplate {
+  background: teal;
+}

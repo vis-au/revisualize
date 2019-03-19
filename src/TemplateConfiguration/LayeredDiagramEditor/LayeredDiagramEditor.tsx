@@ -3,11 +3,12 @@ import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import 'jquery-ui/ui/widgets/draggable';
 
+import AddTemplateButton from './AddTemplateButton';
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
 
 import './LayeredDiagramEditor.css';
-import AddTemplateButton from './AddTemplateButton';
+import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 interface Props {
   id: string,
@@ -16,6 +17,7 @@ interface Props {
   onNewConnection: (event: any) => void,
   onDetachedConnection: (event: any) => void,
   onConnectionMoved: (event: any) => void,
+  addTemplate: (template: Template) => void,
   deleteTemplate: (template: Template) => void
 }
 interface State {
@@ -28,10 +30,14 @@ const plumbingConfig = {
 };
 
 export default class LayeredDiagramEditor extends React.Component<Props, State> {
+  private buttonObserver: AddTemplateButtonObserver;
+
   constructor(props: Props) {
     super(props);
 
     this.renderTemplate = this.renderTemplate.bind(this);
+
+    this.buttonObserver = new AddTemplateButtonObserver();
   }
 
   private configurePlumbing() {
@@ -88,7 +94,17 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
-  private renderTemplateSubtree(template: Template) {
+  private renderEmptyLayers(numberOfLayers: number) {
+    const layers: JSX.Element[] = [];
+
+    for (let i = 0; i < numberOfLayers; i++) {
+      layers.push(this.renderLayer(i, []));
+    }
+
+    return layers;
+  }
+
+  private renderTemplateSubtree(template: Template, numberOfLayers: number) {
     const templatesInSubtree = template.getFlatHierarchy();
     const layerMap = this.getTemplatesPerLayer(templatesInSubtree);
     const layers: any[][] = [];
@@ -107,16 +123,17 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return (
       <div className="templateGroup">
         { layers.map(l => l[1]) }
+        { this.renderEmptyLayers(numberOfLayers - layers.length) }
       </div>
     );
   }
 
-  private renderTemplateSubtrees() {
+  private renderTemplateSubtrees(numberOfLayers: number) {
     const rootTemplates = this.props.templates.filter(t => t.parent === null);
 
     return (
       <div className="templateGroups">
-        { rootTemplates.map(this.renderTemplateSubtree.bind(this)) }
+        { rootTemplates.map(t => this.renderTemplateSubtree(t, numberOfLayers)) }
       </div>
     );
   }
@@ -125,19 +142,17 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return (
       <div className="layer">
         <h2>{ index }</h2>
-        <AddTemplateButton />
+        <AddTemplateButton
+          id={ index.toString() }
+          addTemplate={ this.props.addTemplate }
+          buttonObserver={ this.buttonObserver }
+        />
       </div>
     );
   }
 
-  private renderLayerWidgets() {
+  private renderLayerWidgets(numberOfLayers: number) {
     const layerWidgets: JSX.Element[] = [];
-    const layerMap = this.getTemplatesPerLayer();
-    let numberOfLayers = 0;
-
-    layerMap.forEach((value, key) => {
-      numberOfLayers++;
-    });
 
     for (let i = 0; i < numberOfLayers; i++) {
       layerWidgets.push(this.renderLayerWidget(i))
@@ -151,11 +166,18 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
   }
 
   public render() {
+    let numberOfLayers = 0;
+    const layerMap = this.getTemplatesPerLayer();
+
+    layerMap.forEach((value, key) => {
+      numberOfLayers++;
+    });
+
     return (
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
-          { this.renderTemplateSubtrees() }
-          { this.renderLayerWidgets() }
+          { this.renderTemplateSubtrees(numberOfLayers) }
+          { this.renderLayerWidgets(numberOfLayers) }
         </div>
       </div>
     );

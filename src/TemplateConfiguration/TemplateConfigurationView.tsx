@@ -113,6 +113,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           <TemplateEditor
             templates={ this.state.templates }
             onTemplatesChanged={ this.onTemplatesChanged }
+            addTemplate={ this.addTemplate }
             deleteTemplate={ this.deleteTemplate }/>
 
           <button

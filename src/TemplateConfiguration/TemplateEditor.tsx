@@ -4,11 +4,12 @@ import * as React from 'react';
 import TemplateBlock from './TemplateBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
-import LayeredDiagramEditor from '../Widgets/LayeredDiagramEditor/LayeredDiagramEditor';
+import LayeredDiagramEditor from './LayeredDiagramEditor/LayeredDiagramEditor';
 
 interface Props {
   templates: Template[],
   onTemplatesChanged: () => void,
+  addTemplate: (template: Template) => void,
   deleteTemplate: (template: Template) => void
 }
 interface State {
@@ -274,6 +275,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
       <LayeredDiagramEditor
         id={ 'layeredTemplateDiagramEditor' }
         templates={ this.props.templates }
+        addTemplate={ this.props.addTemplate }
         deleteTemplate={ this.onDeleteTemplate }
         onConnectionMoved={ this.onConnectionMoved }
         onDetachedConnection={ this.onDetachedConnection }
