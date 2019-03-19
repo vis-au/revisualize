@@ -259,7 +259,7 @@ export default class SpecCompiler {
       schema = this.getMultiLayerSpec(templates, layout);
     }
 
-    console.log(schema)
+    console.log(templates, schema)
 
     return schema;
   }
