@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { LayoutStructure } from '../Model/Layouts/LayoutStructure';
 import { DEFAULT_LAYOUT_ICONS, IconLayoutBlock } from '../PatternConfiguration/PatternPresetValues';
 import { plumbingProvider } from '../PlumbingProvider';
-import { LayoutStructure } from '../Model/Layouts/LayoutStructure';
 import IconButton from '../Widgets/IconButton';
 import BuildingBlock from './BuildingBlock';
 

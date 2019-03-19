@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ArbitraryValueRef, NewSignal, ProductionRule, Scale, Signal, SignalRef } from 'vega';
 
-import { plumbingProvider } from '../PlumbingProvider';
 import { ArbitraryVisualVariableName, VisualElement } from '../Model/Elements/VisualElement';
 import { DynamicValue } from '../Model/Interactions/DynamicValue';
+import { plumbingProvider } from '../PlumbingProvider';
 import { isField, isScale, isScaledFieldRef, isScaledSignalRef, isSignalRef } from '../VegaTypeChecker';
 import DropArea from './DropArea';
 import DynamicValueBuildingBlock from './DynamicValueBuildingBlock';

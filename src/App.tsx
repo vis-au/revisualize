@@ -4,14 +4,14 @@ import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView
 import { DEFAULT_DATA_GRAPH, DEFAULT_SCALES, DEFAULT_SIGNALS } from './DefaultValueFactories/DefaultValueFactory';
 import DataflowGraph from './Model/DataFlowGraph/DataflowGraph';
 import PatternGraph from './Model/Pattern/PatternGraph';
+import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
 import TabNavigation from './ToolkitView/TabNavigation';
-import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 
 import './App.css';
-import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
+import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
 
 interface State {
   activeTab: Tab;

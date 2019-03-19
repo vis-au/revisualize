@@ -3,7 +3,7 @@ import { TopLevelSpec } from 'vega-lite';
 import CompositeTemplate from './CompositeTemplate';
 import Layout from './Layout';
 import { LayoutType } from './LayoutType';
-import { isAtomicSchema, isOverlaySchema, isRepeatSchema, isConcatenateSchema } from './SpecUtils';
+import { isAtomicSchema, isConcatenateSchema, isOverlaySchema, isRepeatSchema } from './SpecUtils';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
 

@@ -1,10 +1,10 @@
 import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
+import LayeredDiagramEditor from './LayeredDiagramEditor/LayeredDiagramEditor';
 import TemplateBlock from './TemplateBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
-import LayeredDiagramEditor from './LayeredDiagramEditor/LayeredDiagramEditor';
 
 interface Props {
   templates: Template[],

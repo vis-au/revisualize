@@ -1,5 +1,5 @@
-import Template from "./Template";
-import { Mark } from "vega-lite/build/src/mark";
+import { Mark } from 'vega-lite/build/src/mark';
+import Template from './Template';
 
 export default class VisualMarkTemplate extends Template {
   constructor(public type: Mark, parent: Template) {

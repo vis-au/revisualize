@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Scale } from 'vega';
 
 import ScaleBuildingBlock from '../../../BuildingBlocks/ScaleBuildingBlock';
-import Utils from '../../../UtilityFunctions';
 import Pattern from '../../../Model/Pattern/Pattern';
+import Utils from '../../../UtilityFunctions';
 import { isScaledFieldRef } from '../../../VegaTypeChecker';
 
 import './CustomScales.css';

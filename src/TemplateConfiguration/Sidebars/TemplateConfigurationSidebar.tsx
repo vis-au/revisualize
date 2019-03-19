@@ -18,7 +18,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.state = { hidden: true };
   }
 
-  onToggle() {
+  public onToggle() {
     this.setState({ hidden: !this.state.hidden });
   }
 

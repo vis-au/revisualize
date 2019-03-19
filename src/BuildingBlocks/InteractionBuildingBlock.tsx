@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { DEFAULT_INTERACTION_ICONS, IconInteractionBlock } from '../PatternConfiguration/PatternPresetValues';
-import { plumbingProvider } from '../PlumbingProvider';
 import { Interaction } from '../Model/Interactions/Interaction';
 import InteractionProvider from '../Model/Interactions/InteractionProvider';
+import { DEFAULT_INTERACTION_ICONS, IconInteractionBlock } from '../PatternConfiguration/PatternPresetValues';
+import { plumbingProvider } from '../PlumbingProvider';
 import IconButton from '../Widgets/IconButton';
 import BuildingBlock from './BuildingBlock';
 

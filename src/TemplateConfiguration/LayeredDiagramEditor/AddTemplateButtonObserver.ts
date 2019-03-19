@@ -1,5 +1,5 @@
 export default class AddTemplateButtonObserver {
-  private callbacks: (() => void)[] = [];
+  private callbacks: Array<() => void> = [];
 
   public join(callback: () => void) {
     this.callbacks.push(callback);

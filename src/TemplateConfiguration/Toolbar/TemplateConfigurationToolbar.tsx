@@ -4,10 +4,9 @@ import { Mark } from 'vega-lite/build/src/mark';
 import Toolbar from '../../Widgets/Toolbar';
 import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 import Layout from '../TemplateModel/Layout';
-import { LayoutType } from '../TemplateModel/LayoutType';
+import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
-import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 
 import './TemplateConfigurationToolbar.css';
 
@@ -67,19 +66,19 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     const decompiler = new SpecDecompiler();
 
     const spec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-      "description": "A simple bar chart with embedded data.",
-      "data": {
-        "values": [
-          {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
-          {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
-          {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
+      '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
+      'description': 'A simple bar chart with embedded data.',
+      'data': {
+        'values': [
+          {'a': 'A','b': 28}, {'a': 'B','b': 55}, {'a': 'C','b': 43},
+          {'a': 'D','b': 91}, {'a': 'E','b': 81}, {'a': 'F','b': 53},
+          {'a': 'G','b': 19}, {'a': 'H','b': 87}, {'a': 'I','b': 52}
         ]
       },
-      "mark": "bar",
-      "encoding": {
-        "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"}
+      'mark': 'bar',
+      'encoding': {
+        'x': {'field': 'a', 'type': 'ordinal'},
+        'y': {'field': 'b', 'type': 'quantitative'}
       }
     };
 

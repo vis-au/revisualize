@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { plumbingProvider } from '../PlumbingProvider';
 import { DataflowNode } from '../Model/DataFlowGraph/DataflowNode';
 import DatasetNode from '../Model/DataFlowGraph/DatasetNode';
+import { plumbingProvider } from '../PlumbingProvider';
 import BuildingBlock from './BuildingBlock';
 
 import './DatasetBuildingBlock.css';

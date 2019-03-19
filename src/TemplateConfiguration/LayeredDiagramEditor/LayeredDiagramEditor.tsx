@@ -1,12 +1,12 @@
-import * as React from 'react';
 import * as $ from 'jquery';
-import 'jquery-ui/ui/widgets/sortable';
 import 'jquery-ui/ui/widgets/draggable';
+import 'jquery-ui/ui/widgets/sortable';
+import * as React from 'react';
 
+import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
+import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import AddTemplateButton from './AddTemplateButton';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
-import Template from '../../TemplateConfiguration/TemplateModel/Template';
-import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
 
 import './LayeredDiagramEditor.css';
 

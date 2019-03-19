@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { plumbingProvider } from '../PlumbingProvider';
 import { DynamicValue } from '../Model/Interactions/DynamicValue';
+import { plumbingProvider } from '../PlumbingProvider';
 import BuildingBlock from './BuildingBlock';
 
 import './DynamicValueBuildingBlock.css';

@@ -5,9 +5,9 @@ import DropArea from '../../BuildingBlocks/DropArea';
 import InteractionBuildingBlock from '../../BuildingBlocks/InteractionBuildingBlock';
 import LayoutStructureBuildingBlock from '../../BuildingBlocks/LayoutStructureBuildingBlock';
 import VisualElementBuildingBlock from '../../BuildingBlocks/VisualElementBuildingBlock';
-import { plumbingProvider } from '../../PlumbingProvider';
 import InteractionProvider from '../../Model/Interactions/InteractionProvider';
 import Pattern from '../../Model/Pattern/Pattern';
+import { plumbingProvider } from '../../PlumbingProvider';
 import PatternPreview from './PatternPreview';
 
 import './PatternBlock.css';

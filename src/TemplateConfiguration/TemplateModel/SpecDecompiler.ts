@@ -1,10 +1,10 @@
-import Template from "./Template";
-import CompositeTemplate from "./CompositeTemplate";
-import { isAtomicSchema, isOverlaySchema, isRepeatSchema, isConcatenateSchema } from "./SpecUtils";
-import Layout from "./Layout";
-import { LayoutType } from "./LayoutType";
-import VisualMarkTemplate from "./VisualMark";
-import { isConcatSpec } from "vega-lite/build/src/spec";
+import { isConcatSpec } from 'vega-lite/build/src/spec';
+import CompositeTemplate from './CompositeTemplate';
+import Layout from './Layout';
+import { LayoutType } from './LayoutType';
+import { isAtomicSchema, isConcatenateSchema, isOverlaySchema, isRepeatSchema } from './SpecUtils';
+import Template from './Template';
+import VisualMarkTemplate from './VisualMark';
 
 export default class SpecDecompiler {
   private getAtomicLayout(spec: any): Layout {

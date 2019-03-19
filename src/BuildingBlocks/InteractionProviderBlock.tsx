@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Scale, Signal } from 'vega';
 
-import { plumbingProvider } from '../PlumbingProvider';
 import { DynamicValue } from '../Model/Interactions/DynamicValue';
 import InteractionProvider from '../Model/Interactions/InteractionProvider';
+import { plumbingProvider } from '../PlumbingProvider';
 import DropArea from './DropArea';
 import DynamicValueBuildingBlock from './DynamicValueBuildingBlock';
 import InteractionBuildingBlock from './InteractionBuildingBlock';

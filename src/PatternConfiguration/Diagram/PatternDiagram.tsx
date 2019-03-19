@@ -1,7 +1,6 @@
 import { jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
-import UtilityFunctions from '../../UtilityFunctions';
 import DataflowGraph from '../../Model/DataFlowGraph/DataflowGraph';
 import { DataflowNode } from '../../Model/DataFlowGraph/DataflowNode';
 import DatasetNode from '../../Model/DataFlowGraph/DatasetNode';
@@ -11,6 +10,7 @@ import LayoutFactory, { LayoutType } from '../../Model/Layouts/LayoutFactory';
 import Pattern from '../../Model/Pattern/Pattern';
 import PatternGraph from '../../Model/Pattern/PatternGraph';
 import PatternLink from '../../Model/Pattern/PatternLink';
+import UtilityFunctions from '../../UtilityFunctions';
 import DiagramEditor from '../../Widgets/DiagramEditor';
 import PatternBlock from './PatternBlock';
 

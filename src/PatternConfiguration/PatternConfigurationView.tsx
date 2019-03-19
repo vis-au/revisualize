@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import Tab from '../ToolkitView/Tab';
-import ViewContainer from '../ToolkitView/ViewContainer';
 import DataflowGraph from '../Model/DataFlowGraph/DataflowGraph';
 import Pattern from '../Model/Pattern/Pattern';
 import PatternGraph from '../Model/Pattern/PatternGraph';
+import Tab from '../ToolkitView/Tab';
+import ViewContainer from '../ToolkitView/ViewContainer';
 import PatternDiagram from './Diagram/PatternDiagram';
 import PatternSidebar from './Sidebar/PatternSidebar';
 import PatternToolbar from './Toolbar/PatternToolbar';

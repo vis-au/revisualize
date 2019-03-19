@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import Tab from '../ToolkitView/Tab';
-import ViewContainer from '../ToolkitView/ViewContainer';
 import DataflowGraph from '../Model/DataFlowGraph/DataflowGraph';
 import { DataflowNode } from '../Model/DataFlowGraph/DataflowNode';
 import DatasetNode from '../Model/DataFlowGraph/DatasetNode';
+import Tab from '../ToolkitView/Tab';
+import ViewContainer from '../ToolkitView/ViewContainer';
 import DataFlowDiagram from './Diagram/DataFlowDiagram';
 import DataFlowSidebar from './Sidebar/DataFlowSidebar';
 import DataFlowToolbar from './Toolbar/DataFlowToolbar';

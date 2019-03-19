@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import UtilityFunctions from '../UtilityFunctions';
 import DataflowGraph from '../Model/DataFlowGraph/DataflowGraph';
 import DatasetNode from '../Model/DataFlowGraph/DatasetNode';
 import TransformNode from '../Model/DataFlowGraph/TransformNode';
+import UtilityFunctions from '../UtilityFunctions';
 import DatasetBuildingBlock from './DatasetBuildingBlock';
 import ScaleBuildingBlock from './ScaleBuildingBlock';
 import SignalBuildingBlock from './SignalBuildingBlock';

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import TemplatePreview from './TemplatePreview';
 import LayoutBlock from './LayoutBlock';
 import Template from './TemplateModel/Template';
+import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
 
 import './TemplateBlock.css';
@@ -52,7 +52,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     );
   }
 
-  renderPreview() {
+  public renderPreview() {
     return (
       <div className="previewContainer">
         <TemplatePreview

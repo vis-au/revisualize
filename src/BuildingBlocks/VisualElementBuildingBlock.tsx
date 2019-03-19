@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { VisualElement } from '../Model/Elements/VisualElement';
 import { DEFAULT_MARK_ICONS, IconVisualElementBlock } from '../PatternConfiguration/PatternPresetValues';
 import { plumbingProvider } from '../PlumbingProvider';
-import { VisualElement } from '../Model/Elements/VisualElement';
 import IconButton from '../Widgets/IconButton';
 import BuildingBlock from './BuildingBlock';
 

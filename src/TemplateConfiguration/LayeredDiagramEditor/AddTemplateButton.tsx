@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Mark } from 'vega-lite/build/src/mark';
 
+import CompositeTemplate from '../TemplateModel/CompositeTemplate';
+import Layout from '../TemplateModel/Layout';
 import { LayoutType } from '../TemplateModel/LayoutType';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
-import Layout from '../TemplateModel/Layout';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 import './AddTemplateButton.css';
