@@ -3,3 +3,7 @@
   box-shadow: 0 2px 4px #ccc;
   top: 40px;
 }
+#templateConfigurationSidebar .toggleButtonWrapper {
+  background: teal;
+  opacity: 1;
+}

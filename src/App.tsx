@@ -11,7 +11,7 @@ import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigura
 
 import './App.css';
 import TemplateConfigurationSidebar from './TemplateConfiguration/TemplateConfigurationSidebar';
-import DataflowSidebar from './TemplateConfiguration/DataflowSidebar';
+import DataflowSidepanel from './TemplateConfiguration/DataflowPanel';
 
 interface State {
   activeTab: Tab;
@@ -19,6 +19,7 @@ interface State {
   width: number;
   dataGraph: DataflowGraph;
   patternGraph: PatternGraph;
+  dataflowVisible: boolean;
 }
 
 export default class App extends React.Component<{}, State> {
@@ -46,7 +47,8 @@ export default class App extends React.Component<{}, State> {
       dataGraph: DEFAULT_DATA_GRAPH,
       height: window.innerHeight,
       patternGraph,
-      width: window.innerWidth
+      width: window.innerWidth,
+      dataflowVisible: false
     };
 
     window.addEventListener('resize', () => {
@@ -55,6 +57,10 @@ export default class App extends React.Component<{}, State> {
         width: window.innerWidth
       });
     });
+  }
+
+  private onDataflowPanelToggle() {
+    this.setState({ dataflowVisible: !this.state.dataflowVisible });
   }
 
   private updateDataGraph(newGraph: DataflowGraph) {
@@ -100,14 +106,18 @@ export default class App extends React.Component<{}, State> {
             patternGraph={ this.state.patternGraph }
             onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
           /> */}
-          <DataflowSidebar>
+          <DataflowSidepanel
+            onToggle={ this.onDataflowPanelToggle.bind(this) }
+            hidden={ !this.state.dataflowVisible }>
+
             <DataFlowConfigurationView
               activeTab={ new Tab('Data') }
               graph={ this.state.dataGraph }
               onDataGraphChanged={ this.updateDataGraph.bind(this) }
             />
-          </DataflowSidebar>
+          </DataflowSidepanel>
           <TemplateConfigurationView
+            className={ this.state.dataflowVisible ? 'faded' : '' }
             activeTab={ this.state.activeTab }
           />
           <TemplateConfigurationSidebar />

@@ -6,15 +6,16 @@ import TemplateEditor from './TemplateEditor';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
+import SpecDecompiler from './TemplateModel/SpecDecompiler';
 
 import './TemplateConfigurationView.css';
-import SpecDecompiler from './TemplateModel/SpecDecompiler';
 
 interface State {
   templates: Template[];
 }
 interface Props {
   activeTab: Tab;
+  className: string;
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -101,6 +102,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
       <ViewContainer
         id="templateConfiguration"
         name="Templates"
+        className={ this.props.className }
         activeContainerName={ this.props.activeTab.name }>
 
         <TemplateConfigurationToolbar

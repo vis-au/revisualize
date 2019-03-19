@@ -4,9 +4,10 @@ import './Sidebar.css';
 
 interface Props {
   id: string;
-  hidden: boolean;
+  hidden?: boolean;
   height?: number;
   width?: number;
+  toggle?: () => void;
   positionLeft?: boolean;
 }
 interface State {
@@ -18,11 +19,15 @@ export default class Sidebar extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      hidden: false
+      hidden: this.props.hidden
     };
   }
 
   private toggleSidebar(event: MouseEvent) {
+    if (this.props.toggle !== undefined) {
+      this.props.toggle();
+    }
+
     this.setState({ hidden: !this.state.hidden });
     event.stopPropagation();
   }
@@ -54,7 +59,7 @@ export default class Sidebar extends React.Component<Props, State> {
         id={ this.props.id }
         className={ this.getSidebarClassName() }
         style={ { height: this.props.height } }>
-        <div className="sidebarBody">
+        <div className={ `sidebarBody ${this.props.hidden ? 'hidden' : ''}` }>
           { this.props.children }
         </div>
         <div

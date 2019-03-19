@@ -1,0 +1,8 @@
+#templateDataflowSidebar {
+  box-shadow: 0 2px 4px #ccc;
+}
+#templateDataflowSidebar > .toggleButtonWrapper {
+  top: 4.75rem;
+  background: teal;
+  opacity: 1;
+}

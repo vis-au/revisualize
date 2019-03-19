@@ -201,7 +201,7 @@ export default class DataFlowsidebar extends React.Component<Props, State> {
         id="dataFlowSidebar"
         positionLeft={ true }
         hidden={ this.props.focusedNode === null || this.props.focusedNode === undefined }
-        height={ window.innerHeight - 125 }>
+        height={ window.innerHeight - 135 }>
 
         { this.renderTitle() }
         { this.renderFocusedNodeConfiguration() }
