@@ -21,6 +21,7 @@ interface Props {
   deleteTemplate: (template: Template) => void
 }
 interface State {
+  userDefinedLayerNumber: number;
 }
 
 const plumbingConfig = {
@@ -38,6 +39,10 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     this.renderTemplate = this.renderTemplate.bind(this);
 
     this.buttonObserver = new AddTemplateButtonObserver();
+
+    this.state = {
+      userDefinedLayerNumber: 0
+    }
   }
 
   private configurePlumbing() {
@@ -90,50 +95,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
         <div className="container">
           { templatesOnLayer.map(this.renderTemplate) }
         </div>
-      </div>
-    );
-  }
-
-  private renderEmptyLayers(numberOfLayers: number) {
-    const layers: JSX.Element[] = [];
-
-    for (let i = 0; i < numberOfLayers; i++) {
-      layers.push(this.renderLayer(i, []));
-    }
-
-    return layers;
-  }
-
-  private renderTemplateSubtree(template: Template, numberOfLayers: number) {
-    const templatesInSubtree = template.getFlatHierarchy();
-    const layerMap = this.getTemplatesPerLayer(templatesInSubtree);
-    const layers: any[][] = [];
-
-    layerMap.forEach((value, key) => {
-      const nextLayer = this.renderLayer(key, value);
-      layers.push([key, nextLayer]);
-    });
-
-    layers.sort((layerA, layerB) => {
-      return layerB[0] - layerA[0];
-    });
-
-    layers.sort((a, b) => a[0] - b[0]);
-
-    return (
-      <div className="templateGroup">
-        { layers.map(l => l[1]) }
-        { this.renderEmptyLayers(numberOfLayers - layers.length) }
-      </div>
-    );
-  }
-
-  private renderTemplateSubtrees(numberOfLayers: number) {
-    const rootTemplates = this.props.templates.filter(t => t.parent === null);
-
-    return (
-      <div className="templateGroups">
-        { rootTemplates.map(t => this.renderTemplateSubtree(t, numberOfLayers)) }
       </div>
     );
   }
@@ -203,7 +164,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
-
   public render() {
     let numberOfLayers = 0;
     const layerMap = this.getTemplatesPerLayer();
@@ -216,7 +176,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
         <div className="layeredDiagramEditor">
           { this.renderLayerWidgets(numberOfLayers) }
-          {/* { this.renderTemplateSubtrees(numberOfLayers) } */}
           { this.renderLayersLazy() }
         </div>
       </div>
