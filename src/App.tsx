@@ -10,8 +10,8 @@ import TabNavigation from './ToolkitView/TabNavigation';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 
 import './App.css';
-import TemplateConfigurationSidebar from './TemplateConfiguration/TemplateConfigurationSidebar';
-import DataflowSidepanel from './TemplateConfiguration/DataflowPanel';
+import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
+import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 
 interface State {
   activeTab: Tab;
