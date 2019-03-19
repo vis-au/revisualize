@@ -1,0 +1,7 @@
+div.visualElement.mark {
+  width: 50px;
+  height: 50px;
+  background: yellow;
+  text-overflow: ellipsis;
+  overflow: auto;
+}

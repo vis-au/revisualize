@@ -1,11 +1,9 @@
 import * as React from 'react';
 
-import CompositeVisualElementBlock from './CompositeVisualElementBlock';
+import TemplatePreview from './TemplatePreview';
 import LayoutBlock from './LayoutBlock';
-import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
-import VisualMarkTemplate from './TemplateModel/VisualMark';
-import VisualElementMarkBlock from './VisualElementMarkBlock';
+import VisualElementBlock from './VisualElementBlock';
 
 import './TemplateBlock.css';
 
@@ -29,6 +27,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.onClick = this.onClick.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.renderVisualElements = this.renderVisualElements.bind(this);
+    this.renderVisualElement = this.renderVisualElement.bind(this);
   }
 
   private onClick() {
@@ -46,10 +45,6 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderLayout() {
-    if (this.props.template.layout === null) {
-      return <span>no layout</span>
-    }
-
     return (
       <div className="layoutStructureContainer">
         <LayoutBlock layout={ this.props.template.layout } />
@@ -57,31 +52,34 @@ export default class TemplateBlock extends React.Component<Props, State> {
     );
   }
 
+  renderPreview() {
+    return (
+      <div className="previewContainer">
+        <TemplatePreview
+          key={ this.props.template.visualElements.map(v => v.id).join('_') }
+          layout={ this.props.template.layout }
+          templates={ this.props.template.visualElements }/>
+      </div>
+    );
+  }
+
+  private renderVisualElement(visualElement: Template) {
+    return (
+      <div key={ visualElement.id } className="visualElementContainer">
+        <VisualElementBlock visualElement={ visualElement }/>
+      </div>
+    );
+  }
+
   private renderVisualElements() {
-    if (this.props.template instanceof CompositeTemplate) {
-      return (
-        <div className="visualElementContainer">
-          <CompositeVisualElementBlock
-            key={ this.props.template.visualElements.map(v => v.id).join('_') }
-            layout={ this.props.template.layout }
-            templates={ this.props.template.visualElements }/>
-        </div>
-      );
-    } else if (this.props.template instanceof VisualMarkTemplate) {
-      return (
-        <div className="visualElementContainer">
-          <VisualElementMarkBlock
-            visualElement={ this.props.template }/>
-        </div>
-      );
-    }
+    return (
+      <div className="visualElementsContainer">
+        { this.props.template.visualElements.map(this.renderVisualElement) }
+      </div>
+    );
   }
 
   public render() {
-    const label = this.props.template.layout === null
-     ? this.props.template.id
-     : this.props.template.layout.type.charAt(0).toUpperCase() + this.props.template.layout.type.slice(1);
-
     return (
       <div
         id={ this.props.template.id }
@@ -89,13 +87,16 @@ export default class TemplateBlock extends React.Component<Props, State> {
         onClick={ this.onClick }>
 
         <div className="templateHeader">
-          <h2>{ label }</h2>
+          <h2>{ this.props.template.id }</h2>
           <button className="expand" onClick={ this.toggleChildTemplates }>subtree</button>
           <div className="delete" onClick={ this.onDelete } />
         </div>
         <div className="body">
-          { this.renderLayout() }
-          { this.renderVisualElements() }
+          <div className="configuration">
+            { this.renderLayout() }
+            { this.renderVisualElements() }
+          </div>
+          { this.renderPreview() }
         </div>
       </div>
     );
@@ -105,7 +106,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     const bodySelector =
       document.querySelector(`#${this.props.template.id} .body`);
     const visualElementSelector =
-      document.querySelector(`#${this.props.template.id} .body .visualElementContainer`);
+      document.querySelector(`#${this.props.template.id} .body .visualelementsContainer`);
 
     const plumbingConfig = {
       paintStyle: { fill: 'teal', radius: 5 },

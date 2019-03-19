@@ -5,7 +5,7 @@ import Layout from './TemplateModel/Layout';
 import SpecCompiler from './TemplateModel/SpecCompiler';
 import Template from './TemplateModel/Template';
 
-import './CompositeVisualElementBlock.css';
+import './TemplatePreview.css';
 
 interface Props {
   templates: Template[];
@@ -15,7 +15,7 @@ interface State {
 
 }
 
-export default class CompositeVisualElementBlock extends React.Component<Props, State> {
+export default class TemplatePreview extends React.Component<Props, State> {
   private specCompiler: SpecCompiler;
 
   constructor(props: Props) {
@@ -24,7 +24,7 @@ export default class CompositeVisualElementBlock extends React.Component<Props, 
     this.specCompiler = new SpecCompiler();
   }
 
-  private renderVisualElements() {
+  private renderVegaPreview() {
     let spec = this.specCompiler.getVegaSpecification(this.props.templates, this.props.layout);
 
     if (spec === null) {
@@ -44,8 +44,8 @@ export default class CompositeVisualElementBlock extends React.Component<Props, 
 
   public render() {
     return (
-      <div className="composite visualElement">
-        { this.renderVisualElements() }
+      <div className="preview">
+        { this.renderVegaPreview() }
       </div>
     );
   }

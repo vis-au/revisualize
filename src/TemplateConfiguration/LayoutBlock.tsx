@@ -14,7 +14,11 @@ interface State {
 export default class LayoutBlock extends React.Component<Props, State> {
   public render() {
     return (
-      <div className="layout">{ this.props.layout.type }</div>
+      <div
+        title={ this.props.layout === null ? 'no layout' : this.props.layout.type }
+        className={ `layout ${this.props.layout === null ? 'null' : ''}`}>
+        { this.props.layout === null ? 'X' : this.props.layout.type }
+      </div>
     );
   }
 }

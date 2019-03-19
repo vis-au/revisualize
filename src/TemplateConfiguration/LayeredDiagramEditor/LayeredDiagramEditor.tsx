@@ -101,7 +101,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderLayerWidget(index: number) {
     return (
-      <div className="layer">
+      <div className="layer" key={ index }>
         {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }

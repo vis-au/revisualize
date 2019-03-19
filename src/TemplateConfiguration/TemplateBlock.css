@@ -75,13 +75,16 @@ div.template .body {
   flex-direction: row;
   justify-content: space-between;
 }
-div.template .body .visualElementContainer,
-div.template .body .layoutContainer {
+div.template .body .configuration {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  flex-wrap: wrap;
-  min-width: 50px;
-  background: #fff;
-  border: 1px solid #ccc;
+  height: 100%;
+}
+div.template .configuration .visualElementsContainer,
+div.template .configuration .layoutContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0.1rem 0;
 }
