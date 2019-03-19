@@ -48,9 +48,10 @@ export default class VegaRenderer extends React.Component<Props, {}> {
     return (
       <div className="vegaRenderer" style={ this.props.style }>
         {
-          this.props.showExportOptions !== undefined && this.props.showExportOptions
-           ? this.renderWithEmbed()
-           : this.renderAsComponent()
+          // this.props.showExportOptions !== undefined && this.props.showExportOptions
+          //  ? this.renderWithEmbed()
+          //  : this.renderAsComponent()
+          this.renderWithEmbed()
         }
       </div>
     );

@@ -37,7 +37,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
     return (
       <VegaRenderer
         id={ template.visualElements.map(t => t.id).join('_') }
-        showExportOptions={ true }
+        showExportOptions={ false }
         width={ 50 }
         height={ 50 }
         schema={ spec }
