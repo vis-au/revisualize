@@ -57,8 +57,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
       <div className="previewContainer">
         <TemplatePreview
           key={ this.props.template.visualElements.map(v => v.id).join('_') }
-          layout={ this.props.template.layout }
-          templates={ this.props.template.visualElements }/>
+          template={ this.props.template }/>
       </div>
     );
   }
@@ -106,7 +105,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     const bodySelector =
       document.querySelector(`#${this.props.template.id} .body`);
     const visualElementSelector =
-      document.querySelector(`#${this.props.template.id} .body .visualelementsContainer`);
+      document.querySelector(`#${this.props.template.id} .body .visualElementsContainer`);
 
     const plumbingConfig = {
       paintStyle: { fill: 'teal', radius: 5 },

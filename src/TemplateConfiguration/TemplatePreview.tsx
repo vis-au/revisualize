@@ -1,15 +1,14 @@
 import * as React from 'react';
 
 import VegaRenderer from '../Model/Renderer/VegaRenderer';
-import Layout from './TemplateModel/Layout';
 import SpecCompiler from './TemplateModel/SpecCompiler';
 import Template from './TemplateModel/Template';
+import VisualMarkTemplate from './TemplateModel/VisualMark';
 
 import './TemplatePreview.css';
 
 interface Props {
-  templates: Template[];
-  layout: Layout;
+  template: Template
 }
 interface State {
 
@@ -25,15 +24,19 @@ export default class TemplatePreview extends React.Component<Props, State> {
   }
 
   private renderVegaPreview() {
-    let spec = this.specCompiler.getVegaSpecification(this.props.templates, this.props.layout);
+    const template = this.props.template;
+    let spec: any = this.specCompiler.getVegaSpecification(template.visualElements, template.layout);
 
-    if (spec === null) {
+    if (template instanceof VisualMarkTemplate) {
+      spec = this.specCompiler.getBasicSchema() as any;
+      spec.mark = template.type;
+    } else if (spec === null) {
       spec = {} as any;
     }
 
     return (
       <VegaRenderer
-        id={ this.props.templates.map(t => t.id).join('_') }
+        id={ template.visualElements.map(t => t.id).join('_') }
         showExportOptions={ true }
         width={ 50 }
         height={ 50 }

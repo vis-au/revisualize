@@ -106,6 +106,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
       connections
         .map(d => d)
         .forEach(connection => {
+          console.log('found one')
           this.dragPlumbing.deleteConnection(connection);
           this.deleteConnectionFromMaps(connection);
         });
@@ -182,7 +183,7 @@ export default class TemplateEditor extends React.Component<Props, State> {
     }
 
     const sourceTemplate = this.props.templates
-      .find(template => template.id === event.source.parentNode.id);
+      .find(template => template.id === event.source.parentNode.parentNode.id);
 
     const targetTemplate = this.props.templates
       .find(template => template.id === event.target.parentNode.id);

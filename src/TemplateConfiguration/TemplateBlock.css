@@ -88,3 +88,8 @@ div.template .configuration .layoutContainer {
   justify-content: space-between;
   margin: 0.1rem 0;
 }
+div.template .configuration .visualElementsContainer:empty {
+  background: red;
+  width: 50px;
+  height: 25px;
+}
