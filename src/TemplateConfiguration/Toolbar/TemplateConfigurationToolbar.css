@@ -26,8 +26,7 @@
   font-size: 15px;
 }
 
-#templateToolbarVisualMarks,
-#templateToolbarLayouts,
+#templateImport,
 #templatePresets {
   display: flex;
   flex-direction: row;
