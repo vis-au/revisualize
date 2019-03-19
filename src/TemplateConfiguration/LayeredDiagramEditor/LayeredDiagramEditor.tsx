@@ -4,11 +4,11 @@ import 'jquery-ui/ui/widgets/sortable';
 import 'jquery-ui/ui/widgets/draggable';
 
 import AddTemplateButton from './AddTemplateButton';
+import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
 
 import './LayeredDiagramEditor.css';
-import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 interface Props {
   id: string,

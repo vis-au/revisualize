@@ -191,6 +191,8 @@ export default class TemplateEditor extends React.Component<Props, State> {
       sourceTemplate.visualElements.push(targetTemplate);
       targetTemplate.parent = sourceTemplate;
 
+      sourceTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
+
       this.saveConnectionToMaps(sourceTemplate, targetTemplate, event.connection);
     }
 
@@ -263,15 +265,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
   public render() {
     return (
-      // <DiagramEditor
-      //   id="templateDiagram"
-      //   dragPlumbing={ this.dragPlumbing }
-      //   plumbingConfig={ templateEditorPlumbingConfig }
-      //   onDiagramClicked={ this.onDiagramClicked }
-      //   onDetachedConnection={ this.onDetachedConnection }
-      //   onConnectionMoved={ this.onConnectionMoved }
-      //   onNewConnection={ this.onNewConnection }
-      //   renderBlocks={ () => this.renderTemplateBlocks(this.props.templates) } />
       <LayeredDiagramEditor
         id={ 'layeredTemplateDiagramEditor' }
         templates={ this.props.templates }
@@ -290,6 +283,10 @@ export default class TemplateEditor extends React.Component<Props, State> {
       .forEach(this.renderTemplateLinks);
 
     window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
+  }
+
+  public shouldComponentUpdate() {
+    return true;
   }
 
   public componentDidUpdate() {

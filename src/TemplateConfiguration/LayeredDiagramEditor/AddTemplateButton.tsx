@@ -67,16 +67,16 @@ export default class AddTemplateButton extends React.Component<Props, State> {
 
   private renderMarkBlock(mark: Mark) {
     return (
-      <li>
-        <button key={ mark } onClick={ () => this.onMarkClicked(mark) }>{ mark }</button>
+      <li key={ mark }>
+        <button onClick={ () => this.onMarkClicked(mark) }>{ mark }</button>
       </li>
     );
   }
 
   private renderLayoutBlock(type: LayoutType) {
     return (
-      <li>
-        <button key={ type } onClick={ () => this.onLayoutClicked(type) }>{ type }</button>
+      <li key={ type }>
+        <button onClick={ () => this.onLayoutClicked(type) }>{ type }</button>
       </li>
     );
   }
