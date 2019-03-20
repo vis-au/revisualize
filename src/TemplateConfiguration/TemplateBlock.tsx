@@ -64,7 +64,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
   private renderVisualElement(visualElement: Template) {
     return (
-      <div key={ visualElement.id } className="visualElementContainer">
+      <div key={ visualElement.id } id={ `ve${visualElement.id}`} className="visualElementContainer">
         <VisualElementBlock visualElement={ visualElement }/>
       </div>
     );

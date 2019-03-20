@@ -20,7 +20,10 @@ interface State {
 const templateEditorPlumbingConfig = {
   Anchor: ['Left', 'Right'],
   Connector: [ 'Bezier', { stub: 5 } ],
-  PaintStyle: { strokeWidth: 2, stroke: 'teal' }
+  PaintStyle: { strokeWidth: 2, stroke: 'teal' },
+  overlays: [
+    'Arrow', [ 'Label', { label:'foo', location:0.25, id:'myLabel' } ]
+  ],
 };
 
 export default class TemplateEditor extends React.Component<Props, State> {
@@ -52,6 +55,8 @@ export default class TemplateEditor extends React.Component<Props, State> {
     }
 
     this.hideAllChildTemplates();
+
+    window.addEventListener('resize', () => this.dragPlumbing.repaintEverything());
   }
 
   private hideAllChildTemplates() {
@@ -115,26 +120,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
     this.props.deleteTemplate(template);
   }
 
-  private renderTemplateBlock(template: Template) {
-    if (this.state.hiddenTemplatesMap.get(template.id)) {
-      return null;
-    }
-
-    return (
-      <TemplateBlock
-        key={ template.id }
-        level={ 0 }
-        dragPlumbing={ this.dragPlumbing }
-        template={ template }
-        toggleChildTemplate={ this.toggleTemplateBlockVisibility }
-        delete={ () => this.onDeleteTemplate(template) }/>
-    );
-  }
-
-  private renderTemplateBlocks(templates: Template[]) {
-    return templates.map(this.renderTemplateBlock);
-  }
-
   private saveConnectionToMaps(source: Template, target: Template, connection: Connection) {
     const templateMap = this.templateConnectionsMap;
     const connectionMap = this.state.connectionTemplateMap;
@@ -177,57 +162,71 @@ export default class TemplateEditor extends React.Component<Props, State> {
     connectionMap.delete(connection.id);
   }
 
-  private onNewConnection(event: any) {
-    if (event.source.parentNode.id === event.target) {
+  private findTemplateInDomParents(domElement: HTMLElement) {
+    let exploredLevels = 0;
+    let workingNode = domElement;
+
+    while (!workingNode.classList.contains('template') && exploredLevels < 10) {
+      workingNode = workingNode.parentNode as HTMLElement;
+      exploredLevels++;
+    }
+
+    return workingNode;
+  }
+
+  private onNewConnection(info: any, originalEvent?: any) {
+    if (info.source.parentNode.id === info.target) {
       return false;
     }
 
-    const sourceTemplate = this.props.templates
-      .find(template => template.id === event.source.parentNode.parentNode.parentNode.id);
+    let sourceHtmlNode = this.findTemplateInDomParents(info.source);
+    let targetHtmlNode = this.findTemplateInDomParents(info.target);
 
-    const targetTemplate = this.props.templates
-      .find(template => template.id === event.target.parentNode.id);
+    let sourceTemplate = this.props.templates
+      .find(template => template.id === sourceHtmlNode.id);
 
-    if (sourceTemplate !== undefined && sourceTemplate.visualElements.indexOf(targetTemplate) === -1) {
-      sourceTemplate.visualElements.push(targetTemplate);
-      targetTemplate.parent = sourceTemplate;
+    let targetTemplate = this.props.templates
+      .find(template => template.id === targetHtmlNode.id);
 
-      sourceTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
-      targetTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
+    if (sourceTemplate !== undefined) {
+      if (originalEvent !== undefined && sourceTemplate.visualElements.indexOf(targetTemplate) === -1) {
+        sourceTemplate.visualElements.push(targetTemplate);
+        targetTemplate.parent = sourceTemplate;
 
-      this.saveConnectionToMaps(sourceTemplate, targetTemplate, event.connection);
+        sourceTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
+        targetTemplate.getFlatHierarchy().forEach(t => t.hierarchyLevel = -1);
+      }
+
+      this.saveConnectionToMaps(sourceTemplate, targetTemplate, info.connection);
     }
 
     this.dragPlumbing.repaintEverything();
-    this.props.onTemplatesChanged();
+
+    // jsplumb original event undefined --> conenctions was created programmatically and not by the
+    // user, which means that a preset was added, therefore the state must not be updated
+    if (originalEvent !== undefined) {
+      this.props.onTemplatesChanged();
+    }
   }
 
-  private onConnectionMoved(event: any) {
-    const connection: any = event.connection;
+  private onConnectionMoved(info: any, originalEvent?: any) {
+    const connection: any = info.connection;
     const templates = this.state.connectionTemplateMap.get(connection.id);
-    const connectionTemplateMap = this.state.connectionTemplateMap;
 
     const targetIndexInSource = templates[0].visualElements.indexOf(templates[1]);
+
+    if (targetIndexInSource === -1) {
+      return;
+    }
+
     templates[0].visualElements.splice(targetIndexInSource, 1);
     templates[1].parent = null;
 
     this.deleteConnectionFromMaps(connection);
-
-    const source = this.props.templates
-      .find(template => template.id === connection.source.parentNode.parentNode.parentNode.id);
-
-    const target = this.props.templates
-      .find(template => template.id === connection.target.parentNode.id);
-
-    connectionTemplateMap.set(connection.id, [source, target]);
-
-    this.dragPlumbing.repaintEverything();
-    this.props.onTemplatesChanged();
-    this.setState({ connectionTemplateMap });
   }
 
-  private onDetachedConnection(event: any) {
-    const connection: Connection = event.connection;
+  private onDetachedConnection(info: any, originalEvent?: any) {
+    const connection: Connection = info.connection;
 
     const templates = this.state.connectionTemplateMap.get(connection.id);
     const sourceTemplate = templates[0];
@@ -238,10 +237,30 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
     targetTemplate.parent = null;
 
-    this.deleteConnectionFromMaps(event.connection);
+    this.deleteConnectionFromMaps(info.connection);
 
     this.dragPlumbing.repaintEverything();
     this.props.onTemplatesChanged();
+  }
+
+  private renderTemplateBlock(template: Template) {
+    if (this.state.hiddenTemplatesMap.get(template.id)) {
+      return null;
+    }
+
+    return (
+      <TemplateBlock
+        key={ template.id }
+        level={ 0 }
+        dragPlumbing={ this.dragPlumbing }
+        template={ template }
+        toggleChildTemplate={ this.toggleTemplateBlockVisibility }
+        delete={ () => this.onDeleteTemplate(template) }/>
+    );
+  }
+
+  private renderTemplateBlocks(templates: Template[]) {
+    return templates.map(this.renderTemplateBlock);
   }
 
   private renderTemplateLinks(template: Template) {
@@ -250,18 +269,15 @@ export default class TemplateEditor extends React.Component<Props, State> {
     }
 
     template.visualElements.forEach(visualElement => {
-      this.renderTemplateLinks(visualElement);
-
       // FIXME: endpoint positions
-      const sourceSelector = document.querySelector(`#${template.id}`);
-      const targetSelector = document.querySelector(`#${visualElement.id}`);
+      const sourceSelector = document.querySelector(`#ve${visualElement.id}`);
+      const targetSelector = document.querySelector(`#${visualElement.id} .body`);
 
-      const connection = this.dragPlumbing.connect({
+      (this.dragPlumbing as any).connect({
         source: sourceSelector,
         target: targetSelector,
+        endpointStyle: { fill: 'teal', radius: 5 }
       });
-
-      this.saveConnectionToMaps(template, visualElement, connection);
     });
   }
 
@@ -287,29 +303,27 @@ export default class TemplateEditor extends React.Component<Props, State> {
     window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
   }
 
-  public shouldComponentUpdate() {
-    return true;
-  }
-
   public componentDidUpdate() {
-    // this.props.templates
-    //   .filter(template => {
-    //     let connectionsInData = template.visualElements.length;
+    this.props.templates
+      .filter(template => {
+        let connectionsInData = template.visualElements.length;
 
-    //     if (template.parent !== null) {
-    //       connectionsInData += 1;
-    //     }
+        if (template.parent !== null) {
+          connectionsInData += 1;
+        }
 
-    //     const mapEntry = this.templateConnectionsMap.get(template.id);
+        const mapEntry = this.templateConnectionsMap.get(template.id);
 
-    //     if (mapEntry === undefined) {
-    //       return true;
-    //     }
+        if (mapEntry === undefined) {
+          return true;
+        }
 
-    //     const connectionsInView = mapEntry.length;
+        const connectionsInView = mapEntry.length;
 
-    //     return connectionsInData !== connectionsInView;
-    //   })
-    //   .forEach(this.renderTemplateLinks);
+        return connectionsInData > connectionsInView;
+      })
+      .forEach(this.renderTemplateLinks);
+
+    this.dragPlumbing.repaintEverything();
   }
 }

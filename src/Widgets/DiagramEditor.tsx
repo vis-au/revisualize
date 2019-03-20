@@ -28,9 +28,9 @@ export default class DiagramEditor extends React.Component<Props, {}> {
   private configurePlumbing() {
     const plumbing = this.props.dragPlumbing;
 
-    plumbing.bind('connection', (event: any) => this.props.onNewConnection(event));
-    plumbing.bind('connectionDetached', (event: any) => this.props.onDetachedConnection(event));
-    plumbing.bind('connectionMoved', (event: any) => this.props.onConnectionMoved(event));
+    plumbing.bind('connection', this.props.onNewConnection);
+    plumbing.bind('connectionDetached', this.props.onDetachedConnection);
+    plumbing.bind('connectionMoved', this.props.onConnectionMoved);
 
     const container = document.querySelector(`#${this.props.id} .diagram`);
 

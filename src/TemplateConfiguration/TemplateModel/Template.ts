@@ -2,6 +2,8 @@ import Layout from './Layout';
 
 export default abstract class Template {
   public id: string;
+  public x: number;
+  public y: number;
   public hierarchyLevel: number;
 
   constructor(public visualElements: Template[], public layout: Layout, public parent: Template) {
