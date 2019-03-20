@@ -176,7 +176,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     const layerMap = this.getTemplatesPerLayer();
 
     layerMap.forEach((value, key) => {
-      numberOfLayers++;
+      numberOfLayers = Math.max(numberOfLayers, key + 1);
     });
 
     return (
