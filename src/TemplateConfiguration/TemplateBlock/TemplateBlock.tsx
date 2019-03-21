@@ -16,7 +16,7 @@ interface Props {
   delete: () => void
 }
 interface State {
-
+  minimized: boolean;
 }
 
 export default class TemplateBlock extends React.Component<Props, State> {
@@ -24,10 +24,15 @@ export default class TemplateBlock extends React.Component<Props, State> {
     super(props);
 
     this.toggleChildTemplates = this.toggleChildTemplates.bind(this);
+    this.togglePreviewMinimized = this.togglePreviewMinimized.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.renderVisualElements = this.renderVisualElements.bind(this);
     this.renderVisualElement = this.renderVisualElement.bind(this);
+
+    this.state = {
+      minimized: false
+    };
   }
 
   private onClick() {
@@ -44,10 +49,14 @@ export default class TemplateBlock extends React.Component<Props, State> {
     });
   }
 
+  private togglePreviewMinimized() {
+    this.setState({ minimized: !this.state.minimized });
+  }
+
   private renderLayout() {
     return (
       <div className="layoutStructureContainer">
-        <LayoutBlock layout={ this.props.template.layout } />
+        <LayoutBlock layout={ this.props.template.layout } minimized={ this.state.minimized } />
       </div>
     );
   }
@@ -65,7 +74,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
   private renderVisualElement(visualElement: Template) {
     return (
       <div key={ visualElement.id } id={ `ve${visualElement.id}`} className="visualElementContainer">
-        <VisualElementBlock visualElement={ visualElement }/>
+        <VisualElementBlock visualElement={ visualElement } minimized={ this.state.minimized }/>
       </div>
     );
   }
@@ -74,6 +83,29 @@ export default class TemplateBlock extends React.Component<Props, State> {
     return (
       <div className="visualElementsContainer">
         { this.props.template.visualElements.map(this.renderVisualElement) }
+      </div>
+    );
+  }
+
+  private renderBody() {
+    if (this.state.minimized) {
+      return (
+        <div className="body">
+          <div className="configuration minimized">
+            { this.renderLayout() }
+            { this.renderVisualElements() }
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="body">
+        <div className="configuration">
+          { this.renderLayout() }
+          { this.renderVisualElements() }
+        </div>
+        { this.renderPreview() }
       </div>
     );
   }
@@ -87,16 +119,10 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
         <div className="templateHeader">
           <h2>{ this.props.template.id }</h2>
-          <button className="expand" onClick={ this.toggleChildTemplates }>subtree</button>
+          <button className="expand" onClick={ this.togglePreviewMinimized }>minimize</button>
           <div className="delete" onClick={ this.onDelete } />
         </div>
-        <div className="body">
-          <div className="configuration">
-            { this.renderLayout() }
-            { this.renderVisualElements() }
-          </div>
-          { this.renderPreview() }
-        </div>
+        { this.renderBody() }
       </div>
     );
   }
@@ -133,5 +159,9 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
   public componentDidMount() {
     this.addPlumbing();
+  }
+
+  public componentDidUpdate() {
+    this.props.dragPlumbing.repaintEverything();
   }
 }

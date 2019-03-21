@@ -22,7 +22,7 @@
 .layeredDiagramEditor .column.placeholder {
   margin: 0 1rem;
   width: 5rem;
-  height: 100%;
+  height: 92vh;
 }
 .layeredDiagramEditor .widgets {
   display: flex;
@@ -36,6 +36,7 @@
 }
 .layeredDiagramEditor .layer {
   width: 100%;
+  height: 92vh;
   padding-top: 1rem;
   display: flex;
   flex-direction: column;
@@ -49,9 +50,8 @@
   min-height: 100px;
 }
 .layeredDiagramEditor .column.placeholder .layer {
-  min-height: auto;
   justify-content: flex-start;
-  height: 100%;
+  /* height: 100vh; */
 }
 .layeredDiagramEditor .widgets .layer {
   display: flex;

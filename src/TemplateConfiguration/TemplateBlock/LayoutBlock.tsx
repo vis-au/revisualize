@@ -5,7 +5,8 @@ import Layout from '../TemplateModel/Layout';
 import './LayoutBlock.css';
 
 interface Props {
-  layout: Layout
+  layout: Layout;
+  minimized: boolean;
 }
 interface State {
 

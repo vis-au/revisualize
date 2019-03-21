@@ -12,28 +12,28 @@ div.template.focus {
   box-shadow: 0 4px 4px #ccc;
 }
 div.template.focus .templateHeader {
-  background: teal;
+  background: #fff;
 }
 
 div.template .templateHeader {
   padding: 0.25rem 1rem;
   margin: 0;
-  border-bottom: teal;
+  border: 1px solid #ccc;
   background: teal;
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: grab;
 }
 div.template .templateHeader .delete {
   margin-left: 0.5rem;
-  color: #fff;
 }
 div.template .templateHeader h2 {
   padding: 0;
   margin: 0;
   font-family: 'Roboto Condensed';
   font-size: 1.15rem;
-  color: #fff;
 }
 div.template .templateHeader .dataSource {
   margin: 0 0.25rem;
@@ -80,6 +80,11 @@ div.template .body .configuration {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+}
+div.template .body .configuration.minimized {
+  flex-direction: row;
+  width: 100%;
+  overflow: hidden;
 }
 div.template .configuration .visualElementsContainer,
 div.template .configuration .layoutContainer {

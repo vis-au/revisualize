@@ -7,6 +7,7 @@ import './VisualElementBlock.css';
 
 interface Props {
   visualElement: Template;
+  minimized: boolean;
 }
 interface State {
 
