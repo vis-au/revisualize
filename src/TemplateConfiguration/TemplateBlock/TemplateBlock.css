@@ -108,22 +108,18 @@ div.template:hover .footer * {
 }
 div.template .footer button {
   padding: 0.15rem 0.5rem 0.2rem;
-  box-shadow: 0 2px 4px #ccc;
-  border: 1px solid teal;
-  border-radius: 2px;
+  border: none;
   background: #fff;
   color: teal;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: row;
   align-items: center;
   overflow: hidden;
+  transition: all 0.2s ease-in-out;
 }
-div.template .footer button:hover {
-  color: #fff;
-  background: teal;
-  box-shadow: 0 4px 4px #ccc;
+div.template .footer button:hover span {
+  text-decoration: underline;
 }
 div.template .footer button i.icon {
   font-size: 14px;

@@ -145,7 +145,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
             <i className="material-icons icon">aspect_ratio</i>
             <span>preview</span>
           </button>
-          <button className="expand" onClick={ this.togglePreviewMinimized }>
+          <button className="expand" onClick={ () => null }>
             <i className="material-icons icon">timeline</i>
             <span>child nodes</span>
           </button>

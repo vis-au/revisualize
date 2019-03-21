@@ -58,13 +58,6 @@
   justify-content: flex-start;
   /* height: 100vh; */
 }
-.layeredDiagramEditor .widgets .layer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  min-width: 0;
-  min-height: 0;
-}
 .layeredDiagramContainer .layer .templates {
   display: flex;
   flex-direction: column;
@@ -92,30 +85,27 @@
 .layeredDiagramContainer .layer .templates .template .vega-actions-wrapper {
   display: none;
 }
-.layeredDiagramEditor .layer .addTemplateWidget {
+.layeredDiagramEditor .layer .layerWidgets {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), opacity 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-.layeredDiagramEditor .placeholder .layer .addTemplateWidget {
+.layeredDiagramEditor .layer:hover .layerWidgets {
   visibility: visible;
   opacity: 1;
 }
-.layeredDiagramEditor .layer:hover .addTemplateWidget {
-  visibility: visible;
-  opacity: 1;
-}
-.layeredDiagramEditor .layerWidget.bottom button {
+.layeredDiagramEditor .layerWidgets.bottom button {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border: 1px solid teal;
-  border-radius: 2px;
-  color: #fff;
-  background: teal;
-  padding: 0.25rem 0.5rem 0.3rem;
+  border: none;
+  color: teal;
+  background: #fff;
   cursor: pointer;
 }
-.layeredDiagramEditor .layerWidget.bottom i.icon {
+.layeredDiagramEditor .layerWidgets.bottom:hover span {
+  text-decoration: underline;
+}
+.layeredDiagramEditor .layerWidgets.bottom i.icon {
   transform: rotate(90deg);
 }

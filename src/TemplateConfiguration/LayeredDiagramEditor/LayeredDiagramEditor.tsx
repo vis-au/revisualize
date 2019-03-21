@@ -88,6 +88,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
 
     this.setState({ collapsedLayers });
+    window.setTimeout(this.props.dragPlumbing.repaintEverything, 500);
   }
 
   private renderTemplate(template: Template, layer: number) {
@@ -105,7 +106,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderLayerTopWidget(index: number) {
     return (
-      <div className="layerWidget top" key={ index }>
+      <div className="layerWidgets top" key={ index }>
         {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }
@@ -134,7 +135,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
 
     return (
-      <div className="layerWidget bottom" key={ layerIndex }>
+      <div className="layerWidgets bottom" key={ layerIndex }>
         <button onClick={ () => this.toggleCollapseLayer(layerIndex) }>
           <i className="icon material-icons">{ icon }</i>
           <span>{ label }</span>
