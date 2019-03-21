@@ -22,6 +22,7 @@ interface Props {
 }
 interface State {
   userDefinedLayerNumber: number;
+  collapsedLayers: number[];
 }
 
 const plumbingConfig = {
@@ -37,11 +38,13 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     super(props);
 
     this.renderTemplate = this.renderTemplate.bind(this);
+    this.toggleCollapseLayer = this.toggleCollapseLayer.bind(this);
 
     this.buttonObserver = new AddTemplateButtonObserver();
 
     this.state = {
-      userDefinedLayerNumber: 0
+      userDefinedLayerNumber: 0,
+      collapsedLayers: []
     }
   }
 
@@ -74,6 +77,19 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return templatePerLayerMap;
   }
 
+  private toggleCollapseLayer(layerIndex: number) {
+    const collapsedLayers = this.state.collapsedLayers;
+    const indexInState = collapsedLayers.indexOf(layerIndex);
+
+    if (indexInState === -1) {
+      collapsedLayers.push(layerIndex);
+    } else {
+      collapsedLayers.splice(indexInState, 1);
+    }
+
+    this.setState({ collapsedLayers });
+  }
+
   private renderTemplate(template: Template, layer: number) {
     return (
       <TemplateBlock
@@ -87,28 +103,55 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
-  private renderLayer(layerNumber: number, templatesOnLayer: Template[] = []) {
-    const even = layerNumber % 2 === 0 ? 'even' : 'uneven';
-
+  private renderLayerTopWidget(index: number) {
     return (
-      <div key={ layerNumber } className={ `layer ${even}` }>
-        { this.renderLayerWidget(layerNumber) }
-        <div className="container">
-          { templatesOnLayer.map(this.renderTemplate) }
-        </div>
-      </div>
-    );
-  }
-
-  private renderLayerWidget(index: number) {
-    return (
-      <div className="layerWidget" key={ index }>
+      <div className="layerWidget top" key={ index }>
         {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }
           addTemplate={ this.props.addTemplate }
           buttonObserver={ this.buttonObserver }
         />
+      </div>
+    );
+  }
+
+  private renderTemplates(layerIndex: number, templatesOnLayer: Template[]) {
+    return (
+      <div className="templates">
+        { templatesOnLayer.map(this.renderTemplate) }
+      </div>
+    );
+  }
+
+  private renderLayerBottomWidget(layerIndex: number) {
+    let icon = 'unfold_less';
+    let label = 'collapse'
+
+    if (this.state.collapsedLayers.indexOf(layerIndex) > -1) {
+      icon = 'unfold_more';
+      label = 'expand';
+    }
+
+    return (
+      <div className="layerWidget bottom" key={ layerIndex }>
+        <button onClick={ () => this.toggleCollapseLayer(layerIndex) }>
+          <i className="icon material-icons">{ icon }</i>
+          <span>{ label }</span>
+        </button>
+      </div>
+    );
+  }
+
+  private renderLayer(layerIndex: number, templatesOnLayer: Template[] = []) {
+    const even = layerIndex % 2 === 0 ? 'even' : 'uneven';
+    const collapsed = this.state.collapsedLayers.indexOf(layerIndex) > -1 ? 'collapsed' : '';
+
+    return (
+      <div key={ layerIndex } className={ `layer ${even} ${collapsed}` }>
+        { this.renderLayerTopWidget(layerIndex) }
+        { this.renderTemplates(layerIndex, templatesOnLayer) }
+        { this.renderLayerBottomWidget(layerIndex) }
       </div>
     );
   }
@@ -194,7 +237,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
   }
 
   private makeTemplatesSortable() {
-    $(`#${this.props.id} .container`).sortable({
+    $(`#${this.props.id} .templates`).sortable({
       placeholder: 'templatePlaceholder',
       handle: '.templateHeader',
       sort: (event, ui) => {
