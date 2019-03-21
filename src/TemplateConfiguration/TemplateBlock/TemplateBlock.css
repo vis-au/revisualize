@@ -29,6 +29,9 @@ div.template .templateHeader {
 div.template .templateHeader .delete {
   margin-left: 0.5rem;
 }
+div.template .templateHeader .delete:hover {
+  color: #fff;
+}
 div.template .templateHeader h2 {
   padding: 0;
   margin: 0;
@@ -49,31 +52,16 @@ div.template .templateHeader .dataSource .buildingBlock.dataset {
   border-radius: 3px;
 }
 
-div.template .unboundNotice {
-  border: 1px dashed #ccc;
-  color: #aaa;
-}
-div.template .body .dropArea {
-  border-color: teal;
-}
-div.template .unboundNotice,
-div.template .dropArea {
-  padding: 0.25rem 0.5rem;
-  margin: 0.25rem 0.25rem;
-}
-div.template .dropArea.jtk-drag-active + .unboundNotice {
-  display: none;
-}
-div.template .templateNoDataset .unboundNotice {
-  color: #fff;
-  border-color: #fff;
-}
-
 div.template .body {
   padding: 0.25rem;
+  font-size: 12px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+div.mark.template .body {
+  justify-content: center;
 }
 div.template .body .configuration {
   display: flex;
@@ -86,15 +74,58 @@ div.template .body .configuration.minimized {
   width: 100%;
   overflow: hidden;
 }
-div.template .configuration .visualElementsContainer,
-div.template .configuration .layoutContainer {
+div.template .body .configuration .visualElementsContainer,
+div.template .body .configuration .layoutContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 0.1rem 0;
+  margin: 1rem 0;
 }
-div.template .configuration .visualElementsContainer:empty {
-  background: red;
+div.template .body .configuration .visualElementsContainer:empty {
+  background: #eee;
+  border: 1px solid #ccc;
   width: 50px;
   height: 25px;
+}
+
+div.template .footer {
+  padding: 0.25rem 0.25rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.15s ease-in-out;
+}
+div.template .footer * {
+  visibility: hidden;
+}
+div.template:hover .footer {
+  height: 2rem;
+}
+div.template:hover .footer * {
+  visibility: visible;
+}
+div.template .footer button {
+  padding: 0.15rem 0.5rem 0.2rem;
+  box-shadow: 0 2px 4px #ccc;
+  border: 1px solid teal;
+  border-radius: 2px;
+  background: #fff;
+  color: teal;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+}
+div.template .footer button:hover {
+  color: #fff;
+  background: teal;
+  box-shadow: 0 4px 4px #ccc;
+}
+div.template .footer button i.icon {
+  font-size: 14px;
+  margin-right: 0.25rem;
 }

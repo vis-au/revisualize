@@ -28,7 +28,7 @@ export default class VisualElementBlock extends React.Component<Props, State> {
         <div
           title={ 'composite template' }
           className="visualElement composite">
-          { 'compo' }
+          { 'template' }
         </div>
       );
     }

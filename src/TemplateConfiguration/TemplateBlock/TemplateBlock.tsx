@@ -4,6 +4,8 @@ import LayoutBlock from './LayoutBlock';
 import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
+import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 
 import './TemplateBlock.css';
 
@@ -53,6 +55,19 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.setState({ minimized: !this.state.minimized });
   }
 
+  private renderHeader() {
+    const label = this.props.template instanceof VisualMarkTemplate
+      ? this.props.template.type
+      : this.props.template.id;
+
+    return (
+      <div className="templateHeader">
+        <h2>{ label }</h2>
+        <div className="delete" onClick={ this.onDelete } />
+      </div>
+    );
+  }
+
   private renderLayout() {
     return (
       <div className="layoutStructureContainer">
@@ -62,6 +77,10 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   public renderPreview() {
+    if (this.state.minimized) {
+      return null;
+    }
+
     return (
       <div className="previewContainer">
         <TemplatePreview
@@ -87,42 +106,68 @@ export default class TemplateBlock extends React.Component<Props, State> {
     );
   }
 
-  private renderBody() {
-    if (this.state.minimized) {
-      return (
-        <div className="body">
-          <div className="configuration minimized">
-            { this.renderLayout() }
-            { this.renderVisualElements() }
-          </div>
-        </div>
-      );
+  private renderConfiguration() {
+    if (this.props.template instanceof VisualMarkTemplate) {
+      return null;
     }
 
     return (
+      <div className="configuration">
+        { this.renderLayout() }
+        { this.renderVisualElements() }
+      </div>
+    );
+  }
+
+  private renderBody() {
+    return (
       <div className="body">
-        <div className="configuration">
-          { this.renderLayout() }
-          { this.renderVisualElements() }
-        </div>
+        { this.renderConfiguration() }
         { this.renderPreview() }
       </div>
     );
   }
 
+  private renderFooter() {
+    if (this.props.template instanceof VisualMarkTemplate) {
+      return (
+        <div className="footer">
+          <button className="expand" onClick={ this.togglePreviewMinimized }>
+            <i className="material-icons icon">aspect_ratio</i>
+            <span>preview</span>
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="footer">
+          <button className="expand" onClick={ this.togglePreviewMinimized }>
+            <i className="material-icons icon">aspect_ratio</i>
+            <span>preview</span>
+          </button>
+          <button className="expand" onClick={ this.togglePreviewMinimized }>
+            <i className="material-icons icon">timeline</i>
+            <span>child nodes</span>
+          </button>
+        </div>
+      );
+    }
+  }
+
   public render() {
+    const type = this.props.template instanceof VisualMarkTemplate
+      ? 'mark'
+      : 'composite';
+
     return (
       <div
         id={ this.props.template.id }
-        className={ 'template' }
+        className={ `${type} template` }
         onClick={ this.onClick }>
 
-        <div className="templateHeader">
-          <h2>{ this.props.template.id }</h2>
-          <button className="expand" onClick={ this.togglePreviewMinimized }>minimize</button>
-          <div className="delete" onClick={ this.onDelete } />
-        </div>
+        { this.renderHeader()}
         { this.renderBody() }
+        { this.renderFooter() }
       </div>
     );
   }
@@ -130,6 +175,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
   private addPlumbing() {
     const bodySelector =
       document.querySelector(`#${this.props.template.id} .body`);
+
     const visualElementSelector =
       document.querySelector(`#${this.props.template.id} .body .visualElementsContainer`);
 
@@ -150,11 +196,10 @@ export default class TemplateBlock extends React.Component<Props, State> {
     };
 
     this.props.dragPlumbing.makeTarget(bodySelector, plumbingConfig);
-    this.props.dragPlumbing.makeSource(visualElementSelector, plumbingConfig, sourceConfig);
 
-    // this.props.dragPlumbing.draggable(this.props.template.id, {
-    //   filter: '.body,.body *'
-    // });
+    if (this.props.template instanceof CompositeTemplate) {
+      this.props.dragPlumbing.makeSource(visualElementSelector, plumbingConfig, sourceConfig);
+    }
   }
 
   public componentDidMount() {
