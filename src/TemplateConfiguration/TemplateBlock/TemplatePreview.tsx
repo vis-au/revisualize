@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import VegaRenderer from '../Model/Renderer/VegaRenderer';
-import SpecCompiler from './TemplateModel/SpecCompiler';
-import Template from './TemplateModel/Template';
-import VisualMarkTemplate from './TemplateModel/VisualMark';
+import VegaRenderer from '../../Model/Renderer/VegaRenderer';
+import SpecCompiler from '../TemplateModel/SpecCompiler';
+import Template from '../TemplateModel/Template';
+import VisualMarkTemplate from '../TemplateModel/VisualMark';
 
 import './TemplatePreview.css';
 

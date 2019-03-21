@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import LayoutBlock from './LayoutBlock';
-import Template from './TemplateModel/Template';
+import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
 

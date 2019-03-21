@@ -3,7 +3,7 @@ import 'jquery-ui/ui/widgets/draggable';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
 
-import TemplateBlock from '../../TemplateConfiguration/TemplateBlock';
+import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
 import AddTemplateButton from './AddTemplateButton';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';

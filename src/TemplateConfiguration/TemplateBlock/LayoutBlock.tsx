@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Layout from './TemplateModel/Layout';
+import Layout from '../TemplateModel/Layout';
 
 import './LayoutBlock.css';
 

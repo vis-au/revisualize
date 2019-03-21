@@ -14,6 +14,7 @@
   background: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px #ccc;
+  z-index: 100000;
 }
 .addTemplateWidget .templateLists ul {
   margin: 0;

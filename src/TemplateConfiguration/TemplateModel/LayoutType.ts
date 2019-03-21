@@ -1,2 +1,2 @@
 export type LayoutType = 'node-link' | 'bubble chart' | 'timeline' | 'radius' | 'angular' | 'polar coordinates' | 'cartesian' | 'histogram' | 'parallel plot' | 'star plot' | 'repeat' | 'overlay' | 'facet' | 'concatenate';
-export const layoutTypes: LayoutType[] = ['node-link', 'bubble chart', 'timeline', 'radius', 'angular', 'polar coordinates', 'cartesian', 'parallel plot', 'star plot', 'repeat', 'overlay', 'facet', 'concatenate'];
+export const LAYOUT_TYPES: LayoutType[] = ['node-link', 'bubble chart', 'timeline', 'radius', 'angular', 'polar coordinates', 'cartesian', 'parallel plot', 'star plot', 'repeat', 'overlay', 'facet', 'concatenate'];

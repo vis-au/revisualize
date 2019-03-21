@@ -3,7 +3,7 @@ import { Mark } from 'vega-lite/build/src/mark';
 
 import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 import Layout from '../TemplateModel/Layout';
-import { LayoutType } from '../TemplateModel/LayoutType';
+import { LayoutType, LAYOUT_TYPES } from '../TemplateModel/LayoutType';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
@@ -20,7 +20,6 @@ interface State {
 }
 
 const DEFAULT_MARKS: Mark[] = ['area', 'bar', 'point', 'text', 'rect', 'line'];
-const DEFAULT_LAYOUTS: LayoutType[] = ['cartesian', 'concatenate', 'histogram', 'overlay', 'repeat'];
 
 export default class AddTemplateButton extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -88,7 +87,7 @@ export default class AddTemplateButton extends React.Component<Props, State> {
         <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
           <h2>Layouts</h2>
           <ul onClick={ this.hideDropdown } className="layouts">
-            { DEFAULT_LAYOUTS.map(this.renderLayoutBlock) }
+            { LAYOUT_TYPES.map(this.renderLayoutBlock) }
           </ul>
           <h2>Marks</h2>
           <ul onClick={ this.hideDropdown } className="marks">
