@@ -7,6 +7,7 @@ import { LayoutType, LAYOUT_TYPES } from '../TemplateModel/LayoutType';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
+import { MARK_TYPES } from '../TemplateModel/MarkType';
 
 import './AddTemplateButton.css';
 
@@ -18,8 +19,6 @@ interface Props {
 interface State {
   isDropdownHidden: boolean
 }
-
-const DEFAULT_MARKS: Mark[] = ['area', 'bar', 'point', 'text', 'rect', 'line'];
 
 export default class AddTemplateButton extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -91,7 +90,7 @@ export default class AddTemplateButton extends React.Component<Props, State> {
           </ul>
           <h2>Marks</h2>
           <ul onClick={ this.hideDropdown } className="marks">
-            { DEFAULT_MARKS.map(this.renderMarkBlock)}
+            { MARK_TYPES.map(this.renderMarkBlock)}
           </ul>
         </div>
       </div>
