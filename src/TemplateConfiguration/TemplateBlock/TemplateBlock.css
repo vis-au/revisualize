@@ -1,6 +1,5 @@
 div.template {
   /* position: absolute; */
-  border: 1px solid #ccc;
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 0px 4px #ccc;
@@ -18,7 +17,7 @@ div.template.focus .templateHeader {
 div.template .templateHeader {
   padding: 0.25rem 1rem;
   margin: 0;
-  border: 1px solid #ccc;
+  border: 1px solid teal;
   background: teal;
   color: #fff;
   display: flex;

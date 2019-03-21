@@ -3,11 +3,11 @@ import { Mark } from 'vega-lite/build/src/mark';
 
 import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 import Layout from '../TemplateModel/Layout';
-import { LayoutType, LAYOUT_TYPES } from '../TemplateModel/LayoutType';
+import { COMPOSITION_TYPES, LayoutType, PLOT_TYPES } from '../TemplateModel/LayoutType';
+import { MARK_TYPES } from '../TemplateModel/MarkType';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
-import { MARK_TYPES } from '../TemplateModel/MarkType';
 
 import './AddTemplateButton.css';
 
@@ -66,7 +66,10 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   private renderMarkBlock(mark: Mark) {
     return (
       <li key={ mark }>
-        <button onClick={ () => this.onMarkClicked(mark) }>{ mark }</button>
+        <button onClick={ () => this.onMarkClicked(mark) }>
+          <i className="icon material-icons">stop</i>
+          <span>{ mark }</span>
+        </button>
       </li>
     );
   }
@@ -74,7 +77,10 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   private renderLayoutBlock(type: LayoutType) {
     return (
       <li key={ type }>
-        <button onClick={ () => this.onLayoutClicked(type) }>{ type }</button>
+        <button onClick={ () => this.onLayoutClicked(type) }>
+          <i className="icon material-icons">equalizer</i>
+          <span>{ type }</span>
+        </button>
       </li>
     );
   }
@@ -84,9 +90,13 @@ export default class AddTemplateButton extends React.Component<Props, State> {
       <div className="addTemplateWidget">
         <button className="floatingAddButton addTemplate" onClick={ this.toggleDropdown }>+</button>
         <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
-          <h2>Layouts</h2>
+          <h2>Compositions</h2>
           <ul onClick={ this.hideDropdown } className="layouts">
-            { LAYOUT_TYPES.map(this.renderLayoutBlock) }
+            { COMPOSITION_TYPES.map(this.renderLayoutBlock) }
+          </ul>
+          <h2>Plots</h2>
+          <ul>
+            { PLOT_TYPES.map(this.renderLayoutBlock) }
           </ul>
           <h2>Marks</h2>
           <ul onClick={ this.hideDropdown } className="marks">
@@ -94,6 +104,6 @@ export default class AddTemplateButton extends React.Component<Props, State> {
           </ul>
         </div>
       </div>
-      );
+    );
   }
 }

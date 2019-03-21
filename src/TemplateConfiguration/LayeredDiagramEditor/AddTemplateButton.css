@@ -6,23 +6,52 @@
 }
 .addTemplateWidget .templateLists {
   position: absolute;
+  max-width: 250px;
+  max-height: 500px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 1rem 2rem;
-  margin-top: 2rem;
+  margin-top: 3rem;
   background: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px #ccc;
   z-index: 100000;
 }
+.addTemplateWidget .templateLists h2 {
+  font-size: 14px;
+}
 .addTemplateWidget .templateLists ul {
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .addTemplateWidget .templateLists ul li {
+  margin: 0.25rem 0.3rem;
+  margin-left: 0;
   list-style: none;
-  margin: 0;
+}
+.addTemplateWidget .templateLists ul li button {
+  background: #fff;
+  color: teal;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.addTemplateWidget .templateLists ul li button * {
+  font-size: 12px;
+}
+.addTemplateWidget .templateLists ul li button:hover span {
+  text-decoration: underline;
+}
+.addTemplateWidget .templateLists ul li button i.icon {
+  margin-right: 0.15rem
 }
 .addTemplateWidget button.addTemplate {
   background: teal;
