@@ -48,19 +48,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
   }
 
-  private configurePlumbing() {
-    const plumbing = this.props.dragPlumbing;
-
-    plumbing.bind('connection', this.props.onNewConnection);
-    plumbing.bind('connectionDetached', this.props.onDetachedConnection);
-    plumbing.bind('connectionMoved', this.props.onConnectionMoved);
-
-    const container = document.querySelector(`#${this.props.id} .diagram`);
-
-    plumbing.setContainer(container);
-    plumbing.importDefaults(plumbingConfig);
-  }
-
   private getTemplatesPerLayer(templates: Template[] = this.props.templates): Map<number, Template[]> {
     const templatePerLayerMap = new Map<number, Template[]>();
 
@@ -170,32 +157,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       layers.push(this.renderLayer(i, templatesOnThatLayer));
     }
 
-    // layerMap.forEach((value, key) => {
-    //   const nextLayer = this.renderLayer(key, value);
-    //   layers.push([key, nextLayer]);
-    // });
-
-    // layers.sort((layerA, layerB) => {
-    //   return layerA[0] - layerB[0];
-    // });
-
-    return (
-      <div className="layers">
-        { layers }
-      </div>
-    );
-  }
-
-  private renderLayersEager() {
-    const layerMap = this.getTemplatesPerLayer();
-    // to ensure the order in which the layers appear
-    const layers: any[] = [];
-
-    for (let i=3; i >= 0; i--) {
-      const nextLayer = this.renderLayer(i, layerMap.get(i));
-      layers.push(nextLayer);
-    }
-
     return (
       <div className="layers">
         { layers }
@@ -205,12 +166,18 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderPlaceholderLayer(numberOfLayers: number) {
     return (
-      <div className="layer">
-        <AddTemplateButton
-          layer={ numberOfLayers }
-          addTemplate={ this.props.addTemplate }
-          buttonObserver={ this.buttonObserver }
-        />
+      <div className="layers">
+        <div className="layer">
+          <div className="layerWidgets top">
+            <AddTemplateButton
+              layer={ numberOfLayers }
+              addTemplate={ this.props.addTemplate }
+              buttonObserver={ this.buttonObserver }
+            />
+          </div>
+          <div className="templates" />
+          <div className="layerWidgets bottom" />
+        </div>
       </div>
     );
   }
@@ -249,16 +216,19 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       },
 
     });
+  }
 
-    // $(`#${this.props.id} .container .template`).draggable({
-    //   // placeholder: 'templatePlaceholder',
-    //   handle: '.templateHeader',
-    //   containment: 'parent',
-    //   zIndex: 100,
-    //   drag: (event, ui) => {
-    //     this.props.dragPlumbing.repaintEverything();
-    //   },
-    // });
+  private configurePlumbing() {
+    const plumbing = this.props.dragPlumbing;
+
+    plumbing.bind('connection', this.props.onNewConnection);
+    plumbing.bind('connectionDetached', this.props.onDetachedConnection);
+    plumbing.bind('connectionMoved', this.props.onConnectionMoved);
+
+    const container = document.querySelector(`#${this.props.id} .diagram`);
+
+    plumbing.setContainer(container);
+    plumbing.importDefaults(plumbingConfig);
   }
 
   public componentDidMount() {

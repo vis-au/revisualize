@@ -18,7 +18,7 @@
   justify-content: flex-start;
   width: 100%;
 }
-.layeredDiagramEditor .column.placeholder {
+.layeredDiagramEditor .placeholder {
   margin: 0 1rem;
   width: 5rem;
   height: 92vh;
@@ -35,7 +35,7 @@
 }
 .layeredDiagramEditor .layer {
   width: 100%;
-  height: 92vh;
+  height: 90vh;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -51,12 +51,12 @@
   overflow-x: hidden;
   transition: width 0.4s ease-in-out;
 }
+.layeredDiagramEditor .column.placeholder .layer {
+  min-width: 0;
+  padding: 1rem 0;
+}
 .layeredDiagramEditor .layer.collapsed {
   width: 5rem;
-}
-.layeredDiagramEditor .column.placeholder .layer {
-  justify-content: flex-start;
-  /* height: 100vh; */
 }
 .layeredDiagramContainer .layer .templates {
   display: flex;
@@ -68,6 +68,9 @@
   padding: 1rem;
   min-width: 100px;
   min-height: 100px;
+}
+.layeredDiagramEditor .column.placeholder .layer .templates {
+  padding: 0;
 }
 .layeredDiagramEditor .layer.collapsed .templates {
   visibility: hidden;
