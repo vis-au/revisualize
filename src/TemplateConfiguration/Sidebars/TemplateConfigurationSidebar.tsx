@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import Sidebar from '../../Widgets/Sidebar';
-import Template from '../TemplateModel/Template';
-import Layout from '../TemplateModel/Layout';
 import CompositeTemplate from '../TemplateModel/CompositeTemplate';
+import Layout from '../TemplateModel/Layout';
+import { FacetChannelEncoding, GeographicPositionEncoding, HyperLinkChannelEncoding, KeyChannelEncoding, LoDChannelEncoding, MarkEncoding, MarkEncodingGroup, markEncodingGroups, MarkPropertiesChannelEncoding, OrderChannelEncoding, PositionEncoding, TextTooltipChannelEncoding } from '../TemplateModel/MarkEncoding';
+import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import EncodingGroupBlock from './EncodingGroupBlock';
 
 import './TemplateConfigurationSidebar.css';
-import EncodingGroupBlock from './EncodingGroupBlock';
-import { markEncodingGroups, MarkEncoding, PositionEncoding, GeographicPositionEncoding, HyperLinkChannelEncoding, TextTooltipChannelEncoding, MarkPropertiesChannelEncoding, KeyChannelEncoding, OrderChannelEncoding, FacetChannelEncoding, LoDChannelEncoding, MarkEncodingGroup } from '../TemplateModel/MarkEncoding';
 
 interface Props {
 }
@@ -53,7 +53,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
 
     this.selectedTemplate = getAtomicTemplate();
 
-    this.state = { hidden: true };
+    this.state = { hidden: false };
   }
 
   public onToggle() {

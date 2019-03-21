@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { MarkEncodingGroup, MarkEncoding, positionEncodings, geographicPositionEncodings, markPropertiesChannelEncodings, textTooltipChannelEncodings, hyperLinkChannelEncodings, keyChannelEncodings, orderChannelEncodings, loDChannelEncodings, facetChannelEncodings } from '../TemplateModel/MarkEncoding';
+
+import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings, textTooltipChannelEncodings } from '../TemplateModel/MarkEncoding';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
+
+import './EncodingGroupBlock.css';
 
 interface Props {
   template: VisualMarkTemplate;
   groupType: MarkEncodingGroup;
 }
 interface State {
+  areEncodingsHidden: boolean;
 }
 
 export default class EncodingGroupBlock extends React.Component<Props, State> {
@@ -16,6 +20,14 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
     this.renderEncodings = this.renderEncodings.bind(this);
+    this.renderAddEncodingWidget = this.renderAddEncodingWidget.bind(this);
+    this.renderUnsetEncodings = this.renderUnsetEncodings.bind(this);
+    this.renderUnsetEncoding = this.renderUnsetEncoding.bind(this);
+    this.toggleEncodingsHidden = this.toggleEncodingsHidden.bind(this);
+
+    this.state = {
+      areEncodingsHidden: true
+    };
   }
 
   private getEncodingsForGroup(): MarkEncoding[] {
@@ -44,6 +56,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     return encodings;
   }
 
+  private toggleEncodingsHidden() {
+    this.setState({ areEncodingsHidden: !this.state.areEncodingsHidden });
+  }
+
   private renderEncoding(encoding: MarkEncoding) {
     const value = this.props.template.getEncodedValue(encoding);
 
@@ -64,8 +80,39 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
     return (
       <div className="encoding">
-        <h2>{ this.props.groupType }</h2>
         { encodings.map(this.renderEncoding) }
+      </div>
+    );
+  }
+
+  private renderUnsetEncoding(unsetEncoding: MarkEncoding) {
+    return (
+      <li className="unsetEncoding">
+        <button>{ unsetEncoding }</button>
+      </li>
+    );
+  }
+
+  private renderUnsetEncodings() {
+    if (this.state.areEncodingsHidden) {
+      return null;
+    }
+
+    const unsetEncodings = this.getEncodingsForGroup()
+      .filter(encoding => this.props.template.getEncodedValue(encoding) === undefined);
+
+    return (
+      <ul className="encodings">
+        { unsetEncodings.map(this.renderUnsetEncoding) }
+      </ul>
+    );
+  }
+
+  private renderAddEncodingWidget() {
+    return (
+      <div className="addEncodingWidget">
+        <button onClick={ this.toggleEncodingsHidden }>add new ...</button>
+        { this.renderUnsetEncodings() }
       </div>
     );
   }
@@ -73,7 +120,9 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   public render() {
     return (
       <div className="encodingGroup">
+        <h2>{ this.props.groupType }</h2>
         { this.renderEncodings() }
+        { this.renderAddEncodingWidget() }
       </div>
     );
   }
