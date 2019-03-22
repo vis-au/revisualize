@@ -13,7 +13,8 @@ interface Props {
 interface State {
   areEncodingsHidden: boolean;
   emptyEncoding: MarkEncoding;
-  temporaryValue: any;
+  temporaryValue: string;
+  temporaryField: string;
 }
 
 export default class EncodingGroupBlock extends React.Component<Props, State> {
@@ -35,7 +36,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.state = {
       areEncodingsHidden: true,
       emptyEncoding: null,
-      temporaryValue: ''
+      temporaryValue: '',
+      temporaryField: ''
     };
   }
 
@@ -90,7 +92,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       return;
     }
 
-    this.props.template.setEncodedValue(this.state.emptyEncoding, this.state.temporaryValue);
+    this.props.template.setEncodedValue(this.state.emptyEncoding, this.state.temporaryValue as any);
 
     this.setState({
       emptyEncoding: null,
@@ -152,19 +154,38 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     );
   }
 
-  private renderEmptyEncoding() {
-    if (this.state.emptyEncoding === null) {
+  private renderEmptyEncodingFieldInput() {
+    if (this.state.emptyEncoding === null || this.state.areEncodingsHidden) {
       return false;
     }
 
     return (
-      <div className="newEncoding">
+      <div className="newFieldEncoding">
         <input
           type="text"
           value={ this.state.temporaryValue || '' }
           onChange={ this.onEncodingChange }
           onKeyPress={ this.onEncodingKeyPress }
-          onBlur={ this.hideEncodingInput } />
+          onBlur={ this.hideEncodingInput }
+          placeholder="enter field" />
+      </div>
+    );
+  }
+
+  private renderEmptyEncodingValueInput() {
+    if (this.state.emptyEncoding === null || this.state.areEncodingsHidden) {
+      return false;
+    }
+
+    return (
+      <div className="newValueEncoding">
+        <input
+          type="text"
+          value={ this.state.temporaryValue || '' }
+          onChange={ this.onEncodingChange }
+          onKeyPress={ this.onEncodingKeyPress }
+          onBlur={ this.hideEncodingInput }
+          placeholder="enter value" />
       </div>
     );
   }
@@ -183,7 +204,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       <div className="encodingGroup">
         <h2>{ this.props.groupType }</h2>
         { this.renderEncodings() }
-        { this.renderEmptyEncoding() }
+        { this.renderEmptyEncodingValueInput() }
+        { this.renderEmptyEncodingFieldInput() }
         { this.renderAddEncodingWidget() }
       </div>
     );
