@@ -7,12 +7,12 @@ import PatternGraph from './Model/Pattern/PatternGraph';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
-import TabNavigation from './ToolkitView/TabNavigation';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
 import Template from './TemplateConfiguration/TemplateModel/Template';
 
 import './App.css';
+import VisualMarkTemplate from './TemplateConfiguration/TemplateModel/VisualMark';
 
 interface State {
   activeTab: Tab;
@@ -22,6 +22,31 @@ interface State {
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
   templates: Template[];
+}
+
+// function getLineChartPreset(): Template {
+//   const histogramLayout = new Layout('histogram');
+//   const overlayLayout = new Layout('overlay');
+
+//   const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
+//   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+//   const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+
+//   const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
+//   const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
+
+//   compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
+//   compositeTemplate2.visualElements.push(atomicTemplate);
+//   compositeTemplate3.visualElements.push(atomicTemplate2);
+
+//   return compositeTemplate;
+// }
+
+function getAtomicTemplate(): VisualMarkTemplate {
+  const atomicTemplate = new VisualMarkTemplate('point', null);
+  atomicTemplate.setEncodedValue('x', {field: 'a', type: 'ordinal'});
+
+  return atomicTemplate;
 }
 
 export default class App extends React.Component<{}, State> {
@@ -53,7 +78,7 @@ export default class App extends React.Component<{}, State> {
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
-      templates: []
+      templates: [getAtomicTemplate()]
     };
 
     window.addEventListener('resize', () => {
@@ -133,6 +158,7 @@ export default class App extends React.Component<{}, State> {
           />
           <TemplateConfigurationSidebar
             onTemplateChanged={ this.onTemplatesChanged }
+            selectedTemplate={ this.state.templates[0] }
           />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }

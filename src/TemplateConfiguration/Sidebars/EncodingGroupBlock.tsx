@@ -64,9 +64,14 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
   private addNewEncodingToTemplate(newEncoding: MarkEncoding) {
     this.props.template.setEncodedValue(newEncoding, null);
+
     // TODO: instead of updating the template everywhere, just update in here and propagate changes
     // only if a valid value is set
     this.props.onTemplateChanged();
+
+    this.setState({
+      areEncodingsHidden: true
+    });
   }
 
   private renderEncoding(encoding: MarkEncoding) {
