@@ -93,7 +93,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderLayerTopWidget(index: number) {
     return (
-      <div className="layerWidgets top" key={ index }>
+      <div className="layerWidgets top" key={ `topWidget${index}` }>
         {/* <h2>{ index }</h2> */}
         <AddTemplateButton
           layer={ index }
@@ -122,7 +122,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
 
     return (
-      <div className="layerWidgets bottom" key={ layerIndex }>
+      <div className="layerWidgets bottom" key={ `bottomWidget${layerIndex}` }>
         <button onClick={ () => this.toggleCollapseLayer(layerIndex) }>
           <i className="icon material-icons">{ icon }</i>
           <span>{ label }</span>
@@ -136,7 +136,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     const collapsed = this.state.collapsedLayers.indexOf(layerIndex) > -1 ? 'collapsed' : '';
 
     return (
-      <div key={ layerIndex } className={ `layer ${even} ${collapsed}` }>
+      <div key={ `layer${layerIndex}` } className={ `layer ${even} ${collapsed}` }>
         { this.renderLayerTopWidget(layerIndex) }
         { this.renderTemplates(layerIndex, templatesOnLayer) }
         { this.renderLayerBottomWidget(layerIndex) }
