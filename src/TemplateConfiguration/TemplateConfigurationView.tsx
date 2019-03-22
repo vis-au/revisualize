@@ -9,12 +9,13 @@ import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar
 
 import './TemplateConfigurationView.css';
 
-interface State {
-  templates: Template[];
-}
 interface Props {
   activeTab: Tab;
   className: string;
+  templates: Template[];
+  onTemplatesChanged: () => void;
+}
+interface State {
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -24,7 +25,6 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.addTemplate = this.addTemplate.bind(this);
     this.addTemplates = this.addTemplates.bind(this);
     this.deleteTemplate = this.deleteTemplate.bind(this);
-    this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
 
     this.state = {
       templates: []
@@ -32,23 +32,23 @@ export default class TemplateConfigurationView extends React.Component<Props, St
   }
 
   private addTemplate(template?: Template) {
-    const templates = this.state.templates;
+    const templates = this.props.templates;
     const newTemplate = template === undefined
       ? new CompositeTemplate(null, [], null)
       : template;
 
     templates.push(newTemplate);
-    this.onTemplatesChanged();
+    this.props.onTemplatesChanged();
   }
 
   private addTemplates(templates: Template[]) {
-    const currentTemplates = this.state.templates;
+    const currentTemplates = this.props.templates;
     currentTemplates.push(...templates);
-    this.onTemplatesChanged();
+    this.props.onTemplatesChanged();
   }
 
   private deleteTemplate(template: Template) {
-    const templates = this.state.templates;
+    const templates = this.props.templates;
     const indexInTemplates = templates.indexOf(template);
 
     if (indexInTemplates === -1) {
@@ -65,11 +65,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     }
 
     templates.splice(indexInTemplates, 1);
-    this.onTemplatesChanged();
-  }
-
-  private onTemplatesChanged() {
-    this.setState({ templates: this.state.templates });
+    this.props.onTemplatesChanged();
   }
 
   public render() {
@@ -86,8 +82,8 @@ export default class TemplateConfigurationView extends React.Component<Props, St
 
         <div id="templateConfigurationBody">
           <TemplateEditor
-            templates={ this.state.templates }
-            onTemplatesChanged={ this.onTemplatesChanged }
+            templates={ this.props.templates }
+            onTemplatesChanged={ this.props.onTemplatesChanged }
             addTemplate={ this.addTemplate }
             deleteTemplate={ this.deleteTemplate }/>
         </div>

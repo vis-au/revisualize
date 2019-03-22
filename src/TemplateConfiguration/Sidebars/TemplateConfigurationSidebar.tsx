@@ -11,6 +11,7 @@ import EncodingGroupBlock from './EncodingGroupBlock';
 import './TemplateConfigurationSidebar.css';
 
 interface Props {
+  onTemplateChanged: () => void;
 }
 interface State {
   hidden: boolean;
@@ -70,6 +71,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         key={ encoding }
         groupType={ encoding }
         template={ this.selectedTemplate }
+        onTemplateChanged={ this.props.onTemplateChanged }
       />
     );
   }

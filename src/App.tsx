@@ -8,10 +8,11 @@ import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigura
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
 import TabNavigation from './ToolkitView/TabNavigation';
-
-import './App.css';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
+import Template from './TemplateConfiguration/TemplateModel/Template';
+
+import './App.css';
 
 interface State {
   activeTab: Tab;
@@ -20,6 +21,7 @@ interface State {
   dataGraph: DataflowGraph;
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
+  templates: Template[];
 }
 
 export default class App extends React.Component<{}, State> {
@@ -37,6 +39,8 @@ export default class App extends React.Component<{}, State> {
       // new Tab('Dashboard')
     ];
 
+    this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
+
     const patternGraph = new PatternGraph();
     patternGraph.globalSignals = DEFAULT_SIGNALS;
     patternGraph.globalScales = DEFAULT_SCALES;
@@ -48,7 +52,8 @@ export default class App extends React.Component<{}, State> {
       height: window.innerHeight,
       patternGraph,
       width: window.innerWidth,
-      dataflowVisible: false
+      dataflowVisible: false,
+      templates: []
     };
 
     window.addEventListener('resize', () => {
@@ -61,6 +66,10 @@ export default class App extends React.Component<{}, State> {
 
   private onDataflowPanelToggle() {
     this.setState({ dataflowVisible: !this.state.dataflowVisible });
+  }
+
+  private onTemplatesChanged() {
+    this.setState({ templates: this.state.templates });
   }
 
   private updateDataGraph(newGraph: DataflowGraph) {
@@ -119,8 +128,12 @@ export default class App extends React.Component<{}, State> {
           <TemplateConfigurationView
             className={ this.state.dataflowVisible ? 'faded' : '' }
             activeTab={ this.state.activeTab }
+            templates={ this.state.templates }
+            onTemplatesChanged={ this.onTemplatesChanged }
           />
-          <TemplateConfigurationSidebar />
+          <TemplateConfigurationSidebar
+            onTemplateChanged={ this.onTemplatesChanged }
+          />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }
             width={ this.state.width - 100 }

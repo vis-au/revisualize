@@ -8,6 +8,7 @@ import './EncodingGroupBlock.css';
 interface Props {
   template: VisualMarkTemplate;
   groupType: MarkEncodingGroup;
+  onTemplateChanged: () => void;
 }
 interface State {
   areEncodingsHidden: boolean;
@@ -18,6 +19,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     super(props);
 
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
+    this.addNewEncodingToTemplate = this.addNewEncodingToTemplate.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
     this.renderEncodings = this.renderEncodings.bind(this);
     this.renderAddEncodingWidget = this.renderAddEncodingWidget.bind(this);
@@ -60,6 +62,13 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.setState({ areEncodingsHidden: !this.state.areEncodingsHidden });
   }
 
+  private addNewEncodingToTemplate(newEncoding: MarkEncoding) {
+    this.props.template.setEncodedValue(newEncoding, null);
+    // TODO: instead of updating the template everywhere, just update in here and propagate changes
+    // only if a valid value is set
+    this.props.onTemplateChanged();
+  }
+
   private renderEncoding(encoding: MarkEncoding) {
     const value = this.props.template.getEncodedValue(encoding);
 
@@ -88,7 +97,9 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   private renderUnsetEncoding(unsetEncoding: MarkEncoding) {
     return (
       <li className="unsetEncoding">
-        <button>{ unsetEncoding }</button>
+        <button onClick={ () => this.addNewEncodingToTemplate(unsetEncoding) }>
+          { unsetEncoding }
+        </button>
       </li>
     );
   }
