@@ -94,6 +94,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
     this.setState({
       emptyEncoding: null,
+      temporaryValue: ''
     });
 
     this.props.onTemplateChanged();
