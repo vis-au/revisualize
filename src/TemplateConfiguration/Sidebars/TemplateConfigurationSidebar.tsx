@@ -34,10 +34,6 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
   }
 
   private renderEncoding(encoding: MarkEncodingGroup) {
-    if (!(this.props.selectedTemplate instanceof VisualMarkTemplate)) {
-      return null;
-    }
-
     return (
       <EncodingGroupBlock
         key={ encoding }

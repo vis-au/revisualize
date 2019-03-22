@@ -1,17 +1,18 @@
 import * as React from 'react';
 
 import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings, textTooltipChannelEncodings } from '../TemplateModel/MarkEncoding';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import Template from '../TemplateModel/Template';
 
 import './EncodingGroupBlock.css';
 
 interface Props {
-  template: VisualMarkTemplate;
+  template: Template;
   groupType: MarkEncodingGroup;
   onTemplateChanged: () => void;
 }
 interface State {
   areEncodingsHidden: boolean;
+  emptyEncoding: MarkEncoding;
 }
 
 export default class EncodingGroupBlock extends React.Component<Props, State> {
@@ -19,7 +20,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     super(props);
 
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
-    this.addNewEncodingToTemplate = this.addNewEncodingToTemplate.bind(this);
+    this.showEncodingInput = this.showEncodingInput.bind(this);
+    this.hideEncodingInput = this.hideEncodingInput.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
     this.renderEncodings = this.renderEncodings.bind(this);
     this.renderAddEncodingWidget = this.renderAddEncodingWidget.bind(this);
@@ -28,7 +30,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.toggleEncodingsHidden = this.toggleEncodingsHidden.bind(this);
 
     this.state = {
-      areEncodingsHidden: true
+      areEncodingsHidden: true,
+      emptyEncoding: null
     };
   }
 
@@ -62,22 +65,20 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.setState({ areEncodingsHidden: !this.state.areEncodingsHidden });
   }
 
-  private addNewEncodingToTemplate(newEncoding: MarkEncoding) {
-    this.props.template.setEncodedValue(newEncoding, null);
-
-    // TODO: instead of updating the template everywhere, just update in here and propagate changes
-    // only if a valid value is set
-    this.props.onTemplateChanged();
-
+  private showEncodingInput(newEncoding: MarkEncoding) {
     this.setState({
-      areEncodingsHidden: true
+      emptyEncoding: newEncoding
     });
+  }
+
+  private hideEncodingInput() {
+    this.setState({ emptyEncoding: null });
   }
 
   private renderEncoding(encoding: MarkEncoding) {
     const value = this.props.template.getEncodedValue(encoding);
 
-    if (value === undefined) {
+    if (value === undefined || value === null) {
       return null;
     }
 
@@ -91,7 +92,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
   private renderEncodings() {
     const encodings = this.getEncodingsForGroup();
-
     return (
       <div className="encoding">
         { encodings.map(this.renderEncoding) }
@@ -102,7 +102,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   private renderUnsetEncoding(unsetEncoding: MarkEncoding) {
     return (
       <li className="unsetEncoding">
-        <button onClick={ () => this.addNewEncodingToTemplate(unsetEncoding) }>
+        <button onClick={ () => this.showEncodingInput(unsetEncoding) }>
           { unsetEncoding }
         </button>
       </li>
@@ -115,12 +115,24 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     }
 
     const unsetEncodings = this.getEncodingsForGroup()
-      .filter(encoding => this.props.template.getEncodedValue(encoding) === undefined);
+      .filter(encoding => this.props.template.getEncodedValue(encoding) === null);
 
     return (
       <ul className="encodings">
         { unsetEncodings.map(this.renderUnsetEncoding) }
       </ul>
+    );
+  }
+
+  private renderEmptyEncoding() {
+    if (this.state.emptyEncoding === null) {
+      return false;
+    }
+
+    return (
+      <div className="newEncoding">
+        <input type="text" value={ 'test' } onBlur={ this.hideEncodingInput }></input>
+      </div>
     );
   }
 
@@ -138,6 +150,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       <div className="encodingGroup">
         <h2>{ this.props.groupType }</h2>
         { this.renderEncodings() }
+        { this.renderEmptyEncoding() }
         { this.renderAddEncodingWidget() }
       </div>
     );

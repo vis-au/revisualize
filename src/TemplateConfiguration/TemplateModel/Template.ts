@@ -1,12 +1,18 @@
 import Layout from './Layout';
+import { MarkEncoding } from './MarkEncoding';
+import { FieldDef } from 'vega-lite/build/src/fielddef';
 
 export default abstract class Template {
   public id: string;
   public hierarchyLevel: number;
 
+  private encodings: Map<MarkEncoding, FieldDef<any>>;
+
   constructor(public visualElements: Template[], public layout: Layout, public parent: Template) {
     this.id = `template${Math.round(Math.random() * 10000)}`;
     this.hierarchyLevel = -1;
+
+    this.encodings = new Map();
   }
 
   /**
@@ -42,5 +48,13 @@ export default abstract class Template {
 
     this.hierarchyLevel = Math.max(...subHierarchies) + 1;
     return this.hierarchyLevel;
+  }
+
+  public setEncodedValue(encoding: MarkEncoding, value: FieldDef<any>) {
+    this.encodings.set(encoding, value);
+  }
+
+  public getEncodedValue(encoding: MarkEncoding) {
+    return this.encodings.get(encoding);
   }
 }
