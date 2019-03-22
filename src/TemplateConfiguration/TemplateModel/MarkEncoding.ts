@@ -1,20 +1,24 @@
+import { FieldDef, isValueDef, ValueDef, MarkPropFieldDef } from "vega-lite/build/src/fielddef";
+
 export type PositionEncoding = 'x' | 'y' | 'x2' | 'y2';
 export const positionEncodings: PositionEncoding[] = ['x', 'y', 'x2', 'y2'];
 
 export type GeographicPositionEncoding = 'longitude' | 'latitude';
 export const geographicPositionEncodings: GeographicPositionEncoding[] = ['longitude', 'latitude'];
 
-export type MarkPropertiesChannelEncoding = 'color' | 'opacity' | 'fillOpacity' | 'strokeOpacity'
-  | 'size' | 'shape';
+export type MarkPropertiesChannelEncoding = 'filled' | 'color' | 'fill' | 'stroke' | 'opacity'
+  | 'fillOpacity' | 'strokeOpacity' | 'size' | 'shape' | 'strokeCap' | 'strokeDash'
+  | 'strokeDashOffset' | 'strokeJoin' | 'strokeMiterLimit' | 'strokeWidth';
 export const markPropertiesChannelEncodings: MarkPropertiesChannelEncoding[] = [
-  'color', 'opacity', 'fillOpacity', 'strokeOpacity', 'size', 'shape'
+  'filled', 'color', 'fill', 'stroke', 'opacity', 'fillOpacity', 'strokeOpacity', 'size', 'shape',
+  'strokeCap', 'strokeDash', 'strokeDashOffset', 'strokeJoin', 'strokeMiterLimit', 'strokeWidth'
 ];
 
 export type TextTooltipChannelEncoding = 'text' | 'tooltip';
 export const textTooltipChannelEncodings: TextTooltipChannelEncoding[] = ['text', 'tooltip'];
 
-export type HyperLinkChannelEncoding = 'href';
-export const hyperLinkChannelEncodings: HyperLinkChannelEncoding[] = ['href'];
+export type HyperLinkChannelEncoding = 'href' | 'cursor';
+export const hyperLinkChannelEncodings: HyperLinkChannelEncoding[] = ['href', 'cursor'];
 
 export type KeyChannelEncoding = 'key';
 export const keyChannelEncodings: KeyChannelEncoding[] = ['key'];
@@ -40,3 +44,5 @@ export const markEncodingGroups: MarkEncodingGroup[] = [
   'position', 'geographic', 'mark property', 'text tooltip', 'hyperlink', 'key channel',
   'order channel', 'lod channel', 'facet channel'
 ];
+
+export type EncodingsType = FieldDef<any> | ValueDef | MarkPropFieldDef<any>

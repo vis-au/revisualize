@@ -21,6 +21,8 @@ function getScatterplotMatrixPreset(): Template {
 
   const compositeTemplate = new CompositeTemplate(repeatLayout, [], null);
   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+  compositeTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  compositeTemplate2.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
 
   const atomicTemplate = new VisualMarkTemplate('circle', compositeTemplate2);
 
@@ -36,7 +38,11 @@ function getLineChartPreset(): Template {
 
   const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+  compositeTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  compositeTemplate2.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
   const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+  compositeTemplate3.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  compositeTemplate3.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
 
   const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
   const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);

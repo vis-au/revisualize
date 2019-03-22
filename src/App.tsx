@@ -21,6 +21,7 @@ interface State {
   dataGraph: DataflowGraph;
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
+  selectedTemplate: Template;
   templates: Template[];
 }
 
@@ -44,7 +45,7 @@ interface State {
 
 function getAtomicTemplate(): VisualMarkTemplate {
   const atomicTemplate = new VisualMarkTemplate('point', null);
-  atomicTemplate.setEncodedValue('x', {field: 'a', type: 'ordinal'});
+  atomicTemplate.setEncodedValue('stroke', {field: 'b', type: 'quantitative'});
 
   return atomicTemplate;
 }
@@ -78,7 +79,8 @@ export default class App extends React.Component<{}, State> {
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
-      templates: [getAtomicTemplate()]
+      templates: [],
+      selectedTemplate: null
     };
 
     window.addEventListener('resize', () => {
@@ -158,7 +160,7 @@ export default class App extends React.Component<{}, State> {
           />
           <TemplateConfigurationSidebar
             onTemplateChanged={ this.onTemplatesChanged }
-            selectedTemplate={ this.state.templates[0] }
+            selectedTemplate={ this.state.selectedTemplate }
           />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }
@@ -169,5 +171,13 @@ export default class App extends React.Component<{}, State> {
         </MainView>
       </div>
     );
+  }
+
+  public componentDidMount() {
+    const newTemplate = getAtomicTemplate();
+    this.setState({
+      templates: [newTemplate],
+      selectedTemplate: newTemplate
+    });
   }
 }

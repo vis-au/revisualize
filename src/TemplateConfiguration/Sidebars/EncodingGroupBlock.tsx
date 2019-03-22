@@ -13,12 +13,15 @@ interface Props {
 interface State {
   areEncodingsHidden: boolean;
   emptyEncoding: MarkEncoding;
+  temporaryValue: any;
 }
 
 export default class EncodingGroupBlock extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    this.onEncodingChange = this.onEncodingChange.bind(this);
+    this.onEncodingKeyPress = this.onEncodingKeyPress.bind(this);
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.showEncodingInput = this.showEncodingInput.bind(this);
     this.hideEncodingInput = this.hideEncodingInput.bind(this);
@@ -31,7 +34,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
     this.state = {
       areEncodingsHidden: true,
-      emptyEncoding: null
+      emptyEncoding: null,
+      temporaryValue: ''
     };
   }
 
@@ -75,6 +79,26 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.setState({ emptyEncoding: null });
   }
 
+  private onEncodingChange(event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      temporaryValue: event.target.value
+    });
+  }
+
+  private onEncodingKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    this.props.template.setEncodedValue(this.state.emptyEncoding, this.state.temporaryValue);
+
+    this.setState({
+      emptyEncoding: null,
+    });
+
+    this.props.onTemplateChanged();
+  }
+
   private renderEncoding(encoding: MarkEncoding) {
     const value = this.props.template.getEncodedValue(encoding);
 
@@ -101,7 +125,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
   private renderUnsetEncoding(unsetEncoding: MarkEncoding) {
     return (
-      <li className="unsetEncoding">
+      <li key={ `unset${unsetEncoding}` } className="unsetEncoding">
         <button onClick={ () => this.showEncodingInput(unsetEncoding) }>
           { unsetEncoding }
         </button>
@@ -115,7 +139,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     }
 
     const unsetEncodings = this.getEncodingsForGroup()
-      .filter(encoding => this.props.template.getEncodedValue(encoding) === null);
+      .filter(encoding => {
+        const value = this.props.template.getEncodedValue(encoding);
+        return value === null || value === undefined;
+      });
 
     return (
       <ul className="encodings">
@@ -131,7 +158,12 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
     return (
       <div className="newEncoding">
-        <input type="text" value={ 'test' } onBlur={ this.hideEncodingInput }></input>
+        <input
+          type="text"
+          value={ this.state.temporaryValue || '' }
+          onChange={ this.onEncodingChange }
+          onKeyPress={ this.onEncodingKeyPress }
+          onBlur={ this.hideEncodingInput } />
       </div>
     );
   }

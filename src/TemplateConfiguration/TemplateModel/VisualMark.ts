@@ -1,7 +1,7 @@
 import { Mark } from 'vega-lite/build/src/mark';
 
 import Template from './Template';
-import { MarkEncoding, markPropertiesChannelEncodings } from './MarkEncoding';
+import { MarkEncoding, markPropertiesChannelEncodings, EncodingsType } from './MarkEncoding';
 import { FieldDef } from 'vega-lite/build/src/fielddef';
 
 export default class VisualMarkTemplate extends Template {
@@ -9,7 +9,7 @@ export default class VisualMarkTemplate extends Template {
     super([], null, parent);
   }
 
-  public setEncodedValue(encoding: MarkEncoding, value: FieldDef<any>) {
+  public setEncodedValue(encoding: MarkEncoding, value: any) {
     if (markPropertiesChannelEncodings.indexOf(encoding as any) > -1) {
       super.setEncodedValue(encoding, value);
     }

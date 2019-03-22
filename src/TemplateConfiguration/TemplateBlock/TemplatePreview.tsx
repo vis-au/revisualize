@@ -43,6 +43,11 @@ export default class TemplatePreview extends React.Component<Props, State> {
         text: { field: 'c', type: 'nominal' },
       };
 
+      template.encodings.forEach((value, key) => {
+        spec.encoding[key] = value;
+        spec.encoding[key].axis
+      });
+
     } else if (spec === null) {
       spec = {} as any;
     }

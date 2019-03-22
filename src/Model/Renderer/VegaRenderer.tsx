@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Vega from 'react-vega';
-import VegaLite from 'react-vega-lite';
 import { Spec } from 'vega';
 import vegaEmbed, { Actions } from 'vega-embed';
 
@@ -26,31 +24,10 @@ export default class VegaRenderer extends React.Component<Props, {}> {
     );
   }
 
-  private renderAsComponent() {
-    if (this.props.schema.$schema.indexOf('vega-lite') > -1) {
-      return <VegaLite
-        width={ this.props.width }
-        height={ this.props.height }
-        renderer="canvas"
-        spec={ this.props.schema } />
-    }
-
-    return (
-      <Vega
-        width={ this.props.width }
-        height={ this.props.height }
-        renderer="canvas"
-        spec={ this.props.schema } />
-    );
-  }
-
   public render() {
     return (
       <div className="vegaRenderer" style={ this.props.style }>
         {
-          // this.props.showExportOptions !== undefined && this.props.showExportOptions
-          //  ? this.renderWithEmbed()
-          //  : this.renderAsComponent()
           this.renderWithEmbed()
         }
       </div>

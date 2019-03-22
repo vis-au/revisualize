@@ -34,6 +34,10 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
   }
 
   private renderEncoding(encoding: MarkEncodingGroup) {
+    if (this.props.selectedTemplate === null) {
+      return null;
+    }
+
     return (
       <EncodingGroupBlock
         key={ encoding }
@@ -57,7 +61,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
       <Sidebar
         id="templateConfigurationSidebar"
         height={ window.innerHeight - 75 }
-        hidden={ this.state.hidden }
+        hidden={ this.state.hidden && this.props.selectedTemplate === null }
         positionLeft={ false }
         toggle={ this.onToggle }>
 

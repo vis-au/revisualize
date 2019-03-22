@@ -15,7 +15,6 @@ export default class SpecCompiler {
   public getBasicSchema() {
     return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
-      'description': 'A simple bar chart with embedded data.',
       'data': {
         'values': [
           {'a': 'A', 'b': 28, 'c': 'X'}, {'a': 'B','b': 55, 'c': 'X'}, {'a': 'C','b': 43, 'c': 'Y'},
@@ -31,6 +30,9 @@ export default class SpecCompiler {
 
     schema.mark = template.type;
     schema.encoding = {};
+    template.encodings.forEach((value, key) => {
+      schema.encoding[key] = value;
+    });
 
     return schema;
   }
@@ -165,18 +167,15 @@ export default class SpecCompiler {
   }
 
   private applyPositionLayout(schema: any, layout: Layout): TopLevelSpec {
-    schema.encoding = {};
+    if (schema.encoding == undefined) {
+      schema.encoding = {};
+    }
 
     // apply basic positioning for x and y coordinates, without a layouting type
     if (['cartesian', 'histogram'].indexOf(layout.type) > -1) {
-      schema.encoding = {
-        'x': {'field': 'a'},
-        'y': {'field': 'b'},
-        'text': {
-          'field': 'b',
-          'type': 'nominal'
-        }
-      };
+      schema.encoding.x = {'field': 'a'};
+      schema.encoding.y = {'field': 'b'};
+      schema.encoding.text = {'field': 'b', 'type': 'nominal'};
     }
 
     // set the encodings for the marks, based on the layout type
