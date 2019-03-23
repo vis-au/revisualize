@@ -56,14 +56,16 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.props.delete();
   }
 
-  private toggleChildTemplates() {
+  private toggleChildTemplates(event: React.MouseEvent<HTMLButtonElement>) {
     this.props.template.visualElements.forEach((template) => {
       this.props.toggleChildTemplate(template);
     });
+    event.stopPropagation();
   }
 
-  private togglePreviewMinimized() {
+  private togglePreviewMinimized(event: React.MouseEvent<HTMLButtonElement>) {
     this.setState({ minimized: !this.state.minimized });
+    event.stopPropagation();
   }
 
   private renderHeader() {
