@@ -109,6 +109,9 @@
   background: #fff;
   cursor: pointer;
 }
+.layeredDiagramEditor .layer.first .layerWidgets.bottom button {
+  color: #ccc;
+}
 .layeredDiagramEditor .layerWidgets.bottom:hover span {
   text-decoration: underline;
 }
