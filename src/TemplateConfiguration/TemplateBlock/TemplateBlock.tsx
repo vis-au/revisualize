@@ -39,7 +39,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     };
   }
 
-  private onClick() {
+  private onClick(event: React.MouseEvent<HTMLDivElement>) {
     this.props.focus();
     let steps = 0;
 
@@ -50,6 +50,8 @@ export default class TemplateBlock extends React.Component<Props, State> {
       this.props.dragPlumbing.repaintEverything();
       steps++;
     }, 5);
+
+    event.stopPropagation();
   }
 
   private onDelete() {
@@ -158,7 +160,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
             <i className="material-icons icon">aspect_ratio</i>
             <span>preview</span>
           </button>
-          <button className="expand" onClick={ () => null }>
+          <button className="childNodes" onClick={ () => null }>
             <i className="material-icons icon">timeline</i>
             <span>child nodes</span>
           </button>

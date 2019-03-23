@@ -42,6 +42,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     this.renderTemplate = this.renderTemplate.bind(this);
     this.toggleCollapseLayer = this.toggleCollapseLayer.bind(this);
+    this.onLayerClicked = this.onLayerClicked.bind(this);
 
     this.buttonObserver = new AddTemplateButtonObserver();
 
@@ -80,6 +81,10 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     this.setState({ collapsedLayers });
     window.setTimeout(this.props.dragPlumbing.repaintEverything, 500);
+  }
+
+  private onLayerClicked() {
+    this.props.focusTemplate(null);
   }
 
   private renderTemplate(template: Template, layer: number) {
@@ -144,7 +149,10 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     const isFirst = layerIndex === 0 ? 'first' : '';
 
     return (
-      <div key={ `layer${layerIndex}` } className={ `layer ${even} ${isCollapsed} ${isFirst}` }>
+      <div
+        key={ `layer${layerIndex}` }
+        className={ `layer ${even} ${isCollapsed} ${isFirst}` }
+        onClick={ this.onLayerClicked }>
         { this.renderLayerTopWidget(layerIndex) }
         { this.renderTemplates(layerIndex, templatesOnLayer) }
         { this.renderLayerBottomWidget(layerIndex) }
