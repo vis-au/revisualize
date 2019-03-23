@@ -14,8 +14,10 @@ interface Props {
   dragPlumbing: any;
   template: Template;
   level: number;
+  focused: boolean;
   toggleChildTemplate: (template: Template) => void;
-  delete: () => void
+  delete: () => void;
+  focus: () => void;
 }
 interface State {
   minimized: boolean;
@@ -38,7 +40,16 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private onClick() {
-    // find something that makes sense
+    this.props.focus();
+    let steps = 0;
+
+    let interval = window.setInterval(() => {
+      if (steps === 100) {
+        window.clearInterval(interval);
+      }
+      this.props.dragPlumbing.repaintEverything();
+      steps++;
+    }, 5);
   }
 
   private onDelete() {
@@ -155,14 +166,13 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   public render() {
-    const type = this.props.template instanceof VisualMarkTemplate
-      ? 'mark'
-      : 'composite';
+    const type = this.props.template instanceof VisualMarkTemplate ? 'mark' : 'composite';
+    const isFocused = this.props.focused ? 'focus' : '';
 
     return (
       <div
         id={ this.props.template.id }
-        className={ `${type} template` }
+        className={ `${type} template ${isFocused}` }
         onClick={ this.onClick }>
 
         { this.renderHeader()}

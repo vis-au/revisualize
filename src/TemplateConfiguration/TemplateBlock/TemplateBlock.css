@@ -10,9 +10,6 @@ div.template {
 div.template.focus {
   box-shadow: 0 4px 4px #ccc;
 }
-div.template.focus .templateHeader {
-  background: #fff;
-}
 
 div.template .templateHeader {
   padding: 0.25rem 1rem;
@@ -99,10 +96,10 @@ div.template .footer {
 div.template .footer * {
   visibility: hidden;
 }
-div.template:hover .footer {
+div.template.focus .footer {
   height: 2rem;
 }
-div.template:hover .footer * {
+div.template.focus .footer * {
   visibility: visible;
 }
 div.template .footer button {
