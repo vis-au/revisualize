@@ -191,10 +191,11 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
   private renderLayer(layerIndex: number, templatesOnLayer: Template[] = []) {
     const even = layerIndex % 2 === 0 ? 'even' : 'uneven';
-    const collapsed = this.state.collapsedLayers.indexOf(layerIndex) > -1 ? 'collapsed' : '';
+    const isCollapsed = this.state.collapsedLayers.indexOf(layerIndex) > -1 ? 'collapsed' : '';
+    const isFirst = layerIndex === 0 ? 'first' : '';
 
     return (
-      <div key={ `layer${layerIndex}` } className={ `layer ${even} ${collapsed}` }>
+      <div key={ `layer${layerIndex}` } className={ `layer ${even} ${isCollapsed} ${isFirst}` }>
         { this.renderLayerTopWidget(layerIndex) }
         { this.renderTemplates(layerIndex, templatesOnLayer) }
         { this.renderLayerBottomWidget(layerIndex) }
