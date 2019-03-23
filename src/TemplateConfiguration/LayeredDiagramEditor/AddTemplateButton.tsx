@@ -14,7 +14,8 @@ import './AddTemplateButton.css';
 interface Props {
   addTemplate: (template: Template) => void;
   layer: number;
-  buttonObserver: AddTemplateButtonObserver
+  buttonObserver: AddTemplateButtonObserver;
+  right: boolean;
 }
 interface State {
   isDropdownHidden: boolean
@@ -86,8 +87,10 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   }
 
   public render() {
+    const orientation = this.props.right ? 'right' : 'left';
+
     return (
-      <div className="addTemplateWidget">
+      <div className={ `addTemplateWidget ${orientation}` }>
         <button className="floatingAddButton addTemplate" onClick={ this.toggleDropdown }>+</button>
         <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
           <h2>Compositions</h2>

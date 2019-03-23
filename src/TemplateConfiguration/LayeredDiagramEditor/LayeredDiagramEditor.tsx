@@ -117,6 +117,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
           layer={ index }
           addTemplate={ this.props.addTemplate }
           buttonObserver={ this.buttonObserver }
+          right={ index === 0 }
         />
       </div>
     );
@@ -192,6 +193,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
               layer={ numberOfLayers }
               addTemplate={ this.props.addTemplate }
               buttonObserver={ this.buttonObserver }
+              right={ false }
             />
           </div>
           <div className="templates" />
