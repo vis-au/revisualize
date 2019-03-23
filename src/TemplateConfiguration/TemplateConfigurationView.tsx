@@ -8,6 +8,8 @@ import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
+import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
+import VisualMarkTemplate from './TemplateModel/VisualMark';
 
 interface Props {
   activeTab: Tab;
@@ -16,6 +18,7 @@ interface Props {
   onTemplatesChanged: () => void;
 }
 interface State {
+  focusedTemplate: Template;
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -25,10 +28,19 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.addTemplate = this.addTemplate.bind(this);
     this.addTemplates = this.addTemplates.bind(this);
     this.deleteTemplate = this.deleteTemplate.bind(this);
+    this.focusTemplate = this.focusTemplate.bind(this);
 
     this.state = {
-      templates: []
+      focusedTemplate: null
     };
+  }
+
+  private focusTemplate(template: Template) {
+    if (this.state.focusedTemplate === template) {
+      this.setState({ focusedTemplate: null });
+    } else {
+      this.setState({ focusedTemplate: template });
+    }
   }
 
   private addTemplate(template?: Template) {
@@ -83,12 +95,53 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         <div id="templateConfigurationBody">
           <TemplatePlumbingContainer
             templates={ this.props.templates }
+            focusedTemplate={ this.state.focusedTemplate }
             onTemplatesChanged={ this.props.onTemplatesChanged }
+            focusTemplate={ this.focusTemplate }
             addTemplate={ this.addTemplate }
             deleteTemplate={ this.deleteTemplate }/>
         </div>
 
+        <TemplateConfigurationSidebar
+          onTemplateChanged={ this.props.onTemplatesChanged }
+          focusedTemplate={ this.state.focusedTemplate }
+        />
+
       </ViewContainer>
     );
   }
+
+  public componentDidMount() {
+    const newTemplate = getAtomicTemplate();
+    this.props.templates.push(newTemplate);
+    this.props.onTemplatesChanged();
+    this.setState({
+      focusedTemplate: newTemplate
+    });
+  }
+}
+
+// function getLineChartPreset(): Template {
+//   const histogramLayout = new Layout('histogram');
+//   const overlayLayout = new Layout('overlay');
+
+//   const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
+//   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+//   const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
+
+//   const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
+//   const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
+
+//   compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
+//   compositeTemplate2.visualElements.push(atomicTemplate);
+//   compositeTemplate3.visualElements.push(atomicTemplate2);
+
+//   return compositeTemplate;
+// }
+
+function getAtomicTemplate(): VisualMarkTemplate {
+  const atomicTemplate = new VisualMarkTemplate('point', null);
+  atomicTemplate.setEncodedValue('stroke', {field: 'b', type: 'quantitative'});
+
+  return atomicTemplate;
 }

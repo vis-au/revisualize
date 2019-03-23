@@ -7,9 +7,11 @@ import Template from '../TemplateModel/Template';
 
 interface Props {
   templates: Template[],
+  focusedTemplate: Template,
   onTemplatesChanged: () => void,
   addTemplate: (template: Template) => void,
-  deleteTemplate: (template: Template) => void
+  deleteTemplate: (template: Template) => void,
+  focusTemplate: (template: Template) => void
 }
 interface State {
   connectionTemplateMap: Map<string, Template[]>
@@ -211,8 +213,10 @@ export default class TemplatePlumbingContainer extends React.Component<Props, St
       <LayeredDiagramEditor
         id={ 'layeredTemplateDiagramEditor' }
         templates={ this.props.templates }
+        focusedTemplate={ this.props.focusedTemplate }
         addTemplate={ this.props.addTemplate }
         deleteTemplate={ this.onDeleteTemplate }
+        focusTemplate={ this.props.focusTemplate }
         onConnectionMoved={ this.onConnectionMoved }
         onDetachedConnection={ this.onDetachedConnection }
         onNewConnection={ this.onNewConnection }

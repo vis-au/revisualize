@@ -21,33 +21,7 @@ interface State {
   dataGraph: DataflowGraph;
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
-  selectedTemplate: Template;
   templates: Template[];
-}
-
-// function getLineChartPreset(): Template {
-//   const histogramLayout = new Layout('histogram');
-//   const overlayLayout = new Layout('overlay');
-
-//   const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
-//   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-//   const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-
-//   const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
-//   const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
-
-//   compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
-//   compositeTemplate2.visualElements.push(atomicTemplate);
-//   compositeTemplate3.visualElements.push(atomicTemplate2);
-
-//   return compositeTemplate;
-// }
-
-function getAtomicTemplate(): VisualMarkTemplate {
-  const atomicTemplate = new VisualMarkTemplate('point', null);
-  atomicTemplate.setEncodedValue('stroke', {field: 'b', type: 'quantitative'});
-
-  return atomicTemplate;
 }
 
 export default class App extends React.Component<{}, State> {
@@ -79,8 +53,7 @@ export default class App extends React.Component<{}, State> {
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
-      templates: [],
-      selectedTemplate: null
+      templates: []
     };
 
     window.addEventListener('resize', () => {
@@ -158,10 +131,6 @@ export default class App extends React.Component<{}, State> {
             templates={ this.state.templates }
             onTemplatesChanged={ this.onTemplatesChanged }
           />
-          <TemplateConfigurationSidebar
-            onTemplateChanged={ this.onTemplatesChanged }
-            selectedTemplate={ this.state.selectedTemplate }
-          />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }
             width={ this.state.width - 100 }
@@ -171,13 +140,5 @@ export default class App extends React.Component<{}, State> {
         </MainView>
       </div>
     );
-  }
-
-  public componentDidMount() {
-    const newTemplate = getAtomicTemplate();
-    this.setState({
-      templates: [newTemplate],
-      selectedTemplate: newTemplate
-    });
   }
 }

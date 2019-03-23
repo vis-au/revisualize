@@ -1,18 +1,15 @@
 import * as React from 'react';
 
 import Sidebar from '../../Widgets/Sidebar';
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
-import Layout from '../TemplateModel/Layout';
 import { MarkEncodingGroup, markEncodingGroups } from '../TemplateModel/MarkEncoding';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import EncodingGroupBlock from './EncodingGroupBlock';
 
 import './TemplateConfigurationSidebar.css';
 
 interface Props {
   onTemplateChanged: () => void;
-  selectedTemplate: Template;
+  focusedTemplate: Template;
 }
 interface State {
   hidden: boolean;
@@ -34,7 +31,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
   }
 
   private renderEncoding(encoding: MarkEncodingGroup) {
-    if (this.props.selectedTemplate === null) {
+    if (this.props.focusedTemplate === null) {
       return null;
     }
 
@@ -42,7 +39,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
       <EncodingGroupBlock
         key={ encoding }
         groupType={ encoding }
-        template={ this.props.selectedTemplate }
+        template={ this.props.focusedTemplate }
         onTemplateChanged={ this.props.onTemplateChanged }
       />
     );
@@ -61,7 +58,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
       <Sidebar
         id="templateConfigurationSidebar"
         height={ window.innerHeight - 75 }
-        hidden={ this.state.hidden && this.props.selectedTemplate === null }
+        hidden={ this.state.hidden && this.props.focusedTemplate === null }
         positionLeft={ false }
         toggle={ this.onToggle }>
 

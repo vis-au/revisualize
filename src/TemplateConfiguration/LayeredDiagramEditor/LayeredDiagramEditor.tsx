@@ -14,17 +14,18 @@ interface Props {
   id: string,
   dragPlumbing: any,
   templates: Template[],
+  focusedTemplate: Template,
   onNewConnection: (event: any) => void,
   onDetachedConnection: (event: any) => void,
   onConnectionMoved: (event: any) => void,
   addTemplate: (template: Template) => void,
-  deleteTemplate: (template: Template) => void
+  deleteTemplate: (template: Template) => void,
+  focusTemplate: (template: Template) => void
 }
 interface State {
   hiddenTemplatesMap: Map<string, boolean>,
   userDefinedLayerNumber: number;
   collapsedLayers: number[];
-  focusedTemplate: Template;
 }
 
 const plumbingConfig = {
@@ -47,7 +48,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     this.state = {
       userDefinedLayerNumber: 0,
       collapsedLayers: [],
-      focusedTemplate: null,
       hiddenTemplatesMap: new Map()
     }
   }
@@ -66,18 +66,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     });
 
     return templatePerLayerMap;
-  }
-
-  private onFocusTemplate(template: Template) {
-    if (this.state.focusedTemplate === template) {
-      this.setState({
-        focusedTemplate: null
-      });
-    } else {
-      this.setState({
-        focusedTemplate: template
-      });
-    }
   }
 
   private toggleCollapseLayer(layerIndex: number) {
@@ -102,8 +90,8 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
         dragPlumbing={ this.props.dragPlumbing }
         template={ template }
         level={ layer }
-        focused={ this.state.focusedTemplate === template }
-        focus={ () => this.onFocusTemplate(template) }
+        focused={ template === this.props.focusedTemplate }
+        focus={ () => this.props.focusTemplate(template) }
         toggleChildTemplate={ () => null }
       />
     );
