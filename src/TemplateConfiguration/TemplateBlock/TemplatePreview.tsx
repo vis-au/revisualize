@@ -44,6 +44,9 @@ export default class TemplatePreview extends React.Component<Props, State> {
       };
 
       template.encodings.forEach((value, key) => {
+        if (value === null || value === undefined) {
+          return;
+        }
         spec.encoding[key] = value;
         spec.encoding[key].axis
       });

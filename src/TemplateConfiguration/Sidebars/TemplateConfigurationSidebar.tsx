@@ -3,7 +3,7 @@ import * as React from 'react';
 import Sidebar from '../../Widgets/Sidebar';
 import { MarkEncodingGroup, markEncodingGroups } from '../TemplateModel/MarkEncoding';
 import Template from '../TemplateModel/Template';
-import EncodingGroupBlock from './EncodingGroupBlock';
+import EncodingGroupBlock from './EncodingGroup';
 
 import './TemplateConfigurationSidebar.css';
 

@@ -1,0 +1,24 @@
+div.encoding {
+  padding: 0.15rem 0.75rem 0.2rem;
+  color: #fff;
+  background: teal;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div.encoding .property {
+
+}
+
+div.encoding .value {
+  margin-left: 0.25rem;
+}
+
+div.encoding .delete {
+  background: transparent;
+  color: #fff;
+  border: none;
+  margin-left: 0.25rem;
+}

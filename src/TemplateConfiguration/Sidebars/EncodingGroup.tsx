@@ -1,9 +1,13 @@
 import * as React from 'react';
 
-import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings, textTooltipChannelEncodings } from '../TemplateModel/MarkEncoding';
+import EncodingBlock from './EncodingBlock';
+import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings,
+  keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup,
+  markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings,
+  textTooltipChannelEncodings } from '../TemplateModel/MarkEncoding';
 import Template from '../TemplateModel/Template';
 
-import './EncodingGroupBlock.css';
+import './EncodingGroup.css';
 
 interface Props {
   template: Template;
@@ -21,8 +25,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.onEncodingChange = this.onEncodingChange.bind(this);
-    this.onEncodingKeyPress = this.onEncodingKeyPress.bind(this);
+    this.onTemporaryFieldChange = this.onTemporaryFieldChange.bind(this);
+    this.onTemporaryFieldKeyPress = this.onTemporaryFieldKeyPress.bind(this);
+    this.onTemporaryValueChange = this.onTemporaryValueChange.bind(this);
+    this.onTemporaryValueKeyPress = this.onTemporaryValueKeyPress.bind(this);
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.showEncodingInput = this.showEncodingInput.bind(this);
     this.hideEncodingInput = this.hideEncodingInput.bind(this);
@@ -81,24 +87,59 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.setState({ emptyEncoding: null });
   }
 
-  private onEncodingChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onTemporaryValueChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       temporaryValue: event.target.value
     });
   }
 
-  private onEncodingKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  private onTemporaryFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      temporaryField: event.target.value
+    });
+  }
+
+  private onTemporaryFieldKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Enter') {
       return;
     }
 
-    this.props.template.setEncodedValue(this.state.emptyEncoding, this.state.temporaryValue as any);
+    const newField = {
+      field: this.state.temporaryValue,
+      type: 'ordinal'
+    };
+
+    this.props.template.setEncodedValue(this.state.emptyEncoding, newField as any);
+
+    this.setState({
+      emptyEncoding: null,
+      temporaryField: ''
+    });
+
+    this.props.onTemplateChanged();
+  }
+
+  private onTemporaryValueKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    const newValue = {
+      value: this.state.temporaryValue
+    };
+
+    this.props.template.setEncodedValue(this.state.emptyEncoding, newValue as any);
 
     this.setState({
       emptyEncoding: null,
       temporaryValue: ''
     });
 
+    this.props.onTemplateChanged();
+  }
+
+  private onDeleteEncoding(encoding: MarkEncoding) {
+    this.props.template.setEncodedValue(encoding, null);
     this.props.onTemplateChanged();
   }
 
@@ -110,17 +151,19 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     }
 
     return (
-      <div key={ encoding } className="encoding">
-        <span>{ encoding }</span>
-        <span>{ JSON.stringify(value) }</span>
-      </div>
+      <EncodingBlock
+        key={ `encoding${encoding}` }
+        encoding={ encoding }
+        value={ value as any }
+        delete={ () => this.onDeleteEncoding(encoding)}
+      />
     );
   }
 
   private renderEncodings() {
     const encodings = this.getEncodingsForGroup();
     return (
-      <div className="encoding">
+      <div className="encodings">
         { encodings.map(this.renderEncoding) }
       </div>
     );
@@ -163,9 +206,9 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       <div className="newFieldEncoding">
         <input
           type="text"
-          value={ this.state.temporaryValue || '' }
-          onChange={ this.onEncodingChange }
-          onKeyPress={ this.onEncodingKeyPress }
+          value={ this.state.temporaryField || '' }
+          onChange={ this.onTemporaryFieldChange }
+          onKeyPress={ this.onTemporaryFieldKeyPress }
           onBlur={ this.hideEncodingInput }
           placeholder="enter field" />
       </div>
@@ -182,8 +225,8 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
         <input
           type="text"
           value={ this.state.temporaryValue || '' }
-          onChange={ this.onEncodingChange }
-          onKeyPress={ this.onEncodingKeyPress }
+          onChange={ this.onTemporaryValueChange }
+          onKeyPress={ this.onTemporaryValueKeyPress }
           onBlur={ this.hideEncodingInput }
           placeholder="enter value" />
       </div>
