@@ -6,6 +6,7 @@ div.encoding {
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 14px;
 }
 
 div.encoding .property {

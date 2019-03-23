@@ -31,7 +31,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.onTemporaryValueKeyPress = this.onTemporaryValueKeyPress.bind(this);
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.showEncodingInput = this.showEncodingInput.bind(this);
-    this.hideEncodingInput = this.hideEncodingInput.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
     this.renderEncodings = this.renderEncodings.bind(this);
     this.renderAddEncodingWidget = this.renderAddEncodingWidget.bind(this);
@@ -78,13 +77,11 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   private showEncodingInput(newEncoding: MarkEncoding) {
-    this.setState({
-      emptyEncoding: newEncoding
-    });
-  }
-
-  private hideEncodingInput() {
-    this.setState({ emptyEncoding: null });
+    if (this.state.emptyEncoding === newEncoding) {
+      this.setState({ emptyEncoding: null });
+    } else {
+      this.setState({ emptyEncoding: newEncoding });
+    }
   }
 
   private onTemporaryValueChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -170,8 +167,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   private renderUnsetEncoding(unsetEncoding: MarkEncoding) {
+    const isTemporary = this.state.emptyEncoding === unsetEncoding ? 'temporary' : '';
+
     return (
-      <li key={ `unset${unsetEncoding}` } className="unsetEncoding">
+      <li key={ `unset${unsetEncoding}` } className={ `unsetEncoding ${isTemporary}` }>
         <button onClick={ () => this.showEncodingInput(unsetEncoding) }>
           { unsetEncoding }
         </button>
@@ -191,9 +190,15 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       });
 
     return (
-      <ul className="encodings">
-        { unsetEncodings.map(this.renderUnsetEncoding) }
-      </ul>
+      <div className="unsetEncodings">
+        <div className="addUnsetEncodingsWidget">
+          { this.renderEmptyEncodingValueInput() }
+          { this.renderEmptyEncodingFieldInput() }
+        </div>
+        <ul>
+          { unsetEncodings.map(this.renderUnsetEncoding) }
+        </ul>
+      </div>
     );
   }
 
@@ -209,7 +214,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
           value={ this.state.temporaryField || '' }
           onChange={ this.onTemporaryFieldChange }
           onKeyPress={ this.onTemporaryFieldKeyPress }
-          onBlur={ this.hideEncodingInput }
           placeholder="enter field" />
       </div>
     );
@@ -227,7 +231,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
           value={ this.state.temporaryValue || '' }
           onChange={ this.onTemporaryValueChange }
           onKeyPress={ this.onTemporaryValueKeyPress }
-          onBlur={ this.hideEncodingInput }
           placeholder="enter value" />
       </div>
     );
@@ -236,7 +239,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   private renderAddEncodingWidget() {
     return (
       <div className="addEncodingWidget">
-        <button onClick={ this.toggleEncodingsHidden }>add new ...</button>
         { this.renderUnsetEncodings() }
       </div>
     );
@@ -245,10 +247,13 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   public render() {
     return (
       <div className="encodingGroup">
-        <h2>{ this.props.groupType }</h2>
+        <div className="row">
+          <h2>{ this.props.groupType }</h2>
+          <button className="addNewEncoding" onClick={ this.toggleEncodingsHidden }>
+            { this.state.areEncodingsHidden ? 'show more' : 'show less'}
+          </button>
+        </div>
         { this.renderEncodings() }
-        { this.renderEmptyEncodingValueInput() }
-        { this.renderEmptyEncodingFieldInput() }
         { this.renderAddEncodingWidget() }
       </div>
     );

@@ -1,22 +1,61 @@
 .encodingGroup {
+  border-top: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.encodingGroup .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 .encodingGroup h2 {
- font-size: 14px;
+  font-size: 15px;
+  text-transform: capitalize;
 }
-
-.encodingGroup .addEncodingWidget {
-
-}
-
-.encodingGroup .encodings {
+.encodingGroup .encodings,
+.encodingGroup .unsetEncodings ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 0.25rem 0.2rem 0.3rem;
   background: #fff;
 }
-.encodingGroup .addEncodingWidget .encodings li.unsetEncoding {
+.encodingGroup .encodings .encoding {
+  margin: 0.25rem 0.15rem;
+  margin-left: 0;
+}
+.encodingGroup .unsetEncoding {
   list-style: none;
   margin: 0.25rem 0.15rem;
   margin-left: 0;
+  background: #fff;
+  border: 1px solid teal;
+  padding: 0.15rem 0.75rem 0.2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+.encodingGroup .unsetEncoding.temporary {
+  background: teal;
+}
+.encodingGroup .unsetEncoding button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: teal;
+}
+.encodingGroup .unsetEncoding.temporary button {
+  color: #fff;
+}
+.encodingGroup button.addNewEncoding {
+  visibility: hidden;
+  border: none;
+  background: transparent;
+  color: teal;
+}
+.encodingGroup:hover button.addNewEncoding {
+  visibility: visible;
+}
+.encodingGroup button.addNewEncoding:hover {
+  text-decoration: underline;
 }
