@@ -2,7 +2,6 @@ import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
 import LayeredDiagramEditor from './LayeredDiagramEditor/LayeredDiagramEditor';
-import TemplateBlock from './TemplateBlock/TemplateBlock';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
 
@@ -13,7 +12,6 @@ interface Props {
   deleteTemplate: (template: Template) => void
 }
 interface State {
-  hiddenTemplatesMap: Map<string, boolean>,
   connectionTemplateMap: Map<string, Template[]>
 }
 
@@ -26,81 +24,29 @@ const templateEditorPlumbingConfig = {
   ],
 };
 
-export default class TemplateEditor extends React.Component<Props, State> {
+export default class TemplatePlumbingContainer extends React.Component<Props, State> {
   private dragPlumbing: jsPlumbInstance;
   private templateConnectionsMap: Map<string, Connection[]>;
 
   constructor(props: Props) {
     super(props);
 
-    this.renderTemplateBlocks = this.renderTemplateBlocks.bind(this);
-    this.onDiagramClicked = this.onDiagramClicked.bind(this);
     this.onNewConnection = this.onNewConnection.bind(this);
     this.onConnectionMoved = this.onConnectionMoved.bind(this);
     this.onDetachedConnection = this.onDetachedConnection.bind(this);
     this.onDeleteTemplate = this.onDeleteTemplate.bind(this);
     this.render = this.render.bind(this);
-    this.renderTemplateBlock = this.renderTemplateBlock.bind(this);
     this.renderTemplateLinks = this.renderTemplateLinks.bind(this);
-    this.toggleTemplateBlockVisibility = this.toggleTemplateBlockVisibility.bind(this);
     this.deleteConnectionFromMaps = this.deleteConnectionFromMaps.bind(this);
-    this.renderTemplateLinks = this.renderTemplateLinks.bind(this)
 
     this.dragPlumbing = jsPlumb.getInstance();
     this.templateConnectionsMap = new Map();
 
     this.state = {
-      hiddenTemplatesMap: new Map(),
       connectionTemplateMap: new Map()
     }
 
-    this.hideAllChildTemplates();
-
     window.addEventListener('resize', () => this.dragPlumbing.repaintEverything());
-  }
-
-  private hideAllChildTemplates() {
-    const hiddenTemplatesMap = this.state.hiddenTemplatesMap;
-    this.props.templates
-      .forEach(template => hiddenTemplatesMap.set(template.id, false));
-
-    // const childTemplates = this.props.templates.filter(template => {
-    //   let isRoot = false;
-
-    //   this.props.templates.forEach(temp => {
-    //     isRoot = isRoot || temp.visualElements.indexOf(template) > -1;
-    //   });
-
-    //   return !isRoot;
-    // });
-
-    // childTemplates.forEach(template => hiddenTemplatesMap.set(template.id, true));
-  }
-
-  private toggleTemplateBlockVisibility(template: Template) {
-    const hiddenTemplatesMap = this.state.hiddenTemplatesMap;
-
-    if (hiddenTemplatesMap.get(template.id)) {
-      hiddenTemplatesMap.set(template.id, false);
-    } else {
-      const exploredSubtree = [];
-      let nextTemplate = template;
-      let workingSet: Template[] = [];
-
-      while (nextTemplate !== undefined) {
-        exploredSubtree.push(nextTemplate);
-        workingSet = workingSet.concat(nextTemplate.visualElements);
-        nextTemplate = workingSet.pop();
-      }
-
-      exploredSubtree.forEach(t => hiddenTemplatesMap.set(t.id, true));
-    }
-
-    this.setState({ hiddenTemplatesMap });
-  }
-
-  private onDiagramClicked() {
-    return;
   }
 
   private onDeleteTemplate(template: Template) {
@@ -111,7 +57,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
       connections
         .map(d => d)
         .forEach(connection => {
-          console.log('found one')
           this.dragPlumbing.deleteConnection(connection);
           this.deleteConnectionFromMaps(connection);
         });
@@ -241,26 +186,6 @@ export default class TemplateEditor extends React.Component<Props, State> {
 
     this.dragPlumbing.repaintEverything();
     this.props.onTemplatesChanged();
-  }
-
-  private renderTemplateBlock(template: Template) {
-    if (this.state.hiddenTemplatesMap.get(template.id)) {
-      return null;
-    }
-
-    return (
-      <TemplateBlock
-        key={ template.id }
-        level={ 0 }
-        dragPlumbing={ this.dragPlumbing }
-        template={ template }
-        toggleChildTemplate={ this.toggleTemplateBlockVisibility }
-        delete={ () => this.onDeleteTemplate(template) }/>
-    );
-  }
-
-  private renderTemplateBlocks(templates: Template[]) {
-    return templates.map(this.renderTemplateBlock);
   }
 
   private renderTemplateLinks(template: Template) {

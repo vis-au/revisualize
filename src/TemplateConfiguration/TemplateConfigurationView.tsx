@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
-import TemplateEditor from './TemplateEditor';
+import TemplatePlumbingContainer from './TemplatePlumbingContainer';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
@@ -81,7 +81,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           addTemplates={ this.addTemplates } />
 
         <div id="templateConfigurationBody">
-          <TemplateEditor
+          <TemplatePlumbingContainer
             templates={ this.props.templates }
             onTemplatesChanged={ this.props.onTemplatesChanged }
             addTemplate={ this.addTemplate }
