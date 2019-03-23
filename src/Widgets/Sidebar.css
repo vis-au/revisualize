@@ -27,9 +27,14 @@
 .sidebar .sidebarBody {
   overflow: hidden;
   padding: 0;
+  opacity: 1;
+  visibility: visible;
+  transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 .sidebar.hidden .sidebarBody {
   width: 0%;
+  visibility: hidden;
+  opacity: 0;
 }
 .sidebar .sidebarBody.hidden {
   display: none;

@@ -10,7 +10,7 @@ div.encoding {
 }
 
 div.encoding .property {
-
+  font-weight: bold;
 }
 
 div.encoding .value {
