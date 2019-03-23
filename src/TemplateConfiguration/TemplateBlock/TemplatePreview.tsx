@@ -25,7 +25,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
 
   private renderVegaPreview() {
     const template = this.props.template;
-    let spec: any = this.specCompiler.getVegaSpecification(template.visualElements, template.layout);
+    let spec: any = this.specCompiler.getVegaSpecification(template);
 
     if (template instanceof VisualMarkTemplate) {
       spec = this.specCompiler.getBasicSchema() as any;

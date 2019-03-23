@@ -1,16 +1,17 @@
 import { TopLevelSpec } from 'vega-lite';
 
-import CompositeTemplate from './CompositeTemplate';
 import Layout from './Layout';
 import { LayoutType } from './LayoutType';
 import { isAtomicSchema, isConcatenateSchema, isOverlaySchema, isRepeatSchema } from './SpecUtils';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
+import PlotTemplate from './PlotTemplate';
+import CompositionTemplate from './CompositionTemplate';
 
 const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
 const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
 
-export default class SpecCompiler {
+export default class SpecCompiler2 {
 
   public getBasicSchema() {
     return {
@@ -23,18 +24,6 @@ export default class SpecCompiler {
         ]
       }
     };
-  }
-
-  private applyVisualMarkTemplate(schema: any, template: VisualMarkTemplate) {
-    schema = this.getBasicSchema();
-
-    schema.mark = template.type;
-    schema.encoding = {};
-    template.encodings.forEach((value, key) => {
-      schema.encoding[key] = value;
-    });
-
-    return schema;
   }
 
   private abstractOverlay(schema: any) {
@@ -210,13 +199,8 @@ export default class SpecCompiler {
   private getSingleLayerSpec(template: Template, layout: Layout): TopLevelSpec {
     let schema: any = null;
 
-    if (template instanceof VisualMarkTemplate) {
-      schema = this.applyVisualMarkTemplate(schema, template);
-      schema = this.applyLayout(schema, layout);
-
-    } else if (template instanceof CompositeTemplate) {
-
-      schema = this.getVegaSpecification(template.visualElements, template.layout);
+    if (template instanceof CompositionTemplate || template instanceof PlotTemplate) {
+      schema = this.getVegaSpecification(template);
 
       if (schema !== null) {
         schema = this.applyLayout(schema, layout);
@@ -230,7 +214,7 @@ export default class SpecCompiler {
     const schema: any = this.getBasicSchema();
 
     const individualSchemas = templates
-      .map(t => this.getVegaSpecification(t.visualElements, t.layout))
+      .map(t => this.getVegaSpecification(t))
       .filter(t => t !== null);
 
     const individualViewAbstractions = individualSchemas.map(s => {
@@ -246,19 +230,50 @@ export default class SpecCompiler {
     return schema;
   }
 
-  public getVegaSpecification(templates: Template[], layout: Layout): TopLevelSpec {
-
+  private getVisualMarkSchema(template: Template) {
     let schema: any = null;
 
-    if (templates.length === 0) {
-      return schema;
-    } else if (templates.length === 1) {
-      schema = this.getSingleLayerSpec(templates[0], layout);
-    } else if (templates.length > 1) {
-      schema = this.getMultiLayerSpec(templates, layout);
+    schema = this.getPlotSchema(template);
+
+    return schema;
+  }
+
+  private getPlotSchema(template: PlotTemplate) {
+    const schema = this.getBasicSchema() as any;
+
+    if (template.visualElements.length === 0) {
+      schema.mark = (template as VisualMarkTemplate).type;
+    } else {
+      schema.mark = (template.visualElements[0] as VisualMarkTemplate).type;
     }
 
-    // console.log(templates, schema)
+    schema.encoding = {};
+
+    template.encodings.forEach((value, key) => {
+      schema.encoding[key] = value;
+    });
+
+    return schema;
+  }
+
+  private getCompositionSchema(template: Template) {
+    if (template.visualElements.length === 1) {
+      return this.getSingleLayerSpec(template.visualElements[0], template.layout);
+    } else if (template.visualElements.length > 1) {
+      return this.getMultiLayerSpec(template.visualElements, template.layout);
+    }
+  }
+
+  public getVegaSpecification(template: Template) {
+    let schema: any = null;
+
+    if (template instanceof VisualMarkTemplate) {
+      schema = this.getVisualMarkSchema(template);
+    } else if (template instanceof PlotTemplate) {
+      schema = this.getPlotSchema(template);
+    } else if (template instanceof CompositionTemplate) {
+      schema = this.getCompositionSchema(template);
+    }
 
     return schema;
   }

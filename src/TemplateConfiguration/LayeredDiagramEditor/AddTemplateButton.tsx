@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Mark } from 'vega-lite/build/src/mark';
 
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
-import Layout from '../TemplateModel/Layout';
-import { COMPOSITION_TYPES, LayoutType, PLOT_TYPES } from '../TemplateModel/LayoutType';
+import { COMPOSITION_TYPES, PLOT_TYPES, Plot, Composition } from '../TemplateModel/LayoutType';
 import { MARK_TYPES } from '../TemplateModel/MarkType';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
+import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
 
 import './AddTemplateButton.css';
 
@@ -25,7 +25,8 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.renderLayoutBlock = this.renderLayoutBlock.bind(this);
+    this.renderCompositionBlock = this.renderCompositionBlock.bind(this);
+    this.renderPlotBlock = this.renderPlotBlock.bind(this);
     this.renderMarkBlock = this.renderMarkBlock.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.hideDropdown = this.hideDropdown.bind(this);
@@ -56,9 +57,15 @@ export default class AddTemplateButton extends React.Component<Props, State> {
     this.props.addTemplate(newVisualMark);
   }
 
-  private onLayoutClicked(type: LayoutType) {
-    const newLayout = new Layout(type);
-    const newCompositeTemplate = new CompositeTemplate(newLayout, [], null);
+  private onPlotClicked(type: Plot) {
+    const newCompositeTemplate = new PlotTemplate(type, null, null);
+    newCompositeTemplate.hierarchyLevel = this.props.layer;
+
+    this.props.addTemplate(newCompositeTemplate);
+  }
+
+  private onCompositionClicked(type: Composition) {
+    const newCompositeTemplate = new CompositionTemplate(type, [], null);
     newCompositeTemplate.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newCompositeTemplate);
@@ -75,10 +82,21 @@ export default class AddTemplateButton extends React.Component<Props, State> {
     );
   }
 
-  private renderLayoutBlock(type: LayoutType) {
+  private renderPlotBlock(type: Plot) {
     return (
       <li key={ type }>
-        <button onClick={ () => this.onLayoutClicked(type) }>
+        <button onClick={ () => this.onPlotClicked(type) }>
+          <i className="icon material-icons">equalizer</i>
+          <span>{ type }</span>
+        </button>
+      </li>
+    );
+  }
+
+  private renderCompositionBlock(type: Composition) {
+    return (
+      <li key={ type }>
+        <button onClick={ () => this.onCompositionClicked(type) }>
           <i className="icon material-icons">equalizer</i>
           <span>{ type }</span>
         </button>
@@ -95,11 +113,11 @@ export default class AddTemplateButton extends React.Component<Props, State> {
         <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
           <h2>Compositions</h2>
           <ul onClick={ this.hideDropdown } className="layouts">
-            { COMPOSITION_TYPES.map(this.renderLayoutBlock) }
+            { COMPOSITION_TYPES.map(this.renderCompositionBlock) }
           </ul>
           <h2>Plots</h2>
           <ul>
-            { PLOT_TYPES.map(this.renderLayoutBlock) }
+            { PLOT_TYPES.map(this.renderPlotBlock) }
           </ul>
           <h2>Marks</h2>
           <ul onClick={ this.hideDropdown } className="marks">

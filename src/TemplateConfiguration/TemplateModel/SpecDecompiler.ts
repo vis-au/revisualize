@@ -1,10 +1,11 @@
-import { isConcatSpec } from 'vega-lite/build/src/spec';
-import CompositeTemplate from './CompositeTemplate';
 import Layout from './Layout';
-import { LayoutType } from './LayoutType';
+import { LayoutType, Plot, Composition } from './LayoutType';
 import { isAtomicSchema, isConcatenateSchema, isOverlaySchema, isRepeatSchema } from './SpecUtils';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
+import CompositionTemplate from './CompositionTemplate';
+import PlotTemplate from './PlotTemplate';
+import { MarkEncoding } from './MarkEncoding';
 
 export default class SpecDecompiler {
   private getAtomicLayout(spec: any): Layout {
@@ -36,21 +37,31 @@ export default class SpecDecompiler {
   }
 
   public decompile(spec: any): Template {
-    const rootTemplate: Template = new CompositeTemplate(null, [], null);
+    let rootTemplate: Template = null;
     let layout: Layout = null;
     let visualElements: Template[] = [];
 
     if (isAtomicSchema(spec)) {
       layout = this.getAtomicLayout(spec);
-      visualElements.push(new VisualMarkTemplate(spec.mark, rootTemplate));
+      rootTemplate = new PlotTemplate(layout.type as Plot, null, null);
+
+      Object.keys(spec.encoding).forEach((encoding: MarkEncoding) => {
+        rootTemplate.setEncodedValue(encoding, spec.encoding[encoding]);
+      });
+
+      const markTemplate = new VisualMarkTemplate(spec.mark, rootTemplate);
+      visualElements.push(markTemplate);
     } else if (isOverlaySchema(spec)) {
       layout = new Layout('overlay');
+      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
       visualElements = this.decomposeOverlay(spec);
     } else if (isRepeatSchema(spec)) {
       layout = new Layout('repeat');
+      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
       visualElements = this.decomposeRepeat(spec);
     } else if (isConcatenateSchema(spec)) {
       layout = new Layout('concatenate');
+      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
       visualElements = this.decomposeConcat(spec);
     }
 

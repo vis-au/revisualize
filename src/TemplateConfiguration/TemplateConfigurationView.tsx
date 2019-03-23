@@ -3,13 +3,13 @@ import * as React from 'react';
 import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingContainer from './LayeredDiagramEditor/TemplatePlumbingContainer';
-import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
-
-import './TemplateConfigurationView.css';
 import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
 import VisualMarkTemplate from './TemplateModel/VisualMark';
+import PlotTemplate from './TemplateModel/PlotTemplate';
+
+import './TemplateConfigurationView.css';
 
 interface Props {
   activeTab: Tab;
@@ -43,11 +43,9 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     }
   }
 
-  private addTemplate(template?: Template) {
+  private addTemplate(template: Template) {
     const templates = this.props.templates;
-    const newTemplate = template === undefined
-      ? new CompositeTemplate(null, [], null)
-      : template;
+    const newTemplate = template;
 
     templates.push(newTemplate);
     this.props.onTemplatesChanged();
@@ -114,6 +112,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
   public componentDidMount() {
     const newTemplate = getAtomicTemplate();
     this.props.templates.push(newTemplate);
+    this.props.templates.push(...newTemplate.visualElements);
     this.props.onTemplatesChanged();
     this.setState({
       focusedTemplate: newTemplate
@@ -139,9 +138,12 @@ export default class TemplateConfigurationView extends React.Component<Props, St
 //   return compositeTemplate;
 // }
 
-function getAtomicTemplate(): VisualMarkTemplate {
+function getAtomicTemplate(): PlotTemplate {
   const atomicTemplate = new VisualMarkTemplate('point', null);
-  atomicTemplate.setEncodedValue('stroke', {field: 'b', type: 'quantitative'});
 
-  return atomicTemplate;
+  const plotTemplate = new PlotTemplate('histogram', atomicTemplate, null);
+  plotTemplate.setEncodedValue('x', {field: 'a', type: 'ordinal'});
+  plotTemplate.setEncodedValue('y', {field: 'b', type: 'quantitative'});
+
+  return plotTemplate;
 }

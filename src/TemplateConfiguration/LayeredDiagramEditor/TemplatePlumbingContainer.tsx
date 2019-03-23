@@ -2,8 +2,8 @@ import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
 import LayeredDiagramEditor from './LayeredDiagramEditor';
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
 import Template from '../TemplateModel/Template';
+import VisualMarkTemplate from '../TemplateModel/VisualMark';
 
 interface Props {
   templates: Template[],
@@ -191,7 +191,7 @@ export default class TemplatePlumbingContainer extends React.Component<Props, St
   }
 
   private renderTemplateLinks(template: Template) {
-    if (!(template instanceof CompositeTemplate)) {
+    if (template instanceof VisualMarkTemplate) {
       return;
     }
 

@@ -1,6 +1,10 @@
-export type LayoutType = 'node-link' | 'bubble chart' | 'timeline' | 'radius' | 'angular' | 'polar coordinates' | 'cartesian' | 'histogram' | 'parallel plot' | 'star plot' | 'repeat' | 'overlay' | 'facet' | 'concatenate';
-export const LAYOUT_TYPES: LayoutType[] = ['node-link', 'bubble chart', 'timeline', 'radius', 'angular', 'polar coordinates', 'cartesian', 'histogram', 'parallel plot', 'star plot', 'repeat', 'overlay', 'facet', 'concatenate'];
+export type Composition = 'repeat' | 'concatenate' | 'overlay' | 'facet';
+export type Plot = 'node-link' | 'bubble chart' | 'timeline' | 'radius' | 'angular' |
+  'polar coordinates' | 'cartesian' | 'histogram' | 'parallel plot' | 'star plot';
 
-export const PLOT_TYPES: LayoutType[] = ['repeat', 'overlay', 'facet', 'concatenate'];
-export const COMPOSITION_TYPES: LayoutType[] = ['node-link', 'bubble chart', 'timeline', 'radius',
+export type LayoutType = Composition | Plot;
+export const COMPOSITION_TYPES: LayoutType[] = ['repeat', 'overlay', 'facet', 'concatenate'];
+export const PLOT_TYPES: LayoutType[] = ['node-link', 'bubble chart', 'timeline', 'radius',
   'angular', 'polar coordinates', 'cartesian', 'histogram', 'parallel plot', 'star plot'];
+
+export const layouts: LayoutType[] = PLOT_TYPES.concat(COMPOSITION_TYPES);

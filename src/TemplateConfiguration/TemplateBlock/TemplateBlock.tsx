@@ -5,7 +5,8 @@ import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
+import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
 
 import './TemplateBlock.css';
 
@@ -93,6 +94,11 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
   public renderPreview() {
     if (this.state.minimized) {
+      return null;
+    }
+    if (!(this.props.template instanceof VisualMarkTemplate) &&
+      this.props.template.visualElements.length === 0) {
+
       return null;
     }
 
@@ -211,7 +217,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
     this.props.dragPlumbing.makeTarget(bodySelector, plumbingConfig);
 
-    if (this.props.template instanceof CompositeTemplate) {
+    if (this.props.template instanceof CompositionTemplate || this.props.template instanceof PlotTemplate) {
       this.props.dragPlumbing.makeSource(visualElementSelector, plumbingConfig, sourceConfig);
     }
   }

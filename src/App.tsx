@@ -8,11 +8,9 @@ import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigura
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
-import TemplateConfigurationSidebar from './TemplateConfiguration/Sidebars/TemplateConfigurationSidebar';
 import Template from './TemplateConfiguration/TemplateModel/Template';
 
 import './App.css';
-import VisualMarkTemplate from './TemplateConfiguration/TemplateModel/VisualMark';
 
 interface State {
   activeTab: Tab;

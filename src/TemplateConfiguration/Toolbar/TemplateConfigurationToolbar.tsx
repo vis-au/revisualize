@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Mark } from 'vega-lite/build/src/mark';
 
 import Toolbar from '../../Widgets/Toolbar';
-import CompositeTemplate from '../TemplateModel/CompositeTemplate';
-import Layout from '../TemplateModel/Layout';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
 
 import './TemplateConfigurationToolbar.css';
 
@@ -16,42 +16,38 @@ interface Props {
 }
 
 function getScatterplotMatrixPreset(): Template {
-  const repeatLayout = new Layout('repeat');
-  const histogramLayout = new Layout('histogram');
+  const compositionTemplate = new CompositionTemplate('repeat', [], null);
+  const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
+  plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
 
-  const compositeTemplate = new CompositeTemplate(repeatLayout, [], null);
-  const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-  compositeTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
-  compositeTemplate2.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
+  const atomicTemplate = new VisualMarkTemplate('circle', plotTemplate);
 
-  const atomicTemplate = new VisualMarkTemplate('circle', compositeTemplate2);
+  compositionTemplate.visualElements.push(plotTemplate);
+  plotTemplate.visualElements.push(atomicTemplate);
 
-  compositeTemplate.visualElements.push(compositeTemplate2);
-  compositeTemplate2.visualElements.push(atomicTemplate);
-
-  return compositeTemplate;
+  return compositionTemplate;
 }
 
 function getLineChartPreset(): Template {
-  const histogramLayout = new Layout('histogram');
-  const overlayLayout = new Layout('overlay');
+  const compositionTemplate = new CompositionTemplate('overlay', [], null);
 
-  const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
-  const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-  compositeTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
-  compositeTemplate2.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
-  const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-  compositeTemplate3.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
-  compositeTemplate3.setEncodedValue('y', {'field': 'c', 'type': 'quantitative'});
+  const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
+  plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
 
-  const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
-  const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
+  const plotTemplate2 = new PlotTemplate('histogram', null, compositionTemplate);
+  plotTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
+  plotTemplate2.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
 
-  compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
-  compositeTemplate2.visualElements.push(atomicTemplate);
-  compositeTemplate3.visualElements.push(atomicTemplate2);
+  const atomicTemplate = new VisualMarkTemplate('point', plotTemplate);
+  const atomicTemplate2 = new VisualMarkTemplate('line', plotTemplate2);
 
-  return compositeTemplate;
+  compositionTemplate.visualElements.push(plotTemplate, plotTemplate2);
+  plotTemplate.visualElements = [atomicTemplate];
+  plotTemplate2.visualElements = [atomicTemplate2];
+
+  return compositionTemplate;
 }
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
