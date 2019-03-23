@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
-import TemplatePlumbingContainer from './TemplatePlumbingContainer';
+import TemplatePlumbingContainer from './LayeredDiagramEditor/TemplatePlumbingContainer';
 import CompositeTemplate from './TemplateModel/CompositeTemplate';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';

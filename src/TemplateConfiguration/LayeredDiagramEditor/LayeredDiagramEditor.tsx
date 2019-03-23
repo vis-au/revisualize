@@ -80,46 +80,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     }
   }
 
-  private hideAllChildTemplates() {
-    const hiddenTemplatesMap = this.state.hiddenTemplatesMap;
-    this.props.templates
-      .forEach(template => hiddenTemplatesMap.set(template.id, false));
-
-    // const childTemplates = this.props.templates.filter(template => {
-    //   let isRoot = false;
-
-    //   this.props.templates.forEach(temp => {
-    //     isRoot = isRoot || temp.visualElements.indexOf(template) > -1;
-    //   });
-
-    //   return !isRoot;
-    // });
-
-    // childTemplates.forEach(template => hiddenTemplatesMap.set(template.id, true));
-  }
-
-  private toggleTemplateBlockVisibility(template: Template) {
-    const hiddenTemplatesMap = this.state.hiddenTemplatesMap;
-
-    if (hiddenTemplatesMap.get(template.id)) {
-      hiddenTemplatesMap.set(template.id, false);
-    } else {
-      const exploredSubtree = [];
-      let nextTemplate = template;
-      let workingSet: Template[] = [];
-
-      while (nextTemplate !== undefined) {
-        exploredSubtree.push(nextTemplate);
-        workingSet = workingSet.concat(nextTemplate.visualElements);
-        nextTemplate = workingSet.pop();
-      }
-
-      exploredSubtree.forEach(t => hiddenTemplatesMap.set(t.id, true));
-    }
-
-    this.setState({ hiddenTemplatesMap });
-  }
-
   private toggleCollapseLayer(layerIndex: number) {
     const collapsedLayers = this.state.collapsedLayers;
     const indexInState = collapsedLayers.indexOf(layerIndex);
