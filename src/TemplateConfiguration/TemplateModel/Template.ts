@@ -1,16 +1,24 @@
+import { Data } from 'vega-lite/build/src/data';
+import { FieldDef } from 'vega-lite/build/src/fielddef';
+import { SelectionDef } from 'vega-lite/build/src/selection';
+
 import Layout from './Layout';
 import { MarkEncoding } from './MarkEncoding';
-import { FieldDef } from 'vega-lite/build/src/fielddef';
 
 export default abstract class Template {
   public id: string;
   public hierarchyLevel: number;
+  public dataRef: Data;
+  public description: string;
+  public selection: SelectionDef;
 
   public encodings: Map<MarkEncoding, FieldDef<any>>;
 
   constructor(public visualElements: Template[], public layout: Layout, public parent: Template) {
     this.id = `template${Math.round(Math.random() * 10000)}`;
     this.hierarchyLevel = -1;
+    this.dataRef = null;
+    this.description = null;
 
     this.encodings = new Map();
   }
