@@ -1,73 +1,93 @@
-import Layout from './Layout';
-import { LayoutType, Plot, Composition } from './LayoutType';
-import { isAtomicSchema, isConcatenateSchema, isOverlaySchema, isRepeatSchema } from './SpecUtils';
-import Template from './Template';
-import VisualMarkTemplate from './VisualMark';
-import CompositionTemplate from './CompositionTemplate';
-import PlotTemplate from './PlotTemplate';
-import { MarkEncoding } from './MarkEncoding';
+import { isVConcatSpec, isHConcatSpec } from "vega-lite/build/src/spec";
 
-export default class SpecDecompiler {
-  private getAtomicLayout(spec: any): Layout {
-    let layoutType: LayoutType = null;
+import CompositionTemplate from "./CompositionTemplate";
+import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema } from "./SpecUtils";
+import PlotTemplate from "./PlotTemplate";
+import Template from "./Template";
+import VisualMarkTemplate from "./VisualMark";
+import { MarkEncoding } from "./MarkEncoding";
+import Layout from "./Layout";
+import RepeatTemplate from "./RepeatTemplate";
+import LayerTemplate from "./LayerTemplate";
+import FacetTemplate from "./FacetTemplate";
+import ConcatTemplate from "./ConcatTemplate";
 
-    if (spec.encoding.x !== undefined && spec.encoding.y !== undefined) {
-      if (spec.encoding.y.type === 'quantitative') {
-        if (spec.encoding.x.type === 'ordinal') {
-          layoutType = 'histogram'
-        } else if (spec.encoding.x.type === 'quantitative') {
-          layoutType = 'cartesian';
-        }
+export default class SchemaDecompiler {
+
+  private getEncodingsMapFromPlotSchema(schema: any) {
+    const templateEncodings = new Map<MarkEncoding, any>();
+    const schemaEncodings = Object.keys(schema.encoding) as MarkEncoding[];
+
+    schemaEncodings.forEach((encoding: MarkEncoding) => {
+      templateEncodings.set(encoding, schema.encoding[encoding]);
+    });
+
+    return templateEncodings;
+  }
+
+  private getCompositionTemplate(schema: any) {
+    let template: Template = null;
+    let visualElements: Template[] = [];
+
+    if (isRepeatSchema(schema)) {
+      template = new RepeatTemplate(visualElements);
+      (template as RepeatTemplate).repeat = schema.repeat;
+      template.visualElements.push(this.decompile(schema.spec));
+    } else if (isOverlaySchema(schema)) {
+      template = new LayerTemplate(visualElements);
+
+      schema.layer.forEach((layer: any) => {
+        template.visualElements.push(this.decompile(layer));
+      });
+    } else if (isFacetSchema(schema)) {
+      template = new FacetTemplate(visualElements);
+
+      template.visualElements = [this.getPlotTemplate(schema)];
+    } else if (isConcatenateSchema(schema)) {
+      template = new ConcatTemplate(visualElements);
+
+      if (isVConcatSpec(schema)) {
+        (template as ConcatTemplate).isVertical = true;
+        schema.vconcat.forEach((layer: any) => {
+          template.visualElements.push(this.decompile(layer));
+        });
+      } else if (isHConcatSpec(schema)) {
+        (template as ConcatTemplate).isVertical = false;
+        schema.hconcat.forEach((layer: any) => {
+          template.visualElements.push(this.decompile(layer));
+        });
       }
     }
 
-    return new Layout(layoutType);
+    template.visualElements.forEach(t => t.parent = template);
+
+    return template;
   }
 
-  private decomposeOverlay(spec: any): Template[] {
-    return [];
+  private getPlotTemplate(schema: any) {
+    const plotTemplate = new PlotTemplate('histogram', null);
+    const visualElement = new VisualMarkTemplate(schema.mark, plotTemplate);
+    plotTemplate.visualElements = [visualElement];
+
+    const encodings = this.getEncodingsMapFromPlotSchema(schema);
+    plotTemplate.encodings = encodings;
+
+    return plotTemplate;
   }
 
-  private decomposeRepeat(spec: any): Template[] {
-    return [];
-  }
+  public decompile(schema: any) {
+    let template: Template = null;
 
-  private decomposeConcat(spec: any): Template[] {
-    return [];
-  }
-
-  public decompile(spec: any): Template {
-    let rootTemplate: Template = null;
-    let layout: Layout = null;
-    let visualElements: Template[] = [];
-
-    if (isAtomicSchema(spec)) {
-      layout = this.getAtomicLayout(spec);
-      rootTemplate = new PlotTemplate(layout.type as Plot, null, null);
-
-      Object.keys(spec.encoding).forEach((encoding: MarkEncoding) => {
-        rootTemplate.setEncodedValue(encoding, spec.encoding[encoding]);
-      });
-
-      const markTemplate = new VisualMarkTemplate(spec.mark, rootTemplate);
-      visualElements.push(markTemplate);
-    } else if (isOverlaySchema(spec)) {
-      layout = new Layout('overlay');
-      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
-      visualElements = this.decomposeOverlay(spec);
-    } else if (isRepeatSchema(spec)) {
-      layout = new Layout('repeat');
-      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
-      visualElements = this.decomposeRepeat(spec);
-    } else if (isConcatenateSchema(spec)) {
-      layout = new Layout('concatenate');
-      rootTemplate = new CompositionTemplate(layout.type as Composition, null, null);
-      visualElements = this.decomposeConcat(spec);
+    if (isCompositionSchema(schema)) {
+      template = this.getCompositionTemplate(schema);
+    } else if (isPlotSchema(schema)) {
+      template = this.getPlotTemplate(schema);
     }
 
-    rootTemplate.layout = layout;
-    rootTemplate.visualElements = visualElements;
+    template.description = schema.description;
+    template.dataRef = schema.data;
+    template.selection = schema.selection;
 
-    return rootTemplate;
+    return template;
   }
 }
