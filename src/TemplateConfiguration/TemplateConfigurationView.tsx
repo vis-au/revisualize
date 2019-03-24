@@ -110,13 +110,13 @@ export default class TemplateConfigurationView extends React.Component<Props, St
   }
 
   public componentDidMount() {
-    const newTemplate = getAtomicTemplate();
-    this.props.templates.push(newTemplate);
-    this.props.templates.push(...newTemplate.visualElements);
-    this.props.onTemplatesChanged();
-    this.setState({
-      focusedTemplate: newTemplate
-    });
+    // const newTemplate = getAtomicTemplate();
+    // this.props.templates.push(newTemplate);
+    // this.props.templates.push(...newTemplate.visualElements);
+    // this.props.onTemplatesChanged();
+    // this.setState({
+    //   focusedTemplate: newTemplate
+    // });
   }
 }
 

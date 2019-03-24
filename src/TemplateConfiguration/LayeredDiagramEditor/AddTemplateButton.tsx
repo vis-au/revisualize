@@ -10,6 +10,10 @@ import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
 
 import './AddTemplateButton.css';
+import RepeatTemplate from '../TemplateModel/RepeatTemplate';
+import ConcatTemplate from '../TemplateModel/ConcatTemplate';
+import FacetTemplate from '../TemplateModel/FacetTemplate';
+import LayerTemplate from '../TemplateModel/LayerTemplate';
 
 interface Props {
   addTemplate: (template: Template) => void;
@@ -65,7 +69,19 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   }
 
   private onCompositionClicked(type: Composition) {
-    const newCompositeTemplate = new CompositionTemplate(type, [], null);
+    let templateConstructor: any = RepeatTemplate;
+
+    if (type === 'concatenate') {
+      templateConstructor = ConcatTemplate;
+    } else if (type === 'repeat') {
+      templateConstructor = RepeatTemplate;
+    } else if (type === 'facet') {
+      templateConstructor = FacetTemplate;
+    } else if (type === 'overlay') {
+      templateConstructor = LayerTemplate;
+    }
+
+    const newCompositeTemplate = new templateConstructor([], null);
     newCompositeTemplate.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newCompositeTemplate);

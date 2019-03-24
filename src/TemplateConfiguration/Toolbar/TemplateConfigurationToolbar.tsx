@@ -5,9 +5,10 @@ import Toolbar from '../../Widgets/Toolbar';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
-import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
 import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec } from './SpecPresets';
+import RepeatTemplate from '../TemplateModel/RepeatTemplate';
+import LayerTemplate from '../TemplateModel/LayerTemplate';
 
 import './TemplateConfigurationToolbar.css';
 
@@ -17,7 +18,7 @@ interface Props {
 }
 
 function getScatterplotMatrixPreset(): Template {
-  const compositionTemplate = new CompositionTemplate('repeat', [], null);
+  const compositionTemplate = new RepeatTemplate([]);
   const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
   plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
@@ -31,7 +32,7 @@ function getScatterplotMatrixPreset(): Template {
 }
 
 function getLineChartPreset(): Template {
-  const compositionTemplate = new CompositionTemplate('overlay', [], null);
+  const compositionTemplate = new LayerTemplate([]);
 
   const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
