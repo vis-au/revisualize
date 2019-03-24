@@ -63,47 +63,6 @@ export default class SpecCompiler2 {
     return schema;
   }
 
-  private applyPositionLayout(schema: any, layout: Layout): TopLevelSpec {
-    if (schema.encoding == undefined) {
-      schema.encoding = {};
-    }
-
-    // apply basic positioning for x and y coordinates, without a layouting type
-    if (['cartesian', 'histogram'].indexOf(layout.type) > -1) {
-      schema.encoding.x = {'field': 'a'};
-      schema.encoding.y = {'field': 'b'};
-      schema.encoding.text = {'field': 'b', 'type': 'nominal'};
-    }
-
-    // set the encodings for the marks, based on the layout type
-    if (layout.type === 'cartesian') {
-      schema.encoding.x.type = 'quantitative';
-      schema.encoding.y.type = 'quantitative';
-    } else if (layout.type === 'histogram') {
-      schema.encoding.x.type = 'ordinal';
-      schema.encoding.y.type = 'quantitative';
-    }
-
-    return schema;
-  }
-
-  private applyLayout(template: Template, schema: any, layout: Layout) {
-    if (schema === null) {
-      return schema;
-    }
-    if (layout === null) {
-      return schema;
-    }
-
-    if (positioningLayouts.indexOf(layout.type) > -1) {
-      // schema = this.applyPositionLayout(schema, layout);
-    } else if (compositionLayouts.indexOf(layout.type) > -1) {
-      schema = this.applyCompositionLayout(template, schema, layout);
-    }
-
-    return schema;
-  }
-
   private getSingleLayerSpec(template: Template, layout: Layout): TopLevelSpec {
     let schema: any = null;
 
@@ -111,7 +70,7 @@ export default class SpecCompiler2 {
       schema = this.getVegaSpecification(template);
 
       if (schema !== null) {
-        schema = this.applyLayout(template, schema, layout);
+        schema = this.applyCompositionLayout(template, schema, layout);
       }
     }
 
