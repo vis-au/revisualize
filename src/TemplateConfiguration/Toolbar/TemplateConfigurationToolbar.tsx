@@ -17,8 +17,23 @@ interface Props {
   addTemplates: (templates: Template[]) => void;
 }
 
+const dummyData = {
+  'values': [
+    {'a': 'A', 'b': 28, 'c': 'X'}, {'a': 'B','b': 55, 'c': 'X'}, {'a': 'C','b': 43, 'c': 'Y'},
+    {'a': 'D','b': 91, 'c': 'X'}, {'a': 'E','b': 81, 'c': 'X'}, {'a': 'F','b': 53, 'c': 'Y'},
+    {'a': 'G','b': 19, 'c': 'X'}, {'a': 'H','b': 87, 'c': 'X'}, {'a': 'I','b': 52, 'c': 'Z'}
+  ]
+};
+
+
 function getScatterplotMatrixPreset(): Template {
   const compositionTemplate = new RepeatTemplate([]);
+  compositionTemplate.dataRef = dummyData;
+  compositionTemplate.repeat = {
+    column: ['a', 'c'],
+    row: ['a', 'c'],
+  };
+
   const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
   plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
@@ -33,6 +48,7 @@ function getScatterplotMatrixPreset(): Template {
 
 function getLineChartPreset(): Template {
   const compositionTemplate = new LayerTemplate([]);
+  compositionTemplate.dataRef = dummyData;
 
   const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});

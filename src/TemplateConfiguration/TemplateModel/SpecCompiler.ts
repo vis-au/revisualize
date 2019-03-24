@@ -77,8 +77,10 @@ export default class SpecCompiler2 {
     return schema;
   }
 
-  private getMultiLayerSpec(templates: Template[], layout: Layout): TopLevelSpec {
-    const schema: any = this.getBasicSchema(null);
+  private getMultiLayerSpec(template: Template): TopLevelSpec {
+    const templates = template.visualElements;
+    const layout = template.layout;
+    const schema: any = this.getBasicSchema(this.getDataInHierarchy(template));
 
     const individualSchemas = templates
       .map(t => this.getVegaSpecification(t))
@@ -149,7 +151,7 @@ export default class SpecCompiler2 {
     if (template.visualElements.length === 1) {
       return this.getSingleLayerSpec(template.visualElements[0], template.layout);
     } else if (template.visualElements.length > 1) {
-      return this.getMultiLayerSpec(template.visualElements, template.layout);
+      return this.getMultiLayerSpec(template);
     }
   }
 
