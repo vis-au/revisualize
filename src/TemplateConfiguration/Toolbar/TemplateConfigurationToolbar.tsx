@@ -7,6 +7,7 @@ import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMark';
 import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
+import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec } from './SpecPresets';
 
 import './TemplateConfigurationToolbar.css';
 
@@ -52,6 +53,7 @@ function getLineChartPreset(): Template {
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
   private templatePresets: Map<string, () => Template>;
+  private specPresets: Map<string, any>;
 
   constructor(props: Props) {
     super(props);
@@ -62,27 +64,19 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.templatePresets = new Map();
     this.templatePresets.set('Scatterplot Matrix', getScatterplotMatrixPreset);
     this.templatePresets.set('Line Chart', getLineChartPreset);
+
+    this.specPresets = new Map();
+    this.specPresets.set('population', populationLayerChart);
+    this.specPresets.set('barchart', barchartSpec);
+    this.specPresets.set('scattMatrx', scatterplotMatrixSpec);
+    this.specPresets.set('candlestick', candlestickSpec);
+    this.specPresets.set('concat', concatenateSpec);
   }
 
-  private addTemplateFromSpec() {
+  private addTemplateFromSpec(label: string) {
     const decompiler = new SpecDecompiler();
 
-    const spec = {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
-      'description': 'A simple bar chart with embedded data.',
-      'data': {
-        'values': [
-          {'a': 'A','b': 28}, {'a': 'B','b': 55}, {'a': 'C','b': 43},
-          {'a': 'D','b': 91}, {'a': 'E','b': 81}, {'a': 'F','b': 53},
-          {'a': 'G','b': 19}, {'a': 'H','b': 87}, {'a': 'I','b': 52}
-        ]
-      },
-      'mark': 'bar',
-      'encoding': {
-        'x': {'field': 'a', 'type': 'ordinal'},
-        'y': {'field': 'b', 'type': 'quantitative'}
-      }
-    };
+    const spec = this.specPresets.get(label);
 
     const decompilation = decompiler.decompile(spec);
     this.props.addTemplates(decompilation.getFlatHierarchy());
@@ -121,12 +115,28 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     return templates;
   }
 
+  private renderPresetSpec(label: string) {
+    return (
+      <button onClick={ () => this.addTemplateFromSpec(label) }>{ label }</button>
+    );
+  }
+
+  private renderPresetSpecs(): JSX.Element[] {
+    const specs: JSX.Element[] = [];
+
+    this.specPresets.forEach((preset, key) => {
+      specs.push(this.renderPresetSpec(key));
+    });
+
+    return specs;
+  }
+
   public render() {
     return (
       <Toolbar id="templateToolbar">
         <div id="templateImport">
           <h2>Import</h2>
-          <button onClick={ this.addTemplateFromSpec }>Spec disk</button>
+          { this.renderPresetSpecs() }
         </div>
         <div id="templatePresets">
           <h2>Templates</h2>
