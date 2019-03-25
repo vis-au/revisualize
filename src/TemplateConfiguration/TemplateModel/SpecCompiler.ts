@@ -128,14 +128,14 @@ export default class SpecCompiler {
 
   private getMultiLayerSpec(template: Template): TopLevelSpec {
     const templates = template.visualElements;
-    const schema: any = this.getBasicSchema(this.getDataInHierarchy(template));
+    const schema: any = this.getBasicSchema(template.dataRef);
 
     const individualSchemas = templates
       .map(t => this.getVegaSpecification(t))
       .filter(t => t !== null);
 
     const individualViewAbstractions = individualSchemas.map(s => {
-      return getAbstraction(s, null);
+      return getAbstraction(s);
     });
 
     if (template instanceof ConcatTemplate) {
@@ -145,6 +145,15 @@ export default class SpecCompiler {
         schema.hconcat = individualViewAbstractions;
       }
     } else if (template instanceof LayerTemplate) {
+
+      if (template.groupEncodings.size > 0) {
+        schema.encoding = {};
+        template.groupEncodings.forEach((value, key) => schema.encoding[key] = value);
+        individualViewAbstractions.forEach(abstraction => {
+          delete abstraction.data;
+        });
+      }
+
       schema.layer = individualViewAbstractions;
     }
 

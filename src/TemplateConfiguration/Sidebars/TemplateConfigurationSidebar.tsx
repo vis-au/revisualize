@@ -23,7 +23,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.renderEncodings = this.renderEncodings.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
 
-    this.state = { hidden: false };
+    this.state = { hidden: true };
   }
 
   public onToggle() {

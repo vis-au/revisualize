@@ -9,8 +9,7 @@ import RepeatTemplate from "./RepeatTemplate";
 import LayerTemplate from "./LayerTemplate";
 import FacetTemplate from "./FacetTemplate";
 import ConcatTemplate from "./ConcatTemplate";
-import { isRepeatRef, Field, isFieldDef } from "vega-lite/build/src/fielddef";
-import { string } from "prop-types";
+import { isRepeatRef, isFieldDef } from "vega-lite/build/src/fielddef";
 
 export default class SchemaDecompiler {
 
@@ -73,6 +72,13 @@ export default class SchemaDecompiler {
       template.visualElements = [childTemplate];
     } else if (isOverlaySchema(schema)) {
       template = new LayerTemplate(visualElements);
+
+      if (schema.encoding !== undefined) {
+        const groupEncodings = Object.keys(schema.encoding);
+        groupEncodings.forEach((encoding: MarkEncoding) => {
+          (template as LayerTemplate).groupEncodings.set(encoding, schema.encoding[encoding]);
+        });
+      }
 
       schema.layer.forEach((layer: any) => {
         template.visualElements.push(this.decompile(layer));

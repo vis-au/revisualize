@@ -1,5 +1,5 @@
 import { Composition, Plot } from "./LayoutType";
-import { isUnitSpec, isLayerSpec, isRepeatSpec, isConcatSpec, isFacetSpec } from "vega-lite/build/src/spec";
+import { isUnitSpec, isLayerSpec, isRepeatSpec, isConcatSpec, isFacetSpec, GenericLayerSpec, ExtendedLayerSpec, GenericRepeatSpec, NormalizedRepeatSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedUnitSpec, GenericVConcatSpec, GenericHConcatSpec } from "vega-lite/build/src/spec";
 
 
 export function isAtomicSchema(schema: any): boolean {
@@ -51,17 +51,29 @@ export function getPlotType(schema: any): Plot {
   return 'histogram';
 };
 
-export function getOverlayAbstraction(schema: any) {
+export function getLayerAbstraction(schema: ExtendedLayerSpec) {
   const currentLayers = JSON.parse(JSON.stringify(schema.layer));
+  let currentEncoding: any;
+
+  if (schema.encoding !== undefined) {
+    currentEncoding = JSON.parse(JSON.stringify(schema.encoding));
+  }
 
   delete schema.layer;
+  delete schema.encoding;
 
-  return {
+  const abstraction: any = {
     layer: currentLayers
   }
+
+  if (currentEncoding !== undefined) {
+    abstraction.encoding = currentEncoding;
+  }
+
+  return abstraction;
 };
 
-export function getRepeatAbstraction(schema: any) {
+export function getRepeatAbstraction(schema: NormalizedRepeatSpec) {
   const currentSpec = JSON.parse(JSON.stringify(schema.spec));
   const currentRepeat = JSON.parse(JSON.stringify(schema.repeat));
 
@@ -76,20 +88,20 @@ export function getRepeatAbstraction(schema: any) {
   return abstraction;
 };
 
-export function getConcatAbstraction(schema: any) {
+export function getConcatAbstraction(schema: NormalizedConcatSpec) {
   let currentConcat: any = null;
   let concatProp: string = null;
 
-  if (schema.concat !== undefined) {
+  if ((schema as any).concat !== undefined) {
     concatProp = 'concat';
-  } else if (schema.hconcat !== undefined)  {
+  } else if ((schema as GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>).hconcat !== undefined)  {
     concatProp = 'hconcat';
-  } else if (schema.vconcat !== undefined) {
+  } else if ((schema as GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>).vconcat !== undefined) {
     concatProp = 'vconcat';
   }
 
-  currentConcat = JSON.parse(JSON.stringify(schema[concatProp]));
-  delete schema[concatProp];
+  currentConcat = JSON.parse(JSON.stringify((schema as any)[concatProp]));
+  delete (schema as any)[concatProp];
 
   const abstraction: any = {};
   abstraction[concatProp] = currentConcat;
@@ -155,7 +167,7 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
   if (isAtomicSchema(schema)) {
     abstraction = getAtomicAbstraction(schema, compositionProperty);
   } else if (isOverlaySchema(schema)) {
-    abstraction = getOverlayAbstraction(schema);
+    abstraction = getLayerAbstraction(schema);
   } else if (isRepeatSchema(schema)) {
     abstraction = getRepeatAbstraction(schema);
   } else if (isConcatenateSchema(schema)) {
