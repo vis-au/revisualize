@@ -9,6 +9,8 @@ import PlotTemplate from './PlotTemplate';
 import CompositionTemplate from './CompositionTemplate';
 import { Data } from 'vega-lite/build/src/data';
 import RepeatTemplate from './RepeatTemplate';
+import ConcatTemplate from './ConcatTemplate';
+import LayerTemplate from './LayerTemplate';
 
 const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
 const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
@@ -20,6 +22,23 @@ export default class SpecCompiler2 {
       '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
       'data': data
     };
+  }
+
+  private setCommonToplevelProperties(schema: any, template: Template) {
+    if (template.bounds !== undefined) {
+      schema.bounds = template.bounds;
+    }
+    if (template.spacing !== undefined) {
+      schema.spacing = template.spacing;
+    }
+    if (template.height !== undefined) {
+      schema.height = template.height;
+    }
+    if (template.width !== undefined) {
+      schema.width = template.width;
+    }
+
+    return schema;
   }
 
   private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
@@ -79,7 +98,6 @@ export default class SpecCompiler2 {
 
   private getMultiLayerSpec(template: Template): TopLevelSpec {
     const templates = template.visualElements;
-    const layout = template.layout;
     const schema: any = this.getBasicSchema(this.getDataInHierarchy(template));
 
     const individualSchemas = templates
@@ -90,9 +108,13 @@ export default class SpecCompiler2 {
       return getAbstraction(s, null);
     });
 
-    if (layout.type === 'concatenate') {
-      schema.vconcat = individualViewAbstractions;
-    } else if (layout.type === 'overlay') {
+    if (template instanceof ConcatTemplate) {
+      if (template.isVertical) {
+        schema.vconcat = individualViewAbstractions;
+      } else {
+        schema.hconcat = individualViewAbstractions;
+      }
+    } else if (template instanceof LayerTemplate) {
       schema.layer = individualViewAbstractions;
     }
 
@@ -102,7 +124,7 @@ export default class SpecCompiler2 {
   private getVisualMarkSchema(template: Template) {
     let schema: any = null;
 
-    schema = this.getPlotSchema(template);
+    schema = this.getPlotSchema(template as PlotTemplate);
 
     return schema;
   }
@@ -166,6 +188,7 @@ export default class SpecCompiler2 {
       schema = this.getCompositionSchema(template);
     }
 
+    schema = this.setCommonToplevelProperties(schema, template);
     console.log(schema);
 
     return schema;

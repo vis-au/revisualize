@@ -1,8 +1,11 @@
 import Template from "./Template";
 import { Plot } from "./LayoutType";
 import Layout from "./Layout";
+import { SelectionDef } from "vega-lite/build/src/selection";
 
 export default class PlotTemplate extends Template {
+  public selection?: SelectionDef;
+
   constructor(plot: Plot, visualElement: Template, parent: Template = null) {
     const plotLayout = new Layout(plot);
     const visualElements = visualElement === null ? [] : [visualElement];

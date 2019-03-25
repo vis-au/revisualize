@@ -1,16 +1,20 @@
 import { Data } from 'vega-lite/build/src/data';
 import { FieldDef } from 'vega-lite/build/src/fielddef';
-import { SelectionDef } from 'vega-lite/build/src/selection';
 
 import Layout from './Layout';
 import { MarkEncoding } from './MarkEncoding';
+import { BoundsMixins } from 'vega-lite/build/src/toplevelprops';
+import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
 
 export default abstract class Template {
   public id: string;
   public hierarchyLevel: number;
   public dataRef: Data;
   public description: string;
-  public selection: SelectionDef;
+  public bounds: BoundsMixins;
+  public spacing: BarBinSpacingMixins;
+  public width: number;
+  public height: number;
 
   public encodings: Map<MarkEncoding, FieldDef<any>>;
 

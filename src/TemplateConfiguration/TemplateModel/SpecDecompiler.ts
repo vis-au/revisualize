@@ -25,6 +25,13 @@ export default class SchemaDecompiler {
     return templateEncodings;
   }
 
+  private setCommonToplevelProperties(schema: any, template: Template) {
+    template.bounds = schema.bounds;
+    template.spacing = schema.spacing;
+    template.width = schema.width;
+    template.height = schema.height;
+  }
+
   private getCompositionTemplate(schema: any) {
     let template: Template = null;
     let visualElements: Template[] = [];
@@ -60,6 +67,7 @@ export default class SchemaDecompiler {
     }
 
     template.visualElements.forEach(t => t.parent = template);
+    this.setCommonToplevelProperties(schema, template);
 
     return template;
   }
@@ -70,6 +78,7 @@ export default class SchemaDecompiler {
     plotTemplate.visualElements = [visualElement];
 
     const encodings = this.getEncodingsMapFromPlotSchema(schema);
+    this.setCommonToplevelProperties(schema, plotTemplate);
     plotTemplate.encodings = encodings;
 
     return plotTemplate;
@@ -86,7 +95,10 @@ export default class SchemaDecompiler {
 
     template.description = schema.description;
     template.dataRef = schema.data;
-    template.selection = schema.selection;
+
+    if (template instanceof PlotTemplate) {
+      template.selection = schema.selection;
+    }
 
     return template;
   }

@@ -91,9 +91,10 @@ export function getConcatAbstraction(schema: any) {
   currentConcat = JSON.parse(JSON.stringify(schema[concatProp]));
   delete schema[concatProp];
 
-  return {
-    concatProp: currentConcat
-  };
+  const abstraction: any = {};
+  abstraction[concatProp] = currentConcat;
+
+  return abstraction;
 };
 
 export function getAtomicAbstraction(schema: any, compositionProperty: string) {
@@ -128,6 +129,23 @@ export function getAtomicAbstraction(schema: any, compositionProperty: string) {
   return abstraction;
 };
 
+export function getCommonTopLevelAbstractions(schema: any, abstraction: any) {
+  if (schema.bounds !== undefined) {
+    abstraction.bounds = schema.bounds;
+  }
+  if (schema.spacing !== undefined) {
+    abstraction.spacing = schema.spacing;
+  }
+  if (schema.width !== undefined) {
+    abstraction.width = schema.width;
+  }
+  if (schema.height !== undefined) {
+    abstraction.height = schema.height;
+  }
+
+  return abstraction;
+};
+
 export function getAbstraction(schema: any, compositionProperty?: string): any {
   let abstraction: any = null;
 
@@ -140,6 +158,8 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
   } else if (isConcatenateSchema(schema)) {
     abstraction = getConcatAbstraction(schema);
   }
+
+  abstraction = getCommonTopLevelAbstractions(schema, abstraction);
 
   return abstraction;
 };
