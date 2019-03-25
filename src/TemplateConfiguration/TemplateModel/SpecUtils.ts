@@ -129,7 +129,7 @@ export function getAtomicAbstraction(schema: any, compositionProperty: string) {
   return abstraction;
 };
 
-export function getCommonTopLevelAbstractions(schema: any, abstraction: any) {
+export function setSingleViewProperties(schema: any, abstraction: any) {
   if (schema.bounds !== undefined) {
     abstraction.bounds = schema.bounds;
   }
@@ -159,7 +159,7 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
     abstraction = getConcatAbstraction(schema);
   }
 
-  abstraction = getCommonTopLevelAbstractions(schema, abstraction);
+  abstraction = setSingleViewProperties(schema, abstraction);
 
   return abstraction;
 };

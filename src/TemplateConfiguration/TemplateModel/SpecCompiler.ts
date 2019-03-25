@@ -1,7 +1,6 @@
 import { TopLevelSpec } from 'vega-lite';
 
 import Layout from './Layout';
-import { LayoutType } from './LayoutType';
 import { getAbstraction } from './SpecUtils';
 import Template from './Template';
 import VisualMarkTemplate from './VisualMark';
@@ -12,11 +11,7 @@ import RepeatTemplate from './RepeatTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import LayerTemplate from './LayerTemplate';
 
-const compositionLayouts: LayoutType[] = ['repeat', 'overlay', 'concatenate', 'facet'];
-const positioningLayouts: LayoutType[]= ['cartesian', 'histogram', 'node-link'];
-
-export default class SpecCompiler2 {
-
+export default class SpecCompiler {
   public getBasicSchema(data: Data) {
     return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
@@ -24,7 +19,7 @@ export default class SpecCompiler2 {
     };
   }
 
-  private setCommonToplevelProperties(schema: any, template: Template) {
+  private setSingleViewProperties(schema: any, template: Template) {
     if (template.bounds !== undefined) {
       schema.bounds = template.bounds;
     }
@@ -188,7 +183,7 @@ export default class SpecCompiler2 {
       schema = this.getCompositionSchema(template);
     }
 
-    schema = this.setCommonToplevelProperties(schema, template);
+    schema = this.setSingleViewProperties(schema, template);
     console.log(schema);
 
     return schema;

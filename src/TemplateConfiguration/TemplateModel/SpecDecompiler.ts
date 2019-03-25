@@ -1,12 +1,10 @@
 import { isVConcatSpec, isHConcatSpec } from "vega-lite/build/src/spec";
 
-import CompositionTemplate from "./CompositionTemplate";
 import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema } from "./SpecUtils";
 import PlotTemplate from "./PlotTemplate";
 import Template from "./Template";
 import VisualMarkTemplate from "./VisualMark";
 import { MarkEncoding } from "./MarkEncoding";
-import Layout from "./Layout";
 import RepeatTemplate from "./RepeatTemplate";
 import LayerTemplate from "./LayerTemplate";
 import FacetTemplate from "./FacetTemplate";
@@ -25,7 +23,9 @@ export default class SchemaDecompiler {
     return templateEncodings;
   }
 
-  private setCommonToplevelProperties(schema: any, template: Template) {
+  private setSingleViewProperties(schema: any, template: Template) {
+    template.description = schema.description;
+    template.dataRef = schema.data;
     template.bounds = schema.bounds;
     template.spacing = schema.spacing;
     template.width = schema.width;
@@ -67,7 +67,6 @@ export default class SchemaDecompiler {
     }
 
     template.visualElements.forEach(t => t.parent = template);
-    this.setCommonToplevelProperties(schema, template);
 
     return template;
   }
@@ -78,7 +77,6 @@ export default class SchemaDecompiler {
     plotTemplate.visualElements = [visualElement];
 
     const encodings = this.getEncodingsMapFromPlotSchema(schema);
-    this.setCommonToplevelProperties(schema, plotTemplate);
     plotTemplate.encodings = encodings;
 
     return plotTemplate;
@@ -93,8 +91,7 @@ export default class SchemaDecompiler {
       template = this.getPlotTemplate(schema);
     }
 
-    template.description = schema.description;
-    template.dataRef = schema.data;
+    this.setSingleViewProperties(schema, template);
 
     if (template instanceof PlotTemplate) {
       template.selection = schema.selection;
