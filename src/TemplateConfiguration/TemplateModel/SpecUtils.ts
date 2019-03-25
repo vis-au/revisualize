@@ -180,7 +180,7 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
     abstraction.height = JSON.parse(JSON.stringify(schema.height));
   }
   if (schema.data !== undefined) {
-    // abstraction.data = JSON.parse(JSON.stringify(schema.data));
+    abstraction.data = JSON.parse(JSON.stringify(schema.data));
   }
   if (schema.transform !== undefined) {
     abstraction.transform = JSON.parse(JSON.stringify(schema.transform));
