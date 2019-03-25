@@ -47,8 +47,7 @@
   margin: 0;
   min-width: 100px;
   min-height: 100px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   transition: width 0.4s ease-in-out;
 }
 .layeredDiagramEditor .column.placeholder .layer {
@@ -71,6 +70,7 @@
   padding: 1rem;
   min-width: 100px;
   min-height: 100px;
+  overflow: auto;
 }
 .layeredDiagramEditor .column.placeholder .layer .templates {
   padding: 0;

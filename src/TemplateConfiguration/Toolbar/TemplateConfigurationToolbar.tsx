@@ -6,7 +6,7 @@ import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
 import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
-import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec, stackedBarchartPreset, parallelCoordinatesPreset } from './SpecPresets';
+import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec, stackedBarchartPreset, parallelCoordinatesPreset, repeatOverlayPreset } from './SpecPresets';
 import RepeatTemplate from '../TemplateModel/RepeatTemplate';
 import LayerTemplate from '../TemplateModel/LayerTemplate';
 
@@ -90,6 +90,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.specPresets.set('concat', concatenateSpec);
     this.specPresets.set('stackedBC', stackedBarchartPreset);
     this.specPresets.set('parallelCoords', parallelCoordinatesPreset);
+    this.specPresets.set('repeatOverlay', repeatOverlayPreset);
   }
 
   private addTemplateFromSpec(label: string) {
