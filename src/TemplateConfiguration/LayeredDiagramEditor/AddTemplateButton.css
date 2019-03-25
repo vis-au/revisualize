@@ -19,9 +19,6 @@
   box-shadow: 0 2px 4px #ccc;
   z-index: 100000;
 }
-.addTemplateWidget.right .templateLists {
-  left: 50px;
-}
 .addTemplateWidget .templateLists h2 {
   font-size: 14px;
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Mark } from 'vega-lite/build/src/mark';
 
-import { COMPOSITION_TYPES, PLOT_TYPES, Plot, Composition } from '../TemplateModel/LayoutType';
+import { COMPOSITION_TYPES, Plot, Composition } from '../TemplateModel/LayoutType';
 import { MARK_TYPES } from '../TemplateModel/MarkType';
 import Template from '../TemplateModel/Template';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
@@ -119,26 +119,44 @@ export default class AddTemplateButton extends React.Component<Props, State> {
     );
   }
 
+  private renderLayoutGroup() {
+    if (this.props.layer === 0) {
+      return (
+        <div className="templateList">
+          <h2>Marks</h2>
+          <ul onClick={ this.hideDropdown } className="marks">
+            { MARK_TYPES.map(this.renderMarkBlock)}
+          </ul>
+        </div>
+      );
+    } else {
+      return (
+        <div className="templateList">
+          <h2>Compositions</h2>
+          <ul onClick={ this.hideDropdown } className="layouts">
+            { COMPOSITION_TYPES.map(this.renderCompositionBlock) }
+          </ul>
+        </div>
+      );
+    }
+  }
+
+  private renderLayoutGroups() {
+    return (
+      <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
+        { this.renderLayoutGroup() }
+      </div>
+    );
+  }
+
   public render() {
     const orientation = this.props.right ? 'right' : 'left';
 
     return (
       <div className={ `addTemplateWidget ${orientation}` }>
         <button className="floatingAddButton addTemplate" onClick={ this.toggleDropdown }>+</button>
-        <div className={ `templateLists ${this.state.isDropdownHidden ? 'hidden' : ''}` }>
-          <h2>Compositions</h2>
-          <ul onClick={ this.hideDropdown } className="layouts">
-            { COMPOSITION_TYPES.map(this.renderCompositionBlock) }
-          </ul>
-          <h2>Plots</h2>
-          <ul>
-            { PLOT_TYPES.map(this.renderPlotBlock) }
-          </ul>
-          <h2>Marks</h2>
-          <ul onClick={ this.hideDropdown } className="marks">
-            { MARK_TYPES.map(this.renderMarkBlock)}
-          </ul>
-        </div>
+
+        { this.renderLayoutGroups() }
       </div>
     );
   }
