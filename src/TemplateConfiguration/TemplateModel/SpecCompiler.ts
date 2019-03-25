@@ -11,6 +11,14 @@ import RepeatTemplate from './RepeatTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import LayerTemplate from './LayerTemplate';
 
+const dummyData = {
+  'values': [
+    {'a': 'A', 'b': 28, 'c': 'X'}, {'a': 'B','b': 55, 'c': 'X'}, {'a': 'C','b': 43, 'c': 'Y'},
+    {'a': 'D','b': 91, 'c': 'X'}, {'a': 'E','b': 81, 'c': 'X'}, {'a': 'F','b': 53, 'c': 'Y'},
+    {'a': 'G','b': 19, 'c': 'X'}, {'a': 'H','b': 87, 'c': 'X'}, {'a': 'I','b': 52, 'c': 'Z'}
+  ]
+};
+
 export default class SpecCompiler {
   public getBasicSchema(data: Data) {
     return {
@@ -91,6 +99,31 @@ export default class SpecCompiler {
     return schema;
   }
 
+  private getDataInHierarchy(template: Template) {
+    if (template instanceof VisualMarkTemplate) {
+      return dummyData;
+    }
+
+    // data can be stored either in a child node or on the top level template, therefore find the
+    // top level, get its flat hierarchy and find a template with a dataset bound to it
+    let topLevelTemplate: Template = template;
+
+    while (topLevelTemplate.parent !== null) {
+      if (topLevelTemplate.dataRef !== undefined && topLevelTemplate.dataRef !== null) {
+        return topLevelTemplate.dataRef;
+      }
+
+      topLevelTemplate = topLevelTemplate.parent;
+    }
+
+    const flatHierarchy = topLevelTemplate.getFlatHierarchy();
+    const dataTemplate: Template = flatHierarchy.find(t => {
+      return t.dataRef !== null && t.dataRef !== undefined;
+    });
+
+    return dataTemplate.dataRef;
+  }
+
   private getMultiLayerSpec(template: Template): TopLevelSpec {
     const templates = template.visualElements;
     const schema: any = this.getBasicSchema(this.getDataInHierarchy(template));
@@ -124,23 +157,6 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getDataInHierarchy(template: Template) {
-    // data can be stored either in a child node or on the top level template, therefore find the
-    // top level, get its flat hierarchy and find a template with a dataset bound to it
-    let topLevelTemplate: Template = template;
-
-    while (topLevelTemplate.parent !== null) {
-      topLevelTemplate = topLevelTemplate.parent;
-    }
-
-    const flatHierarchy = topLevelTemplate.getFlatHierarchy();
-    const dataTemplate: Template = flatHierarchy.find(t => {
-      return t.dataRef !== null && t.dataRef !== undefined;
-    });
-
-    return dataTemplate.dataRef;
-  }
-
   private getPlotSchema(template: PlotTemplate) {
     const data = this.getDataInHierarchy(template);
     const schema = this.getBasicSchema(data) as any;
@@ -165,11 +181,16 @@ export default class SpecCompiler {
   }
 
   private getCompositionSchema(template: Template) {
+    let schema: any = null;
+
     if (template.visualElements.length === 1) {
-      return this.getSingleLayerSpec(template.visualElements[0], template.layout);
+      schema = this.getSingleLayerSpec(template.visualElements[0], template.layout);
     } else if (template.visualElements.length > 1) {
-      return this.getMultiLayerSpec(template);
+      schema = this.getMultiLayerSpec(template);
     }
+
+    schema.data = this.getDataInHierarchy(template);
+    return schema;
   }
 
   public getVegaSpecification(template: Template) {

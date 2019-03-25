@@ -131,16 +131,19 @@ export function getAtomicAbstraction(schema: any, compositionProperty: string) {
 
 export function setSingleViewProperties(schema: any, abstraction: any) {
   if (schema.bounds !== undefined) {
-    abstraction.bounds = schema.bounds;
+    abstraction.bounds = JSON.parse(JSON.stringify(schema.bounds));
   }
   if (schema.spacing !== undefined) {
-    abstraction.spacing = schema.spacing;
+    abstraction.spacing = JSON.parse(JSON.stringify(schema.spacing));
   }
   if (schema.width !== undefined) {
-    abstraction.width = schema.width;
+    abstraction.width = JSON.parse(JSON.stringify(schema.width));
   }
   if (schema.height !== undefined) {
-    abstraction.height = schema.height;
+    abstraction.height = JSON.parse(JSON.stringify(schema.height));
+  }
+  if (schema.data !== undefined) {
+    abstraction.data = JSON.parse(JSON.stringify(schema.data));
   }
 
   return abstraction;
