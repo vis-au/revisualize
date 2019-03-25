@@ -4,9 +4,10 @@ import { Data } from 'vega-lite/build/src/data';
 import VegaRenderer from '../../Model/Renderer/VegaRenderer';
 import SpecCompiler from '../TemplateModel/SpecCompiler';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 
 import './TemplatePreview.css';
+import { parallelCoordinatesPreset } from '../Toolbar/SpecPresets';
 
 interface Props {
   template: Template
@@ -26,7 +27,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
 
   private renderVegaPreview() {
     const template = this.props.template;
-    let spec: any = this.specCompiler.getVegaSpecification(template);
+    let spec = this.specCompiler.getVegaSpecification(template);
 
     if (template instanceof VisualMarkTemplate) {
       const dummyData: Data = {
@@ -36,8 +37,8 @@ export default class TemplatePreview extends React.Component<Props, State> {
           {a: 2, b: 1, c: 'z'},
         ]
       },
-      spec = this.specCompiler.getBasicSchema(dummyData) as any;
-      spec.data =
+      spec = this.specCompiler.getBasicSchema();
+      spec.data = dummyData;
       spec.mark = template.type;
       spec.encoding = {
         x: { field: 'a', type: 'quantitative', axis: { labels: false, title: null, domain: false, range: false, ticks: false, grid: false } },

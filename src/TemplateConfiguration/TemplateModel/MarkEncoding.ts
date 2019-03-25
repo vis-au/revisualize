@@ -1,4 +1,4 @@
-import { FieldDef, isValueDef, ValueDef, MarkPropFieldDef } from "vega-lite/build/src/fielddef";
+import { FieldDef, ValueDef, MarkPropFieldDef } from "vega-lite/build/src/fielddef";
 
 export type PositionEncoding = 'x' | 'y' | 'x2' | 'y2';
 export const positionEncodings: PositionEncoding[] = ['x', 'y', 'x2', 'y2'];
@@ -36,6 +36,15 @@ export const facetChannelEncodings: FacetChannelEncoding[] = ['facet', 'row', 'c
 export type MarkEncoding = PositionEncoding | GeographicPositionEncoding
   | MarkPropertiesChannelEncoding | TextTooltipChannelEncoding | HyperLinkChannelEncoding
   | KeyChannelEncoding |  OrderChannelEncoding | LoDChannelEncoding | FacetChannelEncoding;
+
+export const markEncodings: MarkEncoding[] = (positionEncodings as MarkEncoding[])
+  .concat(geographicPositionEncodings)
+  .concat(markPropertiesChannelEncodings)
+  .concat(textTooltipChannelEncodings)
+  .concat(hyperLinkChannelEncodings)
+  .concat(orderChannelEncodings)
+  .concat(loDChannelEncodings)
+  .concat(facetChannelEncodings);
 
 export type MarkEncodingGroup = 'position' | 'geographic' | 'mark property' | 'text tooltip'
   | 'hyperlink' | 'key channel' | 'order channel' | 'lod channel' | 'facet channel';

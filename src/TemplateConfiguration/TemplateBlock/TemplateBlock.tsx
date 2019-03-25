@@ -4,7 +4,7 @@ import LayoutBlock from './LayoutBlock';
 import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
 

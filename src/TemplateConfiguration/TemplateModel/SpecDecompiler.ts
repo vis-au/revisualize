@@ -1,9 +1,9 @@
 import { isVConcatSpec, isHConcatSpec } from "vega-lite/build/src/spec";
 
-import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema } from "./SpecUtils";
+import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema, getMarkPropertiesAsMap } from "./SpecUtils";
 import PlotTemplate from "./PlotTemplate";
 import Template from "./Template";
-import VisualMarkTemplate from "./VisualMark";
+import VisualMarkTemplate from "./VisualMarkTemplate";
 import { MarkEncoding } from "./MarkEncoding";
 import RepeatTemplate from "./RepeatTemplate";
 import LayerTemplate from "./LayerTemplate";
@@ -15,6 +15,13 @@ export default class SchemaDecompiler {
 
   private getEncodingsMapFromPlotSchema(schema: any) {
     const templateEncodings = new Map<MarkEncoding, any>();
+
+    // a mark can also be configured using the "global" encoding of layered views, in this case the
+    // mark's encoding can be empty
+    if (schema.encoding === undefined) {
+      return templateEncodings;
+    }
+
     const schemaEncodings = Object.keys(schema.encoding) as MarkEncoding[];
 
     schemaEncodings.forEach((encoding: MarkEncoding) => {
@@ -26,11 +33,13 @@ export default class SchemaDecompiler {
 
   private setSingleViewProperties(schema: any, template: Template) {
     template.description = schema.description;
-    template.dataRef = schema.data;
+    template.data = schema.data;
     template.bounds = schema.bounds;
     template.spacing = schema.spacing;
     template.width = schema.width;
     template.height = schema.height;
+    template.transform = schema.transform;
+    template.config = schema.config;
   }
 
   private applyRepeatBindingWorkaround(repeatTemplate: RepeatTemplate, childTemplate: Template) {
@@ -110,11 +119,15 @@ export default class SchemaDecompiler {
 
   private getPlotTemplate(schema: any) {
     const plotTemplate = new PlotTemplate('histogram', null);
-    const visualElement = new VisualMarkTemplate(schema.mark, plotTemplate);
+    const markType = typeof schema.mark === 'string' ? schema.mark : schema.mark.type;
+    const visualElement = new VisualMarkTemplate(markType, plotTemplate);
     plotTemplate.visualElements = [visualElement];
 
     const encodings = this.getEncodingsMapFromPlotSchema(schema);
+    const properties = getMarkPropertiesAsMap(schema.mark);
+
     plotTemplate.encodings = encodings;
+    plotTemplate.staticMarkProperties = properties;
 
     return plotTemplate;
   }

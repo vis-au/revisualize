@@ -4,9 +4,9 @@ import { Mark } from 'vega-lite/build/src/mark';
 import Toolbar from '../../Widgets/Toolbar';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
-import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec } from './SpecPresets';
+import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec, stackedBarchartPreset, parallelCoordinatesPreset } from './SpecPresets';
 import RepeatTemplate from '../TemplateModel/RepeatTemplate';
 import LayerTemplate from '../TemplateModel/LayerTemplate';
 
@@ -28,7 +28,7 @@ const dummyData = {
 
 function getScatterplotMatrixPreset(): Template {
   const compositionTemplate = new RepeatTemplate([]);
-  compositionTemplate.dataRef = dummyData;
+  compositionTemplate.data = dummyData;
   compositionTemplate.repeat = {
     column: ['a', 'c'],
     row: ['a', 'c'],
@@ -48,7 +48,7 @@ function getScatterplotMatrixPreset(): Template {
 
 function getLineChartPreset(): Template {
   const compositionTemplate = new LayerTemplate([]);
-  compositionTemplate.dataRef = dummyData;
+  compositionTemplate.data = dummyData;
 
   const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
@@ -88,6 +88,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.specPresets.set('scattMatrx', scatterplotMatrixSpec);
     this.specPresets.set('candlestick', candlestickSpec);
     this.specPresets.set('concat', concatenateSpec);
+    this.specPresets.set('stackedBC', stackedBarchartPreset);
+    this.specPresets.set('parallelCoords', parallelCoordinatesPreset);
   }
 
   private addTemplateFromSpec(label: string) {
@@ -134,7 +136,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
 
   private renderPresetSpec(label: string) {
     return (
-      <button onClick={ () => this.addTemplateFromSpec(label) }>{ label }</button>
+      <button key={ label } onClick={ () => this.addTemplateFromSpec(label) }>{ label }</button>
     );
   }
 

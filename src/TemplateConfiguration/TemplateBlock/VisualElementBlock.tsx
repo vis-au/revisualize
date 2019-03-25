@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 
 import './VisualElementBlock.css';
 

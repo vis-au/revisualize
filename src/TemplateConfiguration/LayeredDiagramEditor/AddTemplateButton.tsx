@@ -4,7 +4,7 @@ import { Mark } from 'vega-lite/build/src/mark';
 import { COMPOSITION_TYPES, PLOT_TYPES, Plot, Composition } from '../TemplateModel/LayoutType';
 import { MARK_TYPES } from '../TemplateModel/MarkType';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';

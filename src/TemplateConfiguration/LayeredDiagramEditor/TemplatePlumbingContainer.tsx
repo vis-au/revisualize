@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import LayeredDiagramEditor from './LayeredDiagramEditor';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMark';
+import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 
 interface Props {
   templates: Template[],

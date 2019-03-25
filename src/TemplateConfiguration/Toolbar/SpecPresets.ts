@@ -484,3 +484,133 @@ export const concatenateSpec: any = {
     }
   }
 };
+
+export const stackedBarchartPreset = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {"url": "https://vega.github.io/editor/data/seattle-weather.csv"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "ordinal",
+      "axis": {"title": "Month of the year"}
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "weather",
+      "type": "nominal",
+      "scale": {
+        "domain": ["sun","fog","drizzle","rain","snow"],
+        "range": ["#e7ba52","#c7c7c7","#aec7e8","#1f77b4","#9467bd"]
+      },
+      "legend": {"title": "Weather type"}
+    }
+  }
+};
+
+export const parallelCoordinatesPreset: any = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
+  "data": {
+    "url": "https://vega.github.io/editor/data/iris.json"
+  },
+  "width": 600,
+  "height": 300,
+  "transform": [
+    {"window": [{"op": "count", "as": "index"}]},
+    {"fold": ["petalLength", "petalWidth", "sepalLength", "sepalWidth"]},
+    {
+      "joinaggregate": [
+        {"op": "min", "field": "value", "as": "min"},
+        {"op": "max", "field": "value", "as": "max"}
+      ],
+      "groupby": ["key"]
+    },
+    {
+      "calculate": "(datum.value - datum.min) / (datum.max-datum.min)",
+      "as": "norm_val"
+    },
+    {
+      "calculate": "(datum.min + datum.max) / 2",
+      "as": "mid"
+    }
+  ],
+  "layer": [{
+    "mark": {"type": "rule", "color": "#ccc", "tooltip": null},
+    "encoding": {
+      "detail": {"aggregate": "count", "type": "quantitative"},
+      "x": {"type": "nominal", "field": "key"}
+    }
+  }, {
+    "mark": "line",
+    "encoding": {
+      "color": {"type": "nominal", "field": "species"},
+      "detail": {"type": "nominal", "field": "index"},
+      "opacity": {"value": 0.3},
+      "x": {"type": "nominal", "field": "key"},
+      "y": {"type": "quantitative", "field": "norm_val", "axis": null},
+      "tooltip": [{
+        "field": "petalLength"
+      }, {
+        "field": "petalWidth"
+      }, {
+        "field": "sepalLength"
+      }, {
+        "field": "sepalWidth"
+      }]
+    }
+  },{
+    "encoding": {
+      "x": {"type": "nominal", "field": "key"},
+      "y": {"value": 0}
+    },
+    "layer": [{
+      "mark": {"type": "text", "style": "label"},
+      "encoding": {
+        "text": {"aggregate": "max", "field": "max", "type": "quantitative"}
+      }
+    }, {
+      "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
+    }]
+  },{
+
+    "encoding": {
+      "x": {"type": "nominal", "field": "key"},
+      "y": {"value": 150}
+    },
+    "layer": [{
+      "mark": {"type": "text", "style": "label"},
+      "encoding": {
+        "text": {"aggregate": "min", "field": "mid", "type": "quantitative"}
+      }
+    }, {
+      "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
+    }]
+  },{
+    "encoding": {
+      "x": {"type": "nominal", "field": "key"},
+      "y": {"value": 300}
+    },
+    "layer": [{
+      "mark": {"type": "text", "style": "label"},
+      "encoding": {
+        "text": {"aggregate": "min", "field": "min", "type": "quantitative"}
+      }
+    }, {
+      "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
+    }]
+  }],
+  "config": {
+    "axisX": {"domain": false, "labelAngle": 0, "tickColor": "#ccc", "title": false},
+    "view": {"stroke": null},
+    "style": {
+      "label": {"baseline": "middle", "align": "right", "dx": -5, "tooltip": null},
+      "tick": {"orient": "horizontal", "tooltip": null}
+    }
+  }
+};
+

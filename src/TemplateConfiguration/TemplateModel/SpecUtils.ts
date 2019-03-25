@@ -1,5 +1,6 @@
 import { Composition, Plot } from "./LayoutType";
 import { isUnitSpec, isLayerSpec, isRepeatSpec, isConcatSpec, isFacetSpec, GenericLayerSpec, ExtendedLayerSpec, GenericRepeatSpec, NormalizedRepeatSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedUnitSpec, GenericVConcatSpec, GenericHConcatSpec } from "vega-lite/build/src/spec";
+import { MarkEncoding, markEncodings } from "./MarkEncoding";
 
 
 export function isAtomicSchema(schema: any): boolean {
@@ -20,7 +21,7 @@ export function isConcatenateSchema(schema: any): boolean {
 
 export function isFacetSchema(schema: any): boolean {
   return isFacetSpec(schema);
-}
+};
 
 export function isCompositionSchema(schema: any): boolean {
   return isOverlaySchema(schema)
@@ -109,21 +110,45 @@ export function getConcatAbstraction(schema: NormalizedConcatSpec) {
   return abstraction;
 };
 
+
+export function getMarkPropertiesAsMap(mark: any): Map<MarkEncoding, any> {
+  const properties = new Map<MarkEncoding, any>();
+
+  // since every mark encoding could potentially be statically set for a mark, just go through
+  // all of them and find the ones that are configured
+  markEncodings.forEach(encoding => {
+    if (mark[encoding] !== undefined) {
+      properties.set(encoding, JSON.parse(JSON.stringify(mark[encoding])));
+    }
+  });
+
+  return properties;
+};
+
 export function getAtomicAbstraction(schema: any, compositionProperty: string) {
-  let abstraction: any = {
+  const abstraction: any = {
     mark: JSON.parse(JSON.stringify(schema.mark)),
-    encoding: JSON.parse(JSON.stringify(schema.encoding)),
   };
+
+  if (schema.encoding !== undefined) {
+    abstraction.encoding = JSON.parse(JSON.stringify(schema.encoding));
+  }
 
   if (schema.selection !== undefined) {
     abstraction.selection = JSON.parse(JSON.stringify(schema.selection));
   }
 
+  const staticProperties = getMarkPropertiesAsMap(schema.mark);
+  staticProperties.forEach((property, key) => {
+    abstraction[key] = property;
+    delete schema[key];
+  });
+
   delete schema.mark;
   delete schema.encoding;
   delete schema.selection;
 
-  if (compositionProperty === 'spec') {
+  if (compositionProperty === 'spec' && abstraction.encoding !== undefined) {
     if (abstraction.encoding.x !== undefined) {
       abstraction.encoding.x = {
           field: { repeat: 'column' },
@@ -155,7 +180,13 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
     abstraction.height = JSON.parse(JSON.stringify(schema.height));
   }
   if (schema.data !== undefined) {
-    abstraction.data = JSON.parse(JSON.stringify(schema.data));
+    // abstraction.data = JSON.parse(JSON.stringify(schema.data));
+  }
+  if (schema.transform !== undefined) {
+    abstraction.transform = JSON.parse(JSON.stringify(schema.transform));
+  }
+  if (schema.config !== undefined) {
+    abstraction.config = JSON.parse(JSON.stringify(schema.config));
   }
 
   return abstraction;

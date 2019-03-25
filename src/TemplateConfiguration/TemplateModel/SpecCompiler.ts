@@ -3,7 +3,7 @@ import { TopLevelSpec } from 'vega-lite';
 import Layout from './Layout';
 import { getAbstraction } from './SpecUtils';
 import Template from './Template';
-import VisualMarkTemplate from './VisualMark';
+import VisualMarkTemplate from './VisualMarkTemplate';
 import PlotTemplate from './PlotTemplate';
 import CompositionTemplate from './CompositionTemplate';
 import { Data } from 'vega-lite/build/src/data';
@@ -20,10 +20,9 @@ const dummyData = {
 };
 
 export default class SpecCompiler {
-  public getBasicSchema(data: Data) {
+  public getBasicSchema(): any {
     return {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v3.json',
-      'data': data
+      '$schema': 'https://vega.github.io/schema/vega-lite/v3.json'
     };
   }
 
@@ -39,6 +38,12 @@ export default class SpecCompiler {
     }
     if (template.width !== undefined) {
       schema.width = template.width;
+    }
+    if (template.transform !== undefined) {
+      schema.transform = template.transform;
+    }
+    if (template.config !== undefined) {
+      schema.config = template.config;
     }
 
     return schema;
@@ -111,8 +116,8 @@ export default class SpecCompiler {
     let topLevelTemplate: Template = template;
 
     while (topLevelTemplate.parent !== null) {
-      if (topLevelTemplate.dataRef !== undefined && topLevelTemplate.dataRef !== null) {
-        return topLevelTemplate.dataRef;
+      if (topLevelTemplate.data !== undefined && topLevelTemplate.data !== null) {
+        return topLevelTemplate.data;
       }
 
       topLevelTemplate = topLevelTemplate.parent;
@@ -120,15 +125,16 @@ export default class SpecCompiler {
 
     const flatHierarchy = topLevelTemplate.getFlatHierarchy();
     const dataTemplate: Template = flatHierarchy.find(t => {
-      return t.dataRef !== null && t.dataRef !== undefined;
+      return t.data !== null && t.data !== undefined;
     });
 
-    return dataTemplate.dataRef;
+    return dataTemplate.data;
   }
 
   private getMultiLayerSpec(template: Template): TopLevelSpec {
     const templates = template.visualElements;
-    const schema: any = this.getBasicSchema(template.dataRef);
+    const schema: any = this.getBasicSchema();
+    schema.data = this.getDataInHierarchy(template);
 
     const individualSchemas = templates
       .map(t => this.getVegaSpecification(t))
@@ -169,8 +175,12 @@ export default class SpecCompiler {
   }
 
   private getPlotSchema(template: PlotTemplate) {
+    const schema = this.getBasicSchema();
     const data = this.getDataInHierarchy(template);
-    const schema = this.getBasicSchema(data) as any;
+
+    if (data !== undefined && data !== null) {
+      schema.data = data;
+    }
 
     if (template.visualElements.length === 0) {
       schema.mark = (template as VisualMarkTemplate).type;
@@ -191,7 +201,7 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getCompositionSchema(template: Template) {
+  private getCompositionSchema(template: Template, asRoot: boolean) {
     let schema: any = null;
 
     if (template.visualElements.length === 1) {
@@ -200,11 +210,16 @@ export default class SpecCompiler {
       schema = this.getMultiLayerSpec(template);
     }
 
-    schema.data = this.getDataInHierarchy(template);
+    if (asRoot) {
+      schema.data = this.getDataInHierarchy(template);
+    } else {
+      schema.data = template.data;
+    }
+
     return schema;
   }
 
-  public getVegaSpecification(template: Template) {
+  public getVegaSpecification(template: Template, asRoot?: boolean) {
     let schema: any = null;
 
     if (template instanceof VisualMarkTemplate) {
@@ -212,7 +227,7 @@ export default class SpecCompiler {
     } else if (template instanceof PlotTemplate) {
       schema = this.getPlotSchema(template);
     } else if (template instanceof CompositionTemplate) {
-      schema = this.getCompositionSchema(template);
+      schema = this.getCompositionSchema(template, asRoot);
     }
 
     schema = this.setSingleViewProperties(schema, template);

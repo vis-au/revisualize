@@ -6,7 +6,7 @@ import TemplatePlumbingContainer from './LayeredDiagramEditor/TemplatePlumbingCo
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
-import VisualMarkTemplate from './TemplateModel/VisualMark';
+import VisualMarkTemplate from './TemplateModel/VisualMarkTemplate';
 import PlotTemplate from './TemplateModel/PlotTemplate';
 
 import './TemplateConfigurationView.css';
