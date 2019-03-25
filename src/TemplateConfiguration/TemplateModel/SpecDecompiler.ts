@@ -9,6 +9,8 @@ import RepeatTemplate from "./RepeatTemplate";
 import LayerTemplate from "./LayerTemplate";
 import FacetTemplate from "./FacetTemplate";
 import ConcatTemplate from "./ConcatTemplate";
+import { isRepeatRef, Field, isFieldDef } from "vega-lite/build/src/fielddef";
+import { string } from "prop-types";
 
 export default class SchemaDecompiler {
 
@@ -32,6 +34,33 @@ export default class SchemaDecompiler {
     template.height = schema.height;
   }
 
+  private applyRepeatBindingWorkaround(repeatTemplate: RepeatTemplate, childTemplate: Template) {
+    // in a repeat spec, the bindings inside the child templates can reference the repeated fields
+    // instead of fields from the data. In order to render such a template without its parent,
+    // modify this binding to the first entries in the repeated fields of the parent
+    const overwriteEncodings = new Map<MarkEncoding, any>();
+    const repeatedFields = repeatTemplate.repeat.column.concat(repeatTemplate.repeat.row);
+
+    childTemplate.encodings.forEach((value: any, key: MarkEncoding) => {
+      if (isFieldDef<any>(value)) {
+        if (isRepeatRef(value.field)) {
+          const index = Math.floor(Math.random() * repeatedFields.length);
+          const fieldRef = {
+            field: repeatedFields[index],
+            type: (value as any).type
+          };
+          overwriteEncodings.set(key, fieldRef)
+        }
+      }
+    });
+
+    overwriteEncodings.forEach((value, key) => {
+      childTemplate.setEncodedValue(key, value);
+    });
+
+    return childTemplate;
+  }
+
   private getCompositionTemplate(schema: any) {
     let template: Template = null;
     let visualElements: Template[] = [];
@@ -39,7 +68,9 @@ export default class SchemaDecompiler {
     if (isRepeatSchema(schema)) {
       template = new RepeatTemplate(visualElements);
       (template as RepeatTemplate).repeat = schema.repeat;
-      template.visualElements.push(this.decompile(schema.spec));
+      let childTemplate = this.decompile(schema.spec);
+      childTemplate = this.applyRepeatBindingWorkaround(template as RepeatTemplate, childTemplate);
+      template.visualElements = [childTemplate];
     } else if (isOverlaySchema(schema)) {
       template = new LayerTemplate(visualElements);
 

@@ -85,7 +85,9 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getSingleLayerSpec(template: Template, layout: Layout): TopLevelSpec {
+  private getSingleLayerSpec(parentTemplate: Template): TopLevelSpec {
+    const template = parentTemplate.visualElements[0];
+    const layout = parentTemplate.layout;
     let schema: any = null;
 
     if (template instanceof CompositionTemplate || template instanceof PlotTemplate) {
@@ -184,7 +186,7 @@ export default class SpecCompiler {
     let schema: any = null;
 
     if (template.visualElements.length === 1) {
-      schema = this.getSingleLayerSpec(template.visualElements[0], template.layout);
+      schema = this.getSingleLayerSpec(template);
     } else if (template.visualElements.length > 1) {
       schema = this.getMultiLayerSpec(template);
     }
