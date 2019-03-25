@@ -4,16 +4,14 @@ import { Mark } from 'vega-lite/build/src/mark';
 import { COMPOSITION_TYPES, PLOT_TYPES, Plot, Composition } from '../TemplateModel/LayoutType';
 import { MARK_TYPES } from '../TemplateModel/MarkType';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
-import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
-
-import './AddTemplateButton.css';
 import RepeatTemplate from '../TemplateModel/RepeatTemplate';
 import ConcatTemplate from '../TemplateModel/ConcatTemplate';
 import FacetTemplate from '../TemplateModel/FacetTemplate';
 import LayerTemplate from '../TemplateModel/LayerTemplate';
+
+import './AddTemplateButton.css';
 
 interface Props {
   addTemplate: (template: Template) => void;
@@ -55,14 +53,15 @@ export default class AddTemplateButton extends React.Component<Props, State> {
   }
 
   private onMarkClicked(mark: Mark) {
-    const newVisualMark = new VisualMarkTemplate(mark, null);
+    const newVisualMark = new PlotTemplate(null);
+    newVisualMark.type = mark;
     newVisualMark.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newVisualMark);
   }
 
   private onPlotClicked(type: Plot) {
-    const newCompositeTemplate = new PlotTemplate(type, null, null);
+    const newCompositeTemplate = new PlotTemplate(null);
     newCompositeTemplate.hierarchyLevel = this.props.layer;
 
     this.props.addTemplate(newCompositeTemplate);

@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import Layout from '../TemplateModel/Layout';
+import { LayoutType } from '../TemplateModel/LayoutType';
 
 import './LayoutBlock.css';
 
 interface Props {
-  layout: Layout;
+  layout: LayoutType;
   minimized: boolean;
 }
 interface State {
@@ -16,9 +16,9 @@ export default class LayoutBlock extends React.Component<Props, State> {
   public render() {
     return (
       <div
-        title={ this.props.layout === null ? 'no layout' : this.props.layout.type }
+        title={ this.props.layout === null ? 'no layout' : this.props.layout }
         className={ `layout ${this.props.layout === null ? 'null' : ''}`}>
-        { this.props.layout === null ? 'X' : this.props.layout.type }
+        { this.props.layout === null ? 'X' : this.props.layout }
       </div>
     );
   }

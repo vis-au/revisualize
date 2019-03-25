@@ -6,7 +6,6 @@ import TemplatePlumbingContainer from './LayeredDiagramEditor/TemplatePlumbingCo
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
-import VisualMarkTemplate from './TemplateModel/VisualMarkTemplate';
 import PlotTemplate from './TemplateModel/PlotTemplate';
 
 import './TemplateConfigurationView.css';
@@ -139,9 +138,8 @@ export default class TemplateConfigurationView extends React.Component<Props, St
 // }
 
 function getAtomicTemplate(): PlotTemplate {
-  const atomicTemplate = new VisualMarkTemplate('point', null);
-
-  const plotTemplate = new PlotTemplate('histogram', atomicTemplate, null);
+  const plotTemplate = new PlotTemplate(null);
+  plotTemplate.type = 'point';
   plotTemplate.setEncodedValue('x', {field: 'a', type: 'ordinal'});
   plotTemplate.setEncodedValue('y', {field: 'b', type: 'quantitative'});
 

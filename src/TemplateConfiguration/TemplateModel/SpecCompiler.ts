@@ -1,23 +1,14 @@
 import { TopLevelSpec } from 'vega-lite';
 
-import Layout from './Layout';
 import { getAbstraction } from './SpecUtils';
 import Template from './Template';
-import VisualMarkTemplate from './VisualMarkTemplate';
 import PlotTemplate from './PlotTemplate';
 import CompositionTemplate from './CompositionTemplate';
-import { Data } from 'vega-lite/build/src/data';
 import RepeatTemplate from './RepeatTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import LayerTemplate from './LayerTemplate';
+import { Composition } from './LayoutType';
 
-const dummyData = {
-  'values': [
-    {'a': 'A', 'b': 28, 'c': 'X'}, {'a': 'B','b': 55, 'c': 'X'}, {'a': 'C','b': 43, 'c': 'Y'},
-    {'a': 'D','b': 91, 'c': 'X'}, {'a': 'E','b': 81, 'c': 'X'}, {'a': 'F','b': 53, 'c': 'Y'},
-    {'a': 'G','b': 19, 'c': 'X'}, {'a': 'H','b': 87, 'c': 'X'}, {'a': 'I','b': 52, 'c': 'Z'}
-  ]
-};
 
 export default class SpecCompiler {
   public getBasicSchema(): any {
@@ -78,13 +69,15 @@ export default class SpecCompiler {
     return this.abstractCompositions(schema, 'layer');
   }
 
-  private applyCompositionLayout(template: Template, schema: any, layout: Layout): TopLevelSpec {
-    if (layout.type === 'repeat') {
+  private applyCompositionLayout(template: Template, schema: any, composition: Composition): TopLevelSpec {
+    if (composition === 'repeat') {
       this.applyRepeatLayout(template, schema);
-    } else if (layout.type === 'concatenate') {
+    } else if (composition === 'concatenate') {
       this.applyConcatLayout(schema);
-    } else if (layout.type === 'overlay') {
+    } else if (composition === 'overlay') {
       this.applyOverlayLayout(schema);
+    } else if (composition === 'facet') {
+      // TODO
     }
 
     return schema;
@@ -99,7 +92,7 @@ export default class SpecCompiler {
       schema = this.getVegaSpecification(template);
 
       if (schema !== null) {
-        schema = this.applyCompositionLayout(template, schema, layout);
+        schema = this.applyCompositionLayout(template, schema, layout as Composition);
       }
     }
 
@@ -107,10 +100,6 @@ export default class SpecCompiler {
   }
 
   private getDataInHierarchy(template: Template) {
-    if (template instanceof VisualMarkTemplate) {
-      return dummyData;
-    }
-
     // data can be stored either in a child node or on the top level template, therefore find the
     // top level, get its flat hierarchy and find a template with a dataset bound to it
     let topLevelTemplate: Template = template;
@@ -166,14 +155,6 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getVisualMarkSchema(template: Template) {
-    let schema: any = null;
-
-    schema = this.getPlotSchema(template as PlotTemplate);
-
-    return schema;
-  }
-
   private getPlotSchema(template: PlotTemplate) {
     const schema = this.getBasicSchema();
     const data = this.getDataInHierarchy(template);
@@ -182,11 +163,7 @@ export default class SpecCompiler {
       schema.data = data;
     }
 
-    if (template.visualElements.length === 0) {
-      schema.mark = (template as VisualMarkTemplate).type;
-    } else {
-      schema.mark = (template.visualElements[0] as VisualMarkTemplate).type;
-    }
+    schema.mark = template.type;
 
     if (template.selection !== undefined) {
       schema.selection = template.selection;
@@ -219,12 +196,10 @@ export default class SpecCompiler {
     return schema;
   }
 
-  public getVegaSpecification(template: Template, asRoot?: boolean) {
+  public getVegaSpecification(template: Template, asRoot: boolean = false) {
     let schema: any = null;
 
-    if (template instanceof VisualMarkTemplate) {
-      schema = this.getVisualMarkSchema(template);
-    } else if (template instanceof PlotTemplate) {
+    if (template instanceof PlotTemplate) {
       schema = this.getPlotSchema(template);
     } else if (template instanceof CompositionTemplate) {
       schema = this.getCompositionSchema(template, asRoot);

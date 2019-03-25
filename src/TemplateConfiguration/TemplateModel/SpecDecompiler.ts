@@ -3,7 +3,6 @@ import { isVConcatSpec, isHConcatSpec } from "vega-lite/build/src/spec";
 import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema, getMarkPropertiesAsMap } from "./SpecUtils";
 import PlotTemplate from "./PlotTemplate";
 import Template from "./Template";
-import VisualMarkTemplate from "./VisualMarkTemplate";
 import { MarkEncoding } from "./MarkEncoding";
 import RepeatTemplate from "./RepeatTemplate";
 import LayerTemplate from "./LayerTemplate";
@@ -118,10 +117,9 @@ export default class SchemaDecompiler {
   }
 
   private getPlotTemplate(schema: any) {
-    const plotTemplate = new PlotTemplate('histogram', null);
+    const plotTemplate = new PlotTemplate(null);
     const markType = typeof schema.mark === 'string' ? schema.mark : schema.mark.type;
-    const visualElement = new VisualMarkTemplate(markType, plotTemplate);
-    plotTemplate.visualElements = [visualElement];
+    plotTemplate.type = markType;
 
     const encodings = this.getEncodingsMapFromPlotSchema(schema);
     const properties = getMarkPropertiesAsMap(schema.mark);

@@ -57,9 +57,6 @@
 .layeredDiagramEditor .layer.collapsed {
   width: 5rem;
 }
-.layeredDiagramEditor .layer.first {
-  width: 10%;
-}
 .layeredDiagramContainer .layer .templates {
   display: flex;
   flex-direction: column;

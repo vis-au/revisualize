@@ -4,7 +4,6 @@ import { Mark } from 'vega-lite/build/src/mark';
 import Toolbar from '../../Widgets/Toolbar';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
 import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec, stackedBarchartPreset, parallelCoordinatesPreset, repeatOverlayPreset } from './SpecPresets';
 import RepeatTemplate from '../TemplateModel/RepeatTemplate';
@@ -34,14 +33,12 @@ function getScatterplotMatrixPreset(): Template {
     row: ['a', 'c'],
   };
 
-  const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
+  const plotTemplate = new PlotTemplate(compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
   plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
-
-  const atomicTemplate = new VisualMarkTemplate('circle', plotTemplate);
+  plotTemplate.type = 'point';
 
   compositionTemplate.visualElements.push(plotTemplate);
-  plotTemplate.visualElements.push(atomicTemplate);
 
   return compositionTemplate;
 }
@@ -50,20 +47,17 @@ function getLineChartPreset(): Template {
   const compositionTemplate = new LayerTemplate([]);
   compositionTemplate.data = dummyData;
 
-  const plotTemplate = new PlotTemplate('histogram', null, compositionTemplate);
+  const plotTemplate = new PlotTemplate(compositionTemplate);
   plotTemplate.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
   plotTemplate.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
 
-  const plotTemplate2 = new PlotTemplate('histogram', null, compositionTemplate);
+  const plotTemplate2 = new PlotTemplate(compositionTemplate);
   plotTemplate2.setEncodedValue('x', {'field': 'a', 'type': 'ordinal'});
   plotTemplate2.setEncodedValue('y', {'field': 'b', 'type': 'quantitative'});
 
-  const atomicTemplate = new VisualMarkTemplate('point', plotTemplate);
-  const atomicTemplate2 = new VisualMarkTemplate('line', plotTemplate2);
-
   compositionTemplate.visualElements.push(plotTemplate, plotTemplate2);
-  plotTemplate.visualElements = [atomicTemplate];
-  plotTemplate2.visualElements = [atomicTemplate2];
+  plotTemplate.type = 'point';
+  plotTemplate2.type = 'line';
 
   return compositionTemplate;
 }
@@ -103,7 +97,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   }
 
   private onMarkClicked(mark: Mark) {
-    const newVisualMark = new VisualMarkTemplate(mark, null);
+    const newVisualMark = new PlotTemplate(null);
+    newVisualMark.type = mark;
 
     this.props.addTemplate(newVisualMark);
   }

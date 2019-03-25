@@ -1,12 +1,12 @@
 import { Data } from 'vega-lite/build/src/data';
 import { FieldDef } from 'vega-lite/build/src/fielddef';
 
-import Layout from './Layout';
 import { MarkEncoding } from './MarkEncoding';
 import { BoundsMixins } from 'vega-lite/build/src/toplevelprops';
 import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
 import { Transform } from 'vega-lite/build/src/transform';
 import { Config } from 'vega-lite';
+import { LayoutType } from './LayoutType';
 
 export default abstract class Template {
   public id: string;
@@ -22,7 +22,7 @@ export default abstract class Template {
 
   public encodings: Map<MarkEncoding, FieldDef<any>>;
 
-  constructor(public visualElements: Template[], public layout: Layout, public parent: Template) {
+  constructor(public visualElements: Template[], public layout: LayoutType, public parent: Template) {
     this.id = `template${Math.round(Math.random() * 10000)}`;
     this.hierarchyLevel = -1;
     this.data = null;

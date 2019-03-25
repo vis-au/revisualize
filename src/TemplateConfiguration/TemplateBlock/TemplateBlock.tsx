@@ -4,7 +4,6 @@ import LayoutBlock from './LayoutBlock';
 import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
-import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 import CompositionTemplate from '../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../TemplateModel/PlotTemplate';
 
@@ -72,9 +71,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderHeader() {
-    const label = this.props.template instanceof VisualMarkTemplate
-      ? this.props.template.type
-      : this.props.template.id;
+    const label = this.props.template.id;
 
     return (
       <div className="templateHeader">
@@ -94,11 +91,6 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
   public renderPreview() {
     if (this.state.minimized) {
-      return null;
-    }
-    if (!(this.props.template instanceof VisualMarkTemplate) &&
-      this.props.template.visualElements.length === 0) {
-
       return null;
     }
 
@@ -128,10 +120,6 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderConfiguration() {
-    if (this.props.template instanceof VisualMarkTemplate) {
-      return null;
-    }
-
     return (
       <div className="configuration">
         { this.renderLayout() }
@@ -150,33 +138,22 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderFooter() {
-    if (this.props.template instanceof VisualMarkTemplate) {
-      return (
-        <div className="footer">
-          <button className="expand" onClick={ this.togglePreviewMinimized }>
-            <i className="material-icons icon">aspect_ratio</i>
-            <span>preview</span>
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="footer">
-          <button className="expand" onClick={ this.togglePreviewMinimized }>
-            <i className="material-icons icon">aspect_ratio</i>
-            <span>preview</span>
-          </button>
-          <button className="childNodes" onClick={ () => null }>
-            <i className="material-icons icon">timeline</i>
-            <span>child nodes</span>
-          </button>
-        </div>
-      );
-    }
+    return (
+      <div className="footer">
+        <button className="expand" onClick={ this.togglePreviewMinimized }>
+          <i className="material-icons icon">aspect_ratio</i>
+          <span>preview</span>
+        </button>
+        <button className="childNodes" onClick={ () => null }>
+          <i className="material-icons icon">timeline</i>
+          <span>child nodes</span>
+        </button>
+      </div>
+    );
   }
 
   public render() {
-    const type = this.props.template instanceof VisualMarkTemplate ? 'mark' : 'composite';
+    const type = 'composite';
     const isFocused = this.props.focused ? 'focus' : '';
 
     return (

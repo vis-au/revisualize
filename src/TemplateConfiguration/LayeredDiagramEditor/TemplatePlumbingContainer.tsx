@@ -3,7 +3,6 @@ import * as React from 'react';
 
 import LayeredDiagramEditor from './LayeredDiagramEditor';
 import Template from '../TemplateModel/Template';
-import VisualMarkTemplate from '../TemplateModel/VisualMarkTemplate';
 
 interface Props {
   templates: Template[],
@@ -191,10 +190,6 @@ export default class TemplatePlumbingContainer extends React.Component<Props, St
   }
 
   private renderTemplateLinks(template: Template) {
-    if (template instanceof VisualMarkTemplate) {
-      return;
-    }
-
     template.visualElements.forEach(visualElement => {
       // FIXME: endpoint positions
       const sourceSelector = document.querySelector(`#ve${visualElement.id}`);
