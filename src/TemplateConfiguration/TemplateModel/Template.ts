@@ -1,5 +1,4 @@
 import { Data } from 'vega-lite/build/src/data';
-import { FieldDef } from 'vega-lite/build/src/fielddef';
 
 import { MarkEncoding } from './MarkEncoding';
 import { BoundsMixins } from 'vega-lite/build/src/toplevelprops';
@@ -20,7 +19,8 @@ export default abstract class Template {
   public transform: Transform;
   public config: Config;
 
-  public encodings: Map<MarkEncoding, FieldDef<any>>;
+  public encodings: Map<MarkEncoding, any>;
+  public overwrittenEncodings: Map<MarkEncoding, any>
 
   constructor(public visualElements: Template[], public layout: LayoutType, public parent: Template) {
     this.id = `template${Math.round(Math.random() * 10000)}`;
@@ -29,6 +29,7 @@ export default abstract class Template {
     this.description = null;
 
     this.encodings = new Map();
+    this.overwrittenEncodings = new Map();
   }
 
   /**
@@ -66,7 +67,7 @@ export default abstract class Template {
     return this.hierarchyLevel;
   }
 
-  public setEncodedValue(encoding: MarkEncoding, value: FieldDef<any>) {
+  public setEncodedValue(encoding: MarkEncoding, value: any) {
     this.encodings.set(encoding, value);
   }
 

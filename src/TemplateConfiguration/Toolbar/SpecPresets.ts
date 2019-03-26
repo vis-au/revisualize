@@ -617,7 +617,7 @@ export const parallelCoordinatesPreset: any = {
 export const repeatOverlayPreset = {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "description": "Summarized and per year weather information for Seatle and New York.",
-  "data": {"url": "data/weather.csv"},
+  "data": {"url": "https://vega.github.io/editor/data/weather.csv"},
   "repeat": {"column": ["temp_max","precipitation","wind"]},
   "spec": {
     "layer": [

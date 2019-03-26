@@ -41,39 +41,54 @@ export default class SchemaDecompiler {
     template.config = schema.config;
   }
 
-  private applyRepeatBindingWorkaround(repeatTemplate: RepeatTemplate, childTemplate: Template) {
-    // in a repeat spec, the bindings inside the child templates can reference the repeated fields
-    // instead of fields from the data. In order to render such a template without its parent,
-    // modify this binding to the first entries in the repeated fields of the parent
-    const overwriteEncodings = new Map<MarkEncoding, any>();
-    const repeatedFields = repeatTemplate.repeat.column.concat(repeatTemplate.repeat.row);
+  private getNonRepeatSubtrees(template: Template) {
+    const nonRepeatSubtrees: Template[] = [];
 
-    childTemplate.encodings.forEach((value: any, key: MarkEncoding) => {
-      if (isFieldDef<any>(value)) {
-        if (isRepeatRef(value.field)) {
-          const index = Math.floor(Math.random() * repeatedFields.length);
-          const fieldRef = {
-            field: repeatedFields[index],
-            type: (value as any).type
-          };
-          overwriteEncodings.set(key, fieldRef)
-        }
+    template.visualElements.forEach(t => {
+      if (!(t instanceof RepeatTemplate)) {
+        nonRepeatSubtrees.push(t);
+        nonRepeatSubtrees.push(...this.getNonRepeatSubtrees(t));
       }
     });
 
-    overwriteEncodings.forEach((value, key) => {
-      childTemplate.setEncodedValue(key, value);
-    });
+    return nonRepeatSubtrees;
+  }
 
-    return childTemplate;
+  /**
+   * In a repeat spec, the bindings inside the child templates can reference the repeated fields
+   * instead of fields from the data. In order to render such a template without its parent,
+   * modify this binding to the first entries in the repeated fields of the parent
+   **/
+  private removeRepeatFromChildTemplates(template: RepeatTemplate) {
+    const nonRepeatSubTemplates = this.getNonRepeatSubtrees(template);
+
+    nonRepeatSubTemplates.forEach(childTemplate => {
+      const overwriteEncodings = new Map<MarkEncoding, any>();
+      const repeatedFields = template.repeat.column.concat(template.repeat.row);
+
+      childTemplate.encodings.forEach((value: any, key: MarkEncoding) => {
+        if (isFieldDef<any>(value)) {
+          if (isRepeatRef(value.field)) {
+            const index = Math.floor(Math.random() * repeatedFields.length);
+            const fieldRef = {
+              field: repeatedFields[index],
+              type: (value as any).type
+            };
+            overwriteEncodings.set(key, fieldRef)
+          }
+        }
+      });
+
+      childTemplate.overwrittenEncodings = overwriteEncodings;
+    });
   }
 
   private getRepeatTemplate(schema: any) {
     const template = new RepeatTemplate([]);
     template.repeat = schema.repeat;
     let childTemplate = this.decompile(schema.spec);
-    childTemplate = this.applyRepeatBindingWorkaround(template as RepeatTemplate, childTemplate);
     template.visualElements = [childTemplate];
+    this.removeRepeatFromChildTemplates(template);
 
     return template;
   }

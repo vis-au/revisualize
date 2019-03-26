@@ -83,17 +83,16 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getSingleLayerSpec(parentTemplate: Template): TopLevelSpec {
+  private getSingleLayerSpec(parentTemplate: Template, inferData: boolean): TopLevelSpec {
     const template = parentTemplate.visualElements[0];
+    const inferChildData = !(parentTemplate instanceof RepeatTemplate) && inferData;
     const layout = parentTemplate.layout;
     let schema: any = null;
 
-    if (template instanceof CompositionTemplate || template instanceof PlotTemplate) {
-      schema = this.getVegaSpecification(template);
+    schema = this.getVegaSpecification(template, inferChildData);
 
-      if (schema !== null) {
-        schema = this.applyCompositionLayout(template, schema, layout as Composition);
-      }
+    if (schema !== null) {
+      schema = this.applyCompositionLayout(template, schema, layout as Composition);
     }
 
     return schema;
@@ -120,13 +119,20 @@ export default class SpecCompiler {
     return dataTemplate.data;
   }
 
-  private getMultiLayerSpec(template: Template): TopLevelSpec {
+  private getMultiLayerSpec(template: Template, inferData: boolean, useOverwrittenEncodings: boolean): TopLevelSpec {
     const templates = template.visualElements;
     const schema: any = this.getBasicSchema();
-    schema.data = this.getDataInHierarchy(template);
+    const overwriteChildEncodings = !(template instanceof RepeatTemplate) && useOverwrittenEncodings;
+    const inferChildData = !(template instanceof RepeatTemplate) && inferData;
+
+    if (inferData) {
+      schema.data = this.getDataInHierarchy(template);
+    } else {
+      schema.data = template.data;
+    }
 
     const individualSchemas = templates
-      .map(t => this.getVegaSpecification(t))
+      .map(t => this.getVegaSpecification(t, inferChildData, overwriteChildEncodings))
       .filter(t => t !== null);
 
     const individualViewAbstractions = individualSchemas.map(s => {
@@ -155,7 +161,7 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getPlotSchema(template: PlotTemplate) {
+  private getPlotSchema(template: PlotTemplate, useOverwrittenEncodings: boolean) {
     const schema = this.getBasicSchema();
     const data = this.getDataInHierarchy(template);
 
@@ -173,21 +179,27 @@ export default class SpecCompiler {
 
     template.encodings.forEach((value, key) => {
       schema.encoding[key] = value;
+
+      const overwrittenValue = template.overwrittenEncodings.get(key);
+
+      if (useOverwrittenEncodings && overwrittenValue !== undefined) {
+        schema.encoding[key] = overwrittenValue;
+      }
     });
 
     return schema;
   }
 
-  private getCompositionSchema(template: Template, asRoot: boolean) {
+  private getCompositionSchema(template: Template, inferData: boolean, useOverwrittenEncodings: boolean) {
     let schema: any = null;
 
     if (template.visualElements.length === 1) {
-      schema = this.getSingleLayerSpec(template);
+      schema = this.getSingleLayerSpec(template, inferData);
     } else if (template.visualElements.length > 1) {
-      schema = this.getMultiLayerSpec(template);
+      schema = this.getMultiLayerSpec(template, inferData, useOverwrittenEncodings);
     }
 
-    if (asRoot) {
+    if (inferData) {
       schema.data = this.getDataInHierarchy(template);
     } else {
       schema.data = template.data;
@@ -196,13 +208,13 @@ export default class SpecCompiler {
     return schema;
   }
 
-  public getVegaSpecification(template: Template, asRoot: boolean = false) {
+  public getVegaSpecification(template: Template, inferData: boolean = false, useOverwrittenEncodings: boolean = false) {
     let schema: any = null;
 
     if (template instanceof PlotTemplate) {
-      schema = this.getPlotSchema(template);
+      schema = this.getPlotSchema(template, useOverwrittenEncodings);
     } else if (template instanceof CompositionTemplate) {
-      schema = this.getCompositionSchema(template, asRoot);
+      schema = this.getCompositionSchema(template, inferData, useOverwrittenEncodings);
     }
 
     schema = this.setSingleViewProperties(schema, template);

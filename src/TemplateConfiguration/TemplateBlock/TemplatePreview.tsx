@@ -24,7 +24,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
 
   private renderVegaPreview() {
     const template = this.props.template;
-    let spec = this.specCompiler.getVegaSpecification(template, true);
+    let spec = this.specCompiler.getVegaSpecification(template, true, true);
 
     if (spec === null) {
       spec = {} as any;
