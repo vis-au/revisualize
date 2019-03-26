@@ -69,7 +69,6 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   constructor(props: Props) {
     super(props);
 
-    this.onMarkClicked = this.onMarkClicked.bind(this);
     this.addTemplateFromSpec = this.addTemplateFromSpec.bind(this);
 
     this.templatePresets = new Map();
@@ -100,40 +99,6 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.props.addTemplates(decompilation.getFlatHierarchy());
   }
 
-  private onMarkClicked(mark: Mark) {
-    const newVisualMark = new PlotTemplate(null);
-    newVisualMark.type = mark;
-
-    this.props.addTemplate(newVisualMark);
-  }
-
-  private onPresetClicked(id: string) {
-    const presetCallback = this.templatePresets.get(id);
-
-    if (presetCallback === undefined || presetCallback === null) {
-      return;
-    }
-
-    const flatTemplateHierarchy = presetCallback().getFlatHierarchy();
-    this.props.addTemplates(flatTemplateHierarchy);
-  }
-
-  private renderPresetTemplate(key: string) {
-    return (
-      <button key={ key } onClick={ () => this.onPresetClicked(key) }>{ key }</button>
-    );
-  }
-
-  private renderPresetTemplates(): JSX.Element[] {
-    const templates: JSX.Element[] = [];
-
-    this.templatePresets.forEach((preset, key) => {
-      templates.push(this.renderPresetTemplate(key));
-    });
-
-    return templates;
-  }
-
   private renderPresetSpec(label: string) {
     return (
       <button key={ label } onClick={ () => this.addTemplateFromSpec(label) }>{ label }</button>
@@ -156,10 +121,6 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
         <div id="templateImport">
           <h2>Import</h2>
           { this.renderPresetSpecs() }
-        </div>
-        <div id="templatePresets">
-          <h2>Templates</h2>
-          { this.renderPresetTemplates() }
         </div>
       </Toolbar>
     );
