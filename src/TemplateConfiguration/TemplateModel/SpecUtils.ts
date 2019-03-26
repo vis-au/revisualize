@@ -196,6 +196,8 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
   let abstraction: any = null;
 
   if (isAtomicSchema(schema)) {
+    // atomic can either be content of a plot or repeat, indicated by the compositionpropety being
+    // set to 'spec'
     abstraction = getAtomicAbstraction(schema, compositionProperty);
   } else if (isOverlaySchema(schema)) {
     abstraction = getLayerAbstraction(schema);

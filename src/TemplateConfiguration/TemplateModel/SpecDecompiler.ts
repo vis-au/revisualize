@@ -63,7 +63,6 @@ export default class SchemaDecompiler {
     const nonRepeatSubTemplates = this.getNonRepeatSubtrees(template);
 
     nonRepeatSubTemplates.forEach(childTemplate => {
-      const overwriteEncodings = new Map<MarkEncoding, any>();
       const repeatedFields = template.repeat.column.concat(template.repeat.row);
 
       childTemplate.encodings.forEach((value: any, key: MarkEncoding) => {
@@ -74,12 +73,11 @@ export default class SchemaDecompiler {
               field: repeatedFields[index],
               type: (value as any).type
             };
-            overwriteEncodings.set(key, fieldRef)
+
+            childTemplate.overwrittenEncodings.set(key, fieldRef)
           }
         }
       });
-
-      childTemplate.overwrittenEncodings = overwriteEncodings;
     });
   }
 

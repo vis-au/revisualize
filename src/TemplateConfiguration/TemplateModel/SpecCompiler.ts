@@ -8,6 +8,7 @@ import RepeatTemplate from './RepeatTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import LayerTemplate from './LayerTemplate';
 import { Composition } from './LayoutType';
+import { Data } from 'vega-lite/build/src/data';
 
 
 export default class SpecCompiler {
@@ -18,6 +19,9 @@ export default class SpecCompiler {
   }
 
   private setSingleViewProperties(schema: any, template: Template) {
+    if (template.data !== undefined) {
+      schema.data = template.data;
+    }
     if (template.bounds !== undefined) {
       schema.bounds = template.bounds;
     }
@@ -83,13 +87,12 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getSingleLayerSpec(parentTemplate: Template, inferData: boolean): TopLevelSpec {
+  private getSingleLayerSpec(parentTemplate: Template): TopLevelSpec {
     const template = parentTemplate.visualElements[0];
-    const inferChildData = !(parentTemplate instanceof RepeatTemplate) && inferData;
     const layout = parentTemplate.layout;
     let schema: any = null;
 
-    schema = this.getVegaSpecification(template, inferChildData);
+    schema = this.getVegaSpecification(template, false);
 
     if (schema !== null) {
       schema = this.applyCompositionLayout(template, schema, layout as Composition);
@@ -119,25 +122,16 @@ export default class SpecCompiler {
     return dataTemplate.data;
   }
 
-  private getMultiLayerSpec(template: Template, inferData: boolean, useOverwrittenEncodings: boolean): TopLevelSpec {
+  private getMultiLayerSpec(template: Template, useOverwrittenEncodings: boolean): TopLevelSpec {
     const templates = template.visualElements;
     const schema: any = this.getBasicSchema();
     const overwriteChildEncodings = !(template instanceof RepeatTemplate) && useOverwrittenEncodings;
-    const inferChildData = !(template instanceof RepeatTemplate) && inferData;
-
-    if (inferData) {
-      schema.data = this.getDataInHierarchy(template);
-    } else {
-      schema.data = template.data;
-    }
 
     const individualSchemas = templates
-      .map(t => this.getVegaSpecification(t, inferChildData, overwriteChildEncodings))
-      .filter(t => t !== null);
+      .map(t => this.getVegaSpecification(t, false, overwriteChildEncodings));
 
-    const individualViewAbstractions = individualSchemas.map(s => {
-      return getAbstraction(s);
-    });
+    const individualViewAbstractions = individualSchemas
+      .map(s => getAbstraction(s));
 
     if (template instanceof ConcatTemplate) {
       if (template.isVertical) {
@@ -161,9 +155,15 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getPlotSchema(template: PlotTemplate, useOverwrittenEncodings: boolean) {
+  private getPlotSchema(template: PlotTemplate, inferData: boolean, useOverwrittenEncodings: boolean) {
     const schema = this.getBasicSchema();
-    const data = this.getDataInHierarchy(template);
+    let data: Data = null;
+
+    if (inferData) {
+      data = this.getDataInHierarchy(template);
+    } else {
+      data = template.data;
+    }
 
     if (data !== undefined && data !== null) {
       schema.data = data;
@@ -194,9 +194,9 @@ export default class SpecCompiler {
     let schema: any = null;
 
     if (template.visualElements.length === 1) {
-      schema = this.getSingleLayerSpec(template, inferData);
+      schema = this.getSingleLayerSpec(template);
     } else if (template.visualElements.length > 1) {
-      schema = this.getMultiLayerSpec(template, inferData, useOverwrittenEncodings);
+      schema = this.getMultiLayerSpec(template, useOverwrittenEncodings);
     }
 
     if (inferData) {
@@ -212,7 +212,7 @@ export default class SpecCompiler {
     let schema: any = null;
 
     if (template instanceof PlotTemplate) {
-      schema = this.getPlotSchema(template, useOverwrittenEncodings);
+      schema = this.getPlotSchema(template, inferData, useOverwrittenEncodings);
     } else if (template instanceof CompositionTemplate) {
       schema = this.getCompositionSchema(template, inferData, useOverwrittenEncodings);
     }
