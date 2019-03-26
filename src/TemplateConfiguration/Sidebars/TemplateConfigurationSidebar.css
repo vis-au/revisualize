@@ -2,15 +2,20 @@
   background: #fff;
   box-shadow: 0 2px 4px #ccc;
   top: 40px;
-  padding: 1rem 0.75rem;
 }
 #templateConfigurationSidebar .toggleButtonWrapper {
   top: 50%;
   background: teal;
   opacity: 1;
 }
-#templateConfigurationSidebar .encodings {
+#templateConfigurationSidebar .sidebarContainer {
   overflow-y: auto;
-  max-height: 90vh;
+  max-height: 88vh;
   max-width: 100%;
+  padding: 1rem 0.75rem;
+}
+
+textarea#templateConfigurationSidebarVegaPreview {
+  width: 95%;
+  min-height: 350px;
 }

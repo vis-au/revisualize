@@ -6,6 +6,7 @@ import Template from '../TemplateModel/Template';
 import EncodingGroupBlock from './EncodingGroup';
 
 import './TemplateConfigurationSidebar.css';
+import SpecCompiler from '../TemplateModel/SpecCompiler';
 
 interface Props {
   onTemplateChanged: () => void;
@@ -16,6 +17,8 @@ interface State {
 }
 
 export default class TemplateConfigurationSidebar extends React.Component<Props, State> {
+  private specCompiler: SpecCompiler;
+
   constructor(props: Props) {
     super(props);
 
@@ -23,6 +26,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.renderEncodings = this.renderEncodings.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
 
+    this.specCompiler = new SpecCompiler();
     this.state = { hidden: true };
   }
 
@@ -53,6 +57,24 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     );
   }
 
+  private renderVegaLiteCode() {
+    if (this.props.focusedTemplate === null) {
+      return null;
+    }
+
+    const focusedTemplate = this.props.focusedTemplate;
+    const spec = this.specCompiler.getVegaSpecification(focusedTemplate, true, true);
+    const specString = JSON.stringify(spec, null, 2);
+
+    return (
+      <textarea
+        contentEditable={ false }
+        id="templateConfigurationSidebarVegaPreview"
+        value={ specString }>
+      </textarea>
+    );
+  }
+
   public render() {
     return (
       <Sidebar
@@ -62,7 +84,10 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         positionLeft={ false }
         toggle={ this.onToggle }>
 
-        { this.renderEncodings() }
+        <div className="sidebarContainer">
+          { this.renderEncodings() }
+          { this.renderVegaLiteCode() }
+        </div>
 
       </Sidebar>
     );
