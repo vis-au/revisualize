@@ -21,7 +21,7 @@ export default class EncodingBlock extends React.Component<Props, State> {
       value = value.value;
     }
 
-    const stringValue: string = value as string;
+    const stringValue: string = JSON.stringify(value);
 
     return (
       <span className="value">{ stringValue }</span>
