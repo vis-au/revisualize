@@ -56,7 +56,7 @@ div.template .body {
   justify-content: space-between;
   align-items: center;
 }
-div.mark.template .body {
+div.plot.template .body {
   justify-content: center;
 }
 div.template .body .configuration {

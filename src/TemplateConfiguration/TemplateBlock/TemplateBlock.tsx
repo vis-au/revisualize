@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import LayoutBlock from './LayoutBlock';
 import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
@@ -71,20 +70,14 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderHeader() {
-    const label = this.props.template.id;
+    const label = this.props.template instanceof PlotTemplate
+      ? 'single view'
+      : this.props.template.layout;
 
     return (
       <div className="templateHeader" onClick={ this.onClick }>
         <h2>{ label }</h2>
         <div className="delete" onClick={ this.onDelete } />
-      </div>
-    );
-  }
-
-  private renderLayout() {
-    return (
-      <div className="layoutStructureContainer">
-        <LayoutBlock layout={ this.props.template.layout } minimized={ this.state.minimized } />
       </div>
     );
   }
@@ -121,9 +114,12 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   private renderConfiguration() {
+    if (this.props.template instanceof PlotTemplate) {
+      return null;
+    }
+
     return (
       <div className="configuration">
-        { this.renderLayout() }
         { this.renderVisualElements() }
       </div>
     );
@@ -154,7 +150,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
   }
 
   public render() {
-    const type = 'composite';
+    const type = this.props.template instanceof CompositionTemplate ? 'composite' : 'plot';
     const isFocused = this.props.focused ? 'focus' : '';
 
     return (
@@ -195,7 +191,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
 
     this.props.dragPlumbing.makeTarget(bodySelector, plumbingConfig);
 
-    if (this.props.template instanceof CompositionTemplate || this.props.template instanceof PlotTemplate) {
+    if (this.props.template instanceof CompositionTemplate) {
       this.props.dragPlumbing.makeSource(visualElementSelector, plumbingConfig, sourceConfig);
     }
   }
