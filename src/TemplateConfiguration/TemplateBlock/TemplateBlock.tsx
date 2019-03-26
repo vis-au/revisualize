@@ -74,7 +74,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     const label = this.props.template.id;
 
     return (
-      <div className="templateHeader">
+      <div className="templateHeader" onClick={ this.onClick }>
         <h2>{ label }</h2>
         <div className="delete" onClick={ this.onDelete } />
       </div>
@@ -160,7 +160,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
       <div
         id={ this.props.template.id }
         className={ `${type} template ${isFocused}` }
-        onClick={ this.onClick }>
+        onClick={ (event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}>
 
         { this.renderHeader()}
         { this.renderBody() }
