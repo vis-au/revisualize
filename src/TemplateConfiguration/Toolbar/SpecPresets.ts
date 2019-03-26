@@ -913,4 +913,115 @@ export const mosaicPreset: any = {
   }
 }
 
+export const streamGraphPreset: any = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "width": 300, "height": 200,
+  "data": {"url": "https://vega.github.io/editor/data/unemployment-across-industries.json"},
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "axis": {"domain": false, "format": "%Y", "tickSize": 0}
+    },
+    "y": {
+      "aggregate": "sum", "field": "count","type": "quantitative",
+      "axis": null,
+      "stack": "center"
+    },
+    "color": {"field":"series", "type":"nominal", "scale":{"scheme": "category20b"}}
+  }
+};
+
+export const stackedAreaPreset: any = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Area chart showing weight of cars over time.",
+  "width": 300, "height": 200,
+  "data": {"url": "https://vega.github.io/editor/data/unemployment-across-industries.json"},
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "axis": {"format": "%Y"}
+    },
+    "y": {
+      "aggregate": "sum", "field": "count", "type": "quantitative"
+    },
+    "color": {
+      "field": "series",
+      "type": "nominal",
+      "scale": {"scheme": "category20b"}
+    }
+  }
+};
+
+export const carbonDioxide: any = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {
+    "url": "https://vega.github.io/editor/data/co2-concentration.csv",
+    "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}
+  },
+  "width": 800,
+  "height": 500,
+  "transform": [
+    {"calculate": "year(datum.Date)", "as": "year"},
+    {"calculate": "floor(datum.year / 10)", "as": "decade"},
+    {
+      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
+      "as": "scaled_date"
+    },
+    {
+      "window": [
+        {"op": "first_value", "field": "scaled_date", "as": "first_date"},
+        {"op": "last_value", "field": "scaled_date", "as": "last_date"}
+      ],
+      "sort": [
+        {"field": "scaled_date", "order": "ascending"}
+      ],
+      "groupby": ["decade"],
+      "frame": [null, null]
+    },
+    {
+      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+      "as": "end"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "scaled_date",
+      "type": "quantitative",
+      "axis": {"title": "Year into Decade", "tickCount": 11}
+    },
+    "y": {
+      "field": "CO2",
+      "title": "CO2 concentration in ppm",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    }
+  },
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        }
+      }
+    },
+    {
+      "transform": [{"filter": {"field": "end", "equal": "first"}}],
+      "mark": {"type": "text", "baseline": "top"},
+      "encoding": {"text": {"field": "year", "type": "nominal"}}
+    },
+    {
+      "transform": [{"filter": {"field": "end", "equal": "last"}}],
+      "mark": {"type": "text", "baseline": "bottom"},
+      "encoding": {"text": {"field": "year", "type": "nominal"}}
+    }
+  ],
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}}
+}
+
 
