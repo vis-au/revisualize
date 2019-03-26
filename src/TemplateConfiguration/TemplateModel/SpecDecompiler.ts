@@ -68,47 +68,71 @@ export default class SchemaDecompiler {
     return childTemplate;
   }
 
-  private getCompositionTemplate(schema: any) {
-    let template: Template = null;
-    let visualElements: Template[] = [];
+  private getRepeatTemplate(schema: any) {
+    const template = new RepeatTemplate([]);
+    template.repeat = schema.repeat;
+    let childTemplate = this.decompile(schema.spec);
+    childTemplate = this.applyRepeatBindingWorkaround(template as RepeatTemplate, childTemplate);
+    template.visualElements = [childTemplate];
 
-    if (isRepeatSchema(schema)) {
-      template = new RepeatTemplate(visualElements);
-      (template as RepeatTemplate).repeat = schema.repeat;
-      let childTemplate = this.decompile(schema.spec);
-      childTemplate = this.applyRepeatBindingWorkaround(template as RepeatTemplate, childTemplate);
-      template.visualElements = [childTemplate];
-    } else if (isOverlaySchema(schema)) {
-      template = new LayerTemplate(visualElements);
+    return template;
+  }
 
-      if (schema.encoding !== undefined) {
-        const groupEncodings = Object.keys(schema.encoding);
-        groupEncodings.forEach((encoding: MarkEncoding) => {
-          (template as LayerTemplate).groupEncodings.set(encoding, schema.encoding[encoding]);
-        });
-      }
+  private getLayerTemplate(schema: any) {
+    const template = new LayerTemplate([]);
 
-      schema.layer.forEach((layer: any) => {
+    if (schema.encoding !== undefined) {
+      const groupEncodings = Object.keys(schema.encoding);
+      groupEncodings.forEach((encoding: MarkEncoding) => {
+        (template as LayerTemplate).groupEncodings.set(encoding, schema.encoding[encoding]);
+      });
+    }
+
+    schema.layer.forEach((layer: any) => {
+      template.visualElements.push(this.decompile(layer));
+    });
+
+    return template;
+  }
+
+  private getFacetTemplate(schema: any) {
+    const template = new FacetTemplate([]);
+    const plot = this.getPlotTemplate(schema);
+
+    template.visualElements = [plot];
+
+    return template;
+  }
+
+  private getConcatTemplate(schema: any) {
+    const template = new ConcatTemplate([]);
+
+    if (isVConcatSpec(schema)) {
+      template.isVertical = true;
+      schema.vconcat.forEach((layer: any) => {
         template.visualElements.push(this.decompile(layer));
       });
+    } else if (isHConcatSpec(schema)) {
+      template.isVertical = false;
+      schema.hconcat.forEach((layer: any) => {
+        template.visualElements.push(this.decompile(layer));
+      });
+    }
+
+    return template;
+  }
+
+  private getCompositionTemplate(schema: any) {
+    let template: Template = null;
+
+    if (isRepeatSchema(schema)) {
+      template = this.getRepeatTemplate(schema);
+    } else if (isOverlaySchema(schema)) {
+      template = this.getLayerTemplate(schema);
     } else if (isFacetSchema(schema)) {
-      template = new FacetTemplate(visualElements);
-
-      template.visualElements = [this.getPlotTemplate(schema)];
+      template = this.getFacetTemplate(schema);
     } else if (isConcatenateSchema(schema)) {
-      template = new ConcatTemplate(visualElements);
-
-      if (isVConcatSpec(schema)) {
-        (template as ConcatTemplate).isVertical = true;
-        schema.vconcat.forEach((layer: any) => {
-          template.visualElements.push(this.decompile(layer));
-        });
-      } else if (isHConcatSpec(schema)) {
-        (template as ConcatTemplate).isVertical = false;
-        schema.hconcat.forEach((layer: any) => {
-          template.visualElements.push(this.decompile(layer));
-        });
-      }
+      template = this.getConcatTemplate(schema);
     }
 
     template.visualElements.forEach(t => t.parent = template);
