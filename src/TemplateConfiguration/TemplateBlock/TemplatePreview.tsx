@@ -7,7 +7,8 @@ import Template from '../TemplateModel/Template';
 import './TemplatePreview.css';
 
 interface Props {
-  template: Template
+  template: Template,
+  onRenderComplete: () => void
 }
 interface State {
 
@@ -33,6 +34,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
     return (
       <VegaRenderer
         id={ `renderer${this.props.template.id}` }
+        onRenderComplete={ this.props.onRenderComplete }
         showExportOptions={ false }
         width={ 50 }
         height={ 50 }

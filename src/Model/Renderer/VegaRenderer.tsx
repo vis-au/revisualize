@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Spec } from 'vega';
-import vegaEmbed, { Actions } from 'vega-embed';
+import vegaEmbed, { Actions, Result } from 'vega-embed';
 
 import './VegaRenderer.css';
 
@@ -10,7 +10,8 @@ interface Props {
   schema: Spec;
   width?: number;
   height?: number;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
+  onRenderComplete?: () => void;
 }
 
 export default class VegaRenderer extends React.Component<Props, {}> {
@@ -18,18 +19,10 @@ export default class VegaRenderer extends React.Component<Props, {}> {
     super(props);
   }
 
-  private renderWithEmbed() {
-    return (
-      <div className="vegaContainer" id={ `vegaContainer${ this.props.id }` }></div>
-    );
-  }
-
   public render() {
     return (
       <div className="vegaRenderer" style={ this.props.style }>
-        {
-          this.renderWithEmbed()
-        }
+        <div className="vegaContainer" id={ `vegaContainer${ this.props.id }` }></div>
       </div>
     );
   }
@@ -48,6 +41,8 @@ export default class VegaRenderer extends React.Component<Props, {}> {
       actions: exportActions,
       width: this.props.width || 600,
       height: this.props.height || 400,
+    }).then((value: Result) => {
+      this.props.onRenderComplete();
     });
   }
 

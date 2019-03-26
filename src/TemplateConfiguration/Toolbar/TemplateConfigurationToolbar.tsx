@@ -124,4 +124,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
       </Toolbar>
     );
   }
+
+  public componentDidMount() {
+    this.addTemplateFromSpec('concat');
+  }
 }
