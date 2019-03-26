@@ -6,7 +6,7 @@ import { DataflowNode } from './DataflowNode';
 export default class TransformNode implements DataflowNode {
   private _id: string;
   private _name: string;
-  private _transform: Transform;
+  private _transform: any;
   private _graph: DataflowGraph;
   private _fields: string[] = [];
 
@@ -34,11 +34,11 @@ export default class TransformNode implements DataflowNode {
     this._name = name;
   }
 
-  public get transform(): Transform {
+  public get transform(): any {
     return this._transform;
   }
 
-  public set transform(transform: Transform) {
+  public set transform(transform: any) {
     this._transform = transform;
 
     if (this._graph !== undefined) {

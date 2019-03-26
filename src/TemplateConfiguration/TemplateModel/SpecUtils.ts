@@ -1,5 +1,5 @@
 import { Composition, Plot } from "./LayoutType";
-import { isUnitSpec, isLayerSpec, isRepeatSpec, isConcatSpec, isFacetSpec, GenericLayerSpec, ExtendedLayerSpec, GenericRepeatSpec, NormalizedRepeatSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedUnitSpec, GenericVConcatSpec, GenericHConcatSpec } from "vega-lite/build/src/spec";
+import { isUnitSpec, isLayerSpec, isRepeatSpec, isAnyConcatSpec, isFacetSpec, ExtendedLayerSpec, NormalizedRepeatSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedUnitSpec, GenericVConcatSpec, GenericHConcatSpec } from "vega-lite/build/src/spec";
 import { MarkEncoding, markEncodings } from "./MarkEncoding";
 
 
@@ -16,7 +16,7 @@ export function isRepeatSchema(schema: any): boolean {
 };
 
 export function isConcatenateSchema(schema: any): boolean {
-  return isConcatSpec(schema);
+  return isAnyConcatSpec(schema);
 };
 
 export function isFacetSchema(schema: any): boolean {

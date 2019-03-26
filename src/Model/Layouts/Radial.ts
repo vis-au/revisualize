@@ -80,7 +80,7 @@ export default class RadialLayout implements LayoutStructure {
           type: 'formula',
           expr: `datum.${field}`,
           as: `${field}${this._pattern.id}`
-        } as Transform;
+        } as any;
       })
     };
 

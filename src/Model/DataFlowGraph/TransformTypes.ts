@@ -61,7 +61,7 @@ export const transformTypeList = ['aggregate', 'bin', 'collect', 'countpattern',
   'filter', 'flatten', 'fold', 'formula', 'geojson', 'geopoint', 'graticule', 'identifier',
   'impute', 'lookup', 'sample', 'stack', 'window', 'wordcloud'];
 
-export const BasicTransformsByName: Map<BasicTransformType, Transform> = new Map();
+export const BasicTransformsByName: Map<BasicTransformType, any> = new Map();
 BasicTransformsByName.set('aggregate', {
   as: [''],
   fields: [''],
@@ -91,18 +91,18 @@ BasicTransformsByName.set('project', {
   type: 'project'
 });
 
-const GeographicTransformsByName: Map<string, Transform> = new Map();
-const LayoutTransformsByName: Map<string, Transform> = new Map();
+const GeographicTransformsByName: Map<string, any> = new Map();
+const LayoutTransformsByName: Map<string, any> = new Map();
 LayoutTransformsByName.set('stack', {
   field: '',
   groupby: [''],
   type: 'stack',
 });
 
-const HierarchyTransformsByName: Map<string, Transform> = new Map();
-const CrossFilterTransformsByName: Map<string, Transform> = new Map();
+const HierarchyTransformsByName: Map<string, any> = new Map();
+const CrossFilterTransformsByName: Map<string, any> = new Map();
 
-export const TransformsByGroup: Map<TransformGroupName, Map<any, Transform>> = new Map();
+export const TransformsByGroup: Map<TransformGroupName, Map<any, any>> = new Map();
 
 TransformsByGroup.set('basic', BasicTransformsByName);
 TransformsByGroup.set('geographic', GeographicTransformsByName);

@@ -1,7 +1,6 @@
 import { Data } from 'vega-lite/build/src/data';
 
 import { MarkEncoding } from './MarkEncoding';
-import { BoundsMixins } from 'vega-lite/build/src/toplevelprops';
 import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
 import { Transform } from 'vega-lite/build/src/transform';
 import { Config } from 'vega-lite';
@@ -12,7 +11,7 @@ export default abstract class Template {
   public hierarchyLevel: number;
   public data: Data;
   public description: string;
-  public bounds: BoundsMixins;
+  public bounds: any;
   public spacing: BarBinSpacingMixins;
   public width: number;
   public height: number;

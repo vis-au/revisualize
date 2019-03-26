@@ -1,9 +1,9 @@
 import CompositionTemplate from "./CompositionTemplate";
 import Template from "./Template";
-import { Repeat } from "vega-lite/build/src/repeat";
+import { RepeatMapping } from "vega-lite/build/src/spec/repeat";
 
 export default class RepeatTemplate extends CompositionTemplate {
-  public repeat: Repeat = {};
+  public repeat: RepeatMapping = {};
 
   constructor(visualElements: Template[], parent: Template = null) {
     super('repeat', visualElements, parent);

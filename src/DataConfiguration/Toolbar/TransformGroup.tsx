@@ -23,7 +23,7 @@ export default class TransformGroupBlock extends React.Component<Props, {}> {
     }
   }
 
-  private renderTransform(transform: Transform) {
+  private renderTransform(transform: any) {
     return (
       <div
         key={ transform.type }
