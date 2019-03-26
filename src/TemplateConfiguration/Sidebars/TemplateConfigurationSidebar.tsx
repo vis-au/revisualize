@@ -1,12 +1,14 @@
 import * as React from 'react';
 
 import Sidebar from '../../Widgets/Sidebar';
-import { MarkEncodingGroup, markEncodingGroups } from '../TemplateModel/MarkEncoding';
 import Template from '../TemplateModel/Template';
-import EncodingGroupBlock from './EncodingGroup';
-import SpecCompiler from '../TemplateModel/SpecCompiler';
+import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import CompositionTemplateProperties from './CompositionTemplateProperties';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
+import PlotTemplateProperties from './PlotTemplateProperties';
 
 import './TemplateConfigurationSidebar.css';
+import SpecCompiler from '../TemplateModel/SpecCompiler';
 
 interface Props {
   onTemplateChanged: () => void;
@@ -23,8 +25,6 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     super(props);
 
     this.onToggle = this.onToggle.bind(this);
-    this.renderEncodings = this.renderEncodings.bind(this);
-    this.renderEncoding = this.renderEncoding.bind(this);
 
     this.specCompiler = new SpecCompiler();
     this.state = { hidden: true };
@@ -34,27 +34,20 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.setState({ hidden: !this.state.hidden });
   }
 
-  private renderEncoding(encoding: MarkEncodingGroup) {
-    if (this.props.focusedTemplate === null) {
-      return null;
+  private renderFocusedTemplateProperties() {
+    if (this.props.focusedTemplate instanceof CompositionTemplate) {
+      return (
+        <CompositionTemplateProperties
+          template={ this.props.focusedTemplate }
+          onTemplateChanged={ this.props.onTemplateChanged } />
+      );
+    } else if (this.props.focusedTemplate instanceof PlotTemplate) {
+      return (
+        <PlotTemplateProperties
+          template={ this.props.focusedTemplate }
+          onTemplateChanged={ this.props.onTemplateChanged } />
+      );
     }
-
-    return (
-      <EncodingGroupBlock
-        key={ encoding }
-        groupType={ encoding }
-        template={ this.props.focusedTemplate }
-        onTemplateChanged={ this.props.onTemplateChanged }
-      />
-    );
-  }
-
-  private renderEncodings() {
-    return (
-      <div className="encodings">
-        { markEncodingGroups.map(this.renderEncoding)}
-      </div>
-    );
   }
 
   private renderVegaLiteCode() {
@@ -62,8 +55,8 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
       return null;
     }
 
-    const focusedTemplate = this.props.focusedTemplate;
-    const spec = this.specCompiler.getVegaSpecification(focusedTemplate, true, true);
+    const template = this.props.focusedTemplate;
+    const spec = this.specCompiler.getVegaSpecification(template, true, true);
     const specString = JSON.stringify(spec, null, 2);
 
     return (
@@ -85,7 +78,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         toggle={ this.onToggle }>
 
         <div className="sidebarContainer">
-          { this.renderEncodings() }
+          { this.renderFocusedTemplateProperties() }
           { this.renderVegaLiteCode() }
         </div>
 
