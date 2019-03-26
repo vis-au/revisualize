@@ -64,6 +64,20 @@ export default class TemplateConfigurationView extends React.Component<Props, St
       return;
     }
 
+    if (template.data !== null || template.data !== undefined) {
+      if (template.parent !== null) {
+        if (template.parent.data === null || template.parent.data === undefined) {
+          template.parent.data = JSON.parse(JSON.stringify(template.data));
+        }
+      }
+
+      template.visualElements.forEach(t => {
+        if (t.data === null || t.data === undefined) {
+          t.data = JSON.parse(JSON.stringify(template.data));
+        }
+      });
+    }
+
     // TODO: when the template is deleted from the connection map in the template editor, the
     // ondetachedconnection event is triggered, which sets the parent of the deleted template to
     // null. Therefore, it is null here and cannot be referenced, which is why the following is
@@ -72,6 +86,10 @@ export default class TemplateConfigurationView extends React.Component<Props, St
       const indexInParent = template.parent.visualElements.indexOf(template);
       template.parent.visualElements.splice(indexInParent, 1);
     }
+
+    template.visualElements.forEach(t => {
+      t.parent = null;
+    });
 
     templates.splice(indexInTemplates, 1);
     this.props.onTemplatesChanged();
@@ -107,41 +125,4 @@ export default class TemplateConfigurationView extends React.Component<Props, St
       </ViewContainer>
     );
   }
-
-  public componentDidMount() {
-    // const newTemplate = getAtomicTemplate();
-    // this.props.templates.push(newTemplate);
-    // this.props.templates.push(...newTemplate.visualElements);
-    // this.props.onTemplatesChanged();
-    // this.setState({
-    //   focusedTemplate: newTemplate
-    // });
-  }
-}
-
-// function getLineChartPreset(): Template {
-//   const histogramLayout = new Layout('histogram');
-//   const overlayLayout = new Layout('overlay');
-
-//   const compositeTemplate = new CompositeTemplate(overlayLayout, [], null);
-//   const compositeTemplate2 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-//   const compositeTemplate3 = new CompositeTemplate(histogramLayout, [], compositeTemplate);
-
-//   const atomicTemplate = new VisualMarkTemplate('point', compositeTemplate2);
-//   const atomicTemplate2 = new VisualMarkTemplate('line', compositeTemplate3);
-
-//   compositeTemplate.visualElements.push(compositeTemplate2, compositeTemplate3);
-//   compositeTemplate2.visualElements.push(atomicTemplate);
-//   compositeTemplate3.visualElements.push(atomicTemplate2);
-
-//   return compositeTemplate;
-// }
-
-function getAtomicTemplate(): PlotTemplate {
-  const plotTemplate = new PlotTemplate(null);
-  plotTemplate.type = 'point';
-  plotTemplate.setEncodedValue('x', {field: 'a', type: 'ordinal'});
-  plotTemplate.setEncodedValue('y', {field: 'b', type: 'quantitative'});
-
-  return plotTemplate;
 }

@@ -51,6 +51,10 @@ export default class TemplatePlumbingContainer extends React.Component<Props, St
   }
 
   private onDeleteTemplate(template: Template) {
+    // call this before deleting any connections! This is necessary, since deleting connections
+    // triggers the deleteConnection event, which in turn clears the visualElements array, which
+    // breaks the passing on of the connected data
+    this.props.deleteTemplate(template);
     const connections = this.templateConnectionsMap.get(template.id);
 
     if (connections !== undefined) {
@@ -62,8 +66,6 @@ export default class TemplatePlumbingContainer extends React.Component<Props, St
           this.deleteConnectionFromMaps(connection);
         });
     }
-
-    this.props.deleteTemplate(template);
   }
 
   private saveConnectionToMaps(source: Template, target: Template, connection: Connection) {

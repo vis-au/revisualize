@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Mark } from 'vega-lite/build/src/mark';
 
 import Toolbar from '../../Widgets/Toolbar';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';

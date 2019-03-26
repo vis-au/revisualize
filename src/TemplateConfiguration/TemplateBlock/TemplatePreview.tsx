@@ -34,8 +34,8 @@ export default class TemplatePreview extends React.Component<Props, State> {
       <VegaRenderer
         id={ `renderer${this.props.template.id}` }
         showExportOptions={ false }
-        // width={ 50 }
-        // height={ 50 }
+        width={ 50 }
+        height={ 50 }
         schema={ spec }
       />
     );

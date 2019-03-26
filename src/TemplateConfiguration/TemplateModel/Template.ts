@@ -26,7 +26,6 @@ export default abstract class Template {
     this.id = `template${Math.round(Math.random() * 10000)}`;
     this.hierarchyLevel = -1;
     this.data = null;
-    this.description = null;
 
     this.encodings = new Map();
     this.overwrittenEncodings = new Map();

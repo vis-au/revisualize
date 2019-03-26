@@ -12,9 +12,16 @@ import { Data } from 'vega-lite/build/src/data';
 
 
 export default class SpecCompiler {
-  public getBasicSchema(): any {
+  public getBasicSchema(template?: Template): any {
+    if (template && template.visualElements.length === 0 && template.parent === null) {
+      return {
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        mark: 'area', // could be anything, since data will be empty
+        encoding: {}
+      };
+    }
     return {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v3.json'
+      $schema: 'https://vega.github.io/schema/vega-lite/v3.json'
     };
   }
 
@@ -129,6 +136,13 @@ export default class SpecCompiler {
       return t.data !== null && t.data !== undefined;
     });
 
+    // could occur when template has no parent, no visualelements and no data (i.e. is "empty")
+    if (dataTemplate === undefined) {
+      return {
+        values: []
+      };
+    }
+
     return dataTemplate.data;
   }
 
@@ -203,7 +217,9 @@ export default class SpecCompiler {
   private getCompositionSchema(template: Template, inferData: boolean, useOverwrittenEncodings: boolean) {
     let schema: any = null;
 
-    if (template.visualElements.length === 1) {
+    if (template.visualElements.length === 0) {
+      schema = this.getBasicSchema(template);
+    } else if (template.visualElements.length === 1) {
       schema = this.getSingleLayerSpec(template);
     } else if (template.visualElements.length > 1) {
       schema = this.getMultiLayerSpec(template, useOverwrittenEncodings);
