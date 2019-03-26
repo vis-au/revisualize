@@ -4,9 +4,9 @@ import Sidebar from '../../Widgets/Sidebar';
 import { MarkEncodingGroup, markEncodingGroups } from '../TemplateModel/MarkEncoding';
 import Template from '../TemplateModel/Template';
 import EncodingGroupBlock from './EncodingGroup';
+import SpecCompiler from '../TemplateModel/SpecCompiler';
 
 import './TemplateConfigurationSidebar.css';
-import SpecCompiler from '../TemplateModel/SpecCompiler';
 
 interface Props {
   onTemplateChanged: () => void;

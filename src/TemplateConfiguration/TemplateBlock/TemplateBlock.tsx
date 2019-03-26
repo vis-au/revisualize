@@ -90,7 +90,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     return (
       <div className="previewContainer">
         <TemplatePreview
-          onRenderComplete={ this.props.dragPlumbing.repaintEverything }
+          onRenderComplete={ () => setTimeout(this.props.dragPlumbing.repaintEverything, 250) }
           key={ this.props.template.visualElements.map(v => v.id).join('_') }
           template={ this.props.template }/>
       </div>

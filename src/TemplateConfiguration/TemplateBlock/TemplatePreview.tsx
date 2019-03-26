@@ -50,4 +50,8 @@ export default class TemplatePreview extends React.Component<Props, State> {
       </div>
     );
   }
+
+  public shouldComponentUpdate() {
+    return false;
+  }
 }
