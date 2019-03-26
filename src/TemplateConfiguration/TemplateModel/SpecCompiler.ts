@@ -18,8 +18,8 @@ export default class SpecCompiler {
     };
   }
 
-  private setSingleViewProperties(schema: any, template: Template) {
-    if (template.data !== undefined) {
+  private setSingleViewProperties(schema: any, template: Template, includeData: boolean = true) {
+    if (includeData && template.data !== undefined) {
       schema.data = template.data;
     }
     if (template.bounds !== undefined) {
@@ -42,6 +42,16 @@ export default class SpecCompiler {
     }
 
     return schema;
+  }
+
+  private getRootTemplate(template: Template) {
+    let workingNode = template;
+
+    while (workingNode.parent !== null) {
+      workingNode = workingNode.parent;
+    }
+
+    return workingNode;
   }
 
   private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
@@ -208,16 +218,22 @@ export default class SpecCompiler {
     return schema;
   }
 
-  public getVegaSpecification(template: Template, inferData: boolean = false, useOverwrittenEncodings: boolean = false) {
+  public getVegaSpecification(template: Template, inferProperties: boolean = false, useOverwrittenEncodings: boolean = false) {
     let schema: any = null;
 
     if (template instanceof PlotTemplate) {
-      schema = this.getPlotSchema(template, inferData, useOverwrittenEncodings);
+      schema = this.getPlotSchema(template, inferProperties, useOverwrittenEncodings);
     } else if (template instanceof CompositionTemplate) {
-      schema = this.getCompositionSchema(template, inferData, useOverwrittenEncodings);
+      schema = this.getCompositionSchema(template, inferProperties, useOverwrittenEncodings);
     }
 
     schema = this.setSingleViewProperties(schema, template);
+
+    if (inferProperties) {
+      let rootTemplate = this.getRootTemplate(template);
+      schema = this.setSingleViewProperties(schema, rootTemplate, false);
+    }
+
     console.log(schema);
 
     return schema;
