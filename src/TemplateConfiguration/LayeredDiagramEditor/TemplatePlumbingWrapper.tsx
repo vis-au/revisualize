@@ -25,7 +25,7 @@ const templateEditorPlumbingConfig = {
   ],
 };
 
-export default class TemplatePlumbingContainer extends React.Component<Props, State> {
+export default class TemplatePlumbingWrapper extends React.Component<Props, State> {
   private dragPlumbing: jsPlumbInstance;
   private templateConnectionsMap: Map<string, Connection[]>;
 

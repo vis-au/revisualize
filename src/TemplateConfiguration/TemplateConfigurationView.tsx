@@ -2,11 +2,10 @@ import * as React from 'react';
 
 import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
-import TemplatePlumbingContainer from './LayeredDiagramEditor/TemplatePlumbingContainer';
+import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
-import PlotTemplate from './TemplateModel/PlotTemplate';
 
 import './TemplateConfigurationView.css';
 
@@ -108,7 +107,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           addTemplates={ this.addTemplates } />
 
         <div id="templateConfigurationBody">
-          <TemplatePlumbingContainer
+          <TemplatePlumbingWrapper
             templates={ this.props.templates }
             focusedTemplate={ this.state.focusedTemplate }
             onTemplatesChanged={ this.props.onTemplatesChanged }
