@@ -21,18 +21,17 @@
   color: #000;
 }
 
-#templateToolbar h2 {
-  margin: 0 1rem;
-  font-family: 'Roboto Condensed';
-  font-size: 15px;
-}
-
-#templateImport,
-#templatePresets {
+#templateToolbar .column {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   margin: 0 1rem;
+}
+
+#templateToolbar .column h2 {
+  margin: 0 1rem;
+  font-family: 'Roboto Condensed';
+  font-size: 15px;
 }
