@@ -4,11 +4,11 @@ import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView
 import { DEFAULT_DATA_GRAPH, DEFAULT_SCALES, DEFAULT_SIGNALS } from './DefaultValueFactories/DefaultValueFactory';
 import DataflowGraph from './Model/DataFlowGraph/DataflowGraph';
 import PatternGraph from './Model/Pattern/PatternGraph';
+import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
+import Template from './TemplateConfiguration/TemplateModel/Template';
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
-import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
-import Template from './TemplateConfiguration/TemplateModel/Template';
 
 import './App.css';
 
@@ -20,6 +20,7 @@ interface State {
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
   templates: Template[];
+  templateVersion: number;
 }
 
 export default class App extends React.Component<{}, State> {
@@ -51,7 +52,8 @@ export default class App extends React.Component<{}, State> {
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
-      templates: []
+      templates: [],
+      templateVersion: 0
     };
 
     window.addEventListener('resize', () => {
@@ -67,25 +69,17 @@ export default class App extends React.Component<{}, State> {
   }
 
   private onTemplatesChanged() {
-    this.setState({ templates: this.state.templates });
+    console.log('ooph')
+    this.setState({
+      templates: this.state.templates,
+      templateVersion: this.state.templateVersion + 1
+    });
   }
 
   private updateDataGraph(newGraph: DataflowGraph) {
     this.setState({
       dataGraph: newGraph
     });
-  }
-
-  private updatePatternGraph(newPatternGraph: PatternGraph) {
-    this.setState({ patternGraph: newPatternGraph });
-  }
-
-  private updateActiveTab(activeTab: Tab) {
-    this.setState({ activeTab });
-  }
-
-  private getActiveTab(): Tab {
-    return this.state.activeTab;
   }
 
   public render() {
@@ -128,6 +122,7 @@ export default class App extends React.Component<{}, State> {
             activeTab={ this.state.activeTab }
             templates={ this.state.templates }
             onTemplatesChanged={ this.onTemplatesChanged }
+            templateVersion={ this.state.templateVersion }
           />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }

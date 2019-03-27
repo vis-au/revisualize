@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Template from '../../TemplateModel/Template';
-import RepeatTemplate from '../../TemplateModel/RepeatTemplate';
+import ConcatTemplate from '../../TemplateModel/ConcatTemplate';
 import FacetTemplate from '../../TemplateModel/FacetTemplate';
 import LayerTemplate from '../../TemplateModel/LayerTemplate';
-import ConcatTemplate from '../../TemplateModel/ConcatTemplate';
+import RepeatTemplate from '../../TemplateModel/RepeatTemplate';
+import Template from '../../TemplateModel/Template';
 
 interface Props {
   template: Template;

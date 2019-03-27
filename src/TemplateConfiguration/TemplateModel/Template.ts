@@ -1,10 +1,10 @@
 import { Data } from 'vega-lite/build/src/data';
 
-import { MarkEncoding } from './MarkEncoding';
+import { Config } from 'vega-lite';
 import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
 import { Transform } from 'vega-lite/build/src/transform';
-import { Config } from 'vega-lite';
 import { LayoutType } from './LayoutType';
+import { MarkEncoding } from './MarkEncoding';
 
 export default abstract class Template {
   public id: string;

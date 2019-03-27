@@ -1,6 +1,6 @@
-import Template from "./Template";
-import { Composition } from "./LayoutType";
-import { Resolve } from "vega-lite/build/src/resolve";
+import { Resolve } from 'vega-lite/build/src/resolve';
+import { Composition } from './LayoutType';
+import Template from './Template';
 
 export default abstract class CompositionTemplate extends Template {
   public resolve: Resolve;

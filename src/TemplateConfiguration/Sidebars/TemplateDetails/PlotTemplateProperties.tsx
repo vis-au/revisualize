@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { markEncodingGroups, MarkEncodingGroup } from '../../TemplateModel/MarkEncoding';
-import EncodingGroupBlock from './EncodingGroup';
-import PlotTemplate from '../../TemplateModel/PlotTemplate';
+
 import { Mark } from 'vega-lite/build/src/mark';
+import { MarkEncodingGroup, markEncodingGroups } from '../../TemplateModel/MarkEncoding';
 import { MARK_TYPES } from '../../TemplateModel/MarkType';
+import PlotTemplate from '../../TemplateModel/PlotTemplate';
+import EncodingGroupBlock from './EncodingGroup';
+
+import './PlotTemplateProperties.css';
 
 interface Props {
   template: PlotTemplate;
@@ -35,6 +38,7 @@ export default class PlotTemplateProperties extends React.Component<Props, State
 
     return (
       <div className="marks">
+        <h2>Mark</h2>
         <select name="markSelection" id="markSelection" value={ markType } onChange={ this.setMarkType }>
           { MARK_TYPES.map(this.renderMarkOption) }
         </select>

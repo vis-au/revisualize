@@ -1,6 +1,6 @@
-import { Composition, Plot } from "./LayoutType";
-import { isUnitSpec, isLayerSpec, isRepeatSpec, isAnyConcatSpec, isFacetSpec, ExtendedLayerSpec, NormalizedRepeatSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedUnitSpec, GenericVConcatSpec, GenericHConcatSpec } from "vega-lite/build/src/spec";
-import { MarkEncoding, markEncodings } from "./MarkEncoding";
+import { ExtendedLayerSpec, GenericHConcatSpec, GenericVConcatSpec, isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedRepeatSpec, NormalizedUnitSpec } from 'vega-lite/build/src/spec';
+import { Composition, Plot } from './LayoutType';
+import { MarkEncoding, markEncodings } from './MarkEncoding';
 
 
 export function isAtomicSchema(schema: any): boolean {

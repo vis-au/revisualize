@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ValueDef, FieldDef, isValueDef, isFieldDef } from 'vega-lite/build/src/fielddef';
+import { FieldDef, isFieldDef, isValueDef, ValueDef } from 'vega-lite/build/src/fielddef';
 
 import './EncodingBlock.css';
 

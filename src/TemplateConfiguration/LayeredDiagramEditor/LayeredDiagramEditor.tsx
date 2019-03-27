@@ -3,8 +3,8 @@ import 'jquery-ui/ui/widgets/draggable';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
 
-import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import Template from '../../TemplateConfiguration/TemplateModel/Template';
+import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import AddTemplateButton from './AddTemplateButton';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
@@ -14,6 +14,7 @@ interface Props {
   id: string,
   dragPlumbing: any,
   templates: Template[],
+  templateVersion: number,
   focusedTemplate: Template,
   onNewConnection: (event: any) => void,
   onDetachedConnection: (event: any) => void,
@@ -94,6 +95,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
         delete={ () => this.props.deleteTemplate(template) }
         dragPlumbing={ this.props.dragPlumbing }
         template={ template }
+        templateVersion={ this.props.templateVersion }
         level={ layer }
         focused={ template === this.props.focusedTemplate }
         focus={ () => this.props.focusTemplate(template) }

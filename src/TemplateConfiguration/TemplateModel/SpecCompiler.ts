@@ -1,14 +1,14 @@
 import { TopLevelSpec } from 'vega-lite';
 
-import { getAbstraction } from './SpecUtils';
-import Template from './Template';
-import PlotTemplate from './PlotTemplate';
+import { Data } from 'vega-lite/build/src/data';
 import CompositionTemplate from './CompositionTemplate';
-import RepeatTemplate from './RepeatTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import LayerTemplate from './LayerTemplate';
 import { Composition } from './LayoutType';
-import { Data } from 'vega-lite/build/src/data';
+import PlotTemplate from './PlotTemplate';
+import RepeatTemplate from './RepeatTemplate';
+import { getAbstraction } from './SpecUtils';
+import Template from './Template';
 
 
 export default class SpecCompiler {
@@ -250,7 +250,7 @@ export default class SpecCompiler {
     schema = this.setSingleViewProperties(schema, template);
 
     if (inferProperties) {
-      let rootTemplate = this.getRootTemplate(template);
+      const rootTemplate = this.getRootTemplate(template);
       schema = this.setSingleViewProperties(schema, rootTemplate, false);
     }
 

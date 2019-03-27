@@ -8,6 +8,7 @@ import './TemplatePreview.css';
 
 interface Props {
   template: Template,
+  templateVersion: number,
   onRenderComplete: () => void
 }
 interface State {
@@ -16,11 +17,14 @@ interface State {
 
 export default class TemplatePreview extends React.Component<Props, State> {
   private specCompiler: SpecCompiler;
+  private templateVersion: number;
 
   constructor(props: Props) {
     super(props);
 
     this.specCompiler = new SpecCompiler();
+
+    this.templateVersion = this.props.templateVersion;
   }
 
   private renderVegaPreview() {
@@ -52,6 +56,10 @@ export default class TemplatePreview extends React.Component<Props, State> {
   }
 
   public shouldComponentUpdate() {
-    return false;
+    return this.props.templateVersion !== this.templateVersion;
+  }
+
+  public componentDidUpdate() {
+    this.templateVersion = this.props.templateVersion;
   }
 }

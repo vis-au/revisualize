@@ -1,5 +1,5 @@
-import CompositionTemplate from "./CompositionTemplate";
-import Template from "./Template";
+import CompositionTemplate from './CompositionTemplate';
+import Template from './Template';
 
 export default class FacetTemplate extends CompositionTemplate {
   public facetedFields: string[] = [];

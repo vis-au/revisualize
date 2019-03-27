@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import Toolbar from '../../Widgets/Toolbar';
+import LayerTemplate from '../TemplateModel/LayerTemplate';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
+import RepeatTemplate from '../TemplateModel/RepeatTemplate';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
-import { populationLayerChart, barchartSpec, scatterplotMatrixSpec, candlestickSpec, concatenateSpec, stackedBarchartPreset, parallelCoordinatesPreset, repeatOverlayPreset, mosaicPreset, streamGraphPreset, stackedAreaPreset, carbonDioxide } from './SpecPresets';
-import RepeatTemplate from '../TemplateModel/RepeatTemplate';
-import LayerTemplate from '../TemplateModel/LayerTemplate';
+import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
 
 import './TemplateConfigurationToolbar.css';
 

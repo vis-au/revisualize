@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import Sidebar from '../../../Widgets/Sidebar';
-import Template from '../../TemplateModel/Template';
 import CompositionTemplate from '../../TemplateModel/CompositionTemplate';
-import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplate from '../../TemplateModel/PlotTemplate';
-import PlotTemplateProperties from './PlotTemplateProperties';
 import SpecCompiler from '../../TemplateModel/SpecCompiler';
+import Template from '../../TemplateModel/Template';
+import CompositionTemplateProperties from './CompositionTemplateProperties';
+import PlotTemplateProperties from './PlotTemplateProperties';
 
 import './TemplateConfigurationSidebar.css';
 
@@ -63,7 +63,8 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
       <textarea
         contentEditable={ false }
         id="templateConfigurationSidebarVegaPreview"
-        value={ specString }>
+        value={ specString }
+        onChange={ () => null }>
       </textarea>
     );
   }

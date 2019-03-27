@@ -1,11 +1,12 @@
 import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
-import LayeredDiagramEditor from './LayeredDiagramEditor';
 import Template from '../TemplateModel/Template';
+import LayeredDiagramEditor from './LayeredDiagramEditor';
 
 interface Props {
   templates: Template[],
+  templateVersion: number,
   focusedTemplate: Template,
   onTemplatesChanged: () => void,
   addTemplate: (template: Template) => void,
@@ -127,13 +128,13 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
       return false;
     }
 
-    let sourceHtmlNode = this.findTemplateInDomParents(info.source);
-    let targetHtmlNode = this.findTemplateInDomParents(info.target);
+    const sourceHtmlNode = this.findTemplateInDomParents(info.source);
+    const targetHtmlNode = this.findTemplateInDomParents(info.target);
 
-    let sourceTemplate = this.props.templates
+    const sourceTemplate = this.props.templates
       .find(template => template.id === sourceHtmlNode.id);
 
-    let targetTemplate = this.props.templates
+    const targetTemplate = this.props.templates
       .find(template => template.id === targetHtmlNode.id);
 
     if (sourceTemplate !== undefined) {
@@ -210,6 +211,7 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
       <LayeredDiagramEditor
         id={ 'layeredTemplateDiagramEditor' }
         templates={ this.props.templates }
+        templateVersion={ this.props.templateVersion }
         focusedTemplate={ this.props.focusedTemplate }
         addTemplate={ this.props.addTemplate }
         deleteTemplate={ this.onDeleteTemplate }

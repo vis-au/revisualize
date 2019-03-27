@@ -1,15 +1,15 @@
-import { isVConcatSpec, isHConcatSpec } from "vega-lite/build/src/spec";
+import { isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec';
 
-import { isCompositionSchema, isRepeatSchema, isPlotSchema, isOverlaySchema, isFacetSchema, isConcatenateSchema, getMarkPropertiesAsMap } from "./SpecUtils";
-import PlotTemplate from "./PlotTemplate";
-import Template from "./Template";
-import { MarkEncoding } from "./MarkEncoding";
-import RepeatTemplate from "./RepeatTemplate";
-import LayerTemplate from "./LayerTemplate";
-import FacetTemplate from "./FacetTemplate";
-import ConcatTemplate from "./ConcatTemplate";
-import { isRepeatRef, isFieldDef } from "vega-lite/build/src/fielddef";
-import CompositionTemplate from "./CompositionTemplate";
+import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
+import CompositionTemplate from './CompositionTemplate';
+import ConcatTemplate from './ConcatTemplate';
+import FacetTemplate from './FacetTemplate';
+import LayerTemplate from './LayerTemplate';
+import { MarkEncoding } from './MarkEncoding';
+import PlotTemplate from './PlotTemplate';
+import RepeatTemplate from './RepeatTemplate';
+import { getMarkPropertiesAsMap, isCompositionSchema, isConcatenateSchema, isFacetSchema, isOverlaySchema, isPlotSchema, isRepeatSchema } from './SpecUtils';
+import Template from './Template';
 
 export default class SchemaDecompiler {
 
@@ -85,7 +85,7 @@ export default class SchemaDecompiler {
   private getRepeatTemplate(schema: any) {
     const template = new RepeatTemplate([]);
     template.repeat = schema.repeat;
-    let childTemplate = this.decompile(schema.spec);
+    const childTemplate = this.decompile(schema.spec);
     template.visualElements = [childTemplate];
     this.removeRepeatFromChildTemplates(template);
 

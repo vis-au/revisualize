@@ -1,17 +1,17 @@
 import * as React from 'react';
 
+import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import PlotTemplate from '../TemplateModel/PlotTemplate';
 import Template from '../TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
-import CompositionTemplate from '../TemplateModel/CompositionTemplate';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
 
 import './TemplateBlock.css';
 
 interface Props {
-  key: string;
   dragPlumbing: any;
   template: Template;
+  templateVersion: number;
   level: number;
   focused: boolean;
   toggleChildTemplate: (template: Template) => void;
@@ -42,7 +42,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     this.props.focus();
     let steps = 0;
 
-    let interval = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       if (steps === 100) {
         window.clearInterval(interval);
       }
@@ -90,6 +90,7 @@ export default class TemplateBlock extends React.Component<Props, State> {
     return (
       <div className="previewContainer">
         <TemplatePreview
+          templateVersion={ this.props.templateVersion }
           onRenderComplete={ () => setTimeout(this.props.dragPlumbing.repaintEverything, 250) }
           key={ this.props.template.visualElements.map(v => v.id).join('_') }
           template={ this.props.template }/>

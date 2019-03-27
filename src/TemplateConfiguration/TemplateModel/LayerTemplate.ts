@@ -1,6 +1,6 @@
-import CompositionTemplate from "./CompositionTemplate";
-import Template from "./Template";
-import { MarkEncoding } from "./MarkEncoding";
+import CompositionTemplate from './CompositionTemplate';
+import { MarkEncoding } from './MarkEncoding';
+import Template from './Template';
 
 export default class LayerTemplate extends CompositionTemplate {
   public groupEncodings: Map<MarkEncoding, any>;

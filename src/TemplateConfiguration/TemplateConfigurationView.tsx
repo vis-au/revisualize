@@ -3,9 +3,9 @@ import * as React from 'react';
 import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
+import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
-import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
 
 import './TemplateConfigurationView.css';
 
@@ -13,6 +13,7 @@ interface Props {
   activeTab: Tab;
   className: string;
   templates: Template[];
+  templateVersion: number;
   onTemplatesChanged: () => void;
 }
 interface State {
@@ -109,6 +110,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         <div id="templateConfigurationBody">
           <TemplatePlumbingWrapper
             templates={ this.props.templates }
+            templateVersion={ this.props.templateVersion }
             focusedTemplate={ this.state.focusedTemplate }
             onTemplatesChanged={ this.props.onTemplatesChanged }
             focusTemplate={ this.focusTemplate }
