@@ -6,9 +6,9 @@ import CompositionTemplate from '../../TemplateModel/CompositionTemplate';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplate from '../../TemplateModel/PlotTemplate';
 import PlotTemplateProperties from './PlotTemplateProperties';
+import SpecCompiler from '../../TemplateModel/SpecCompiler';
 
 import './TemplateConfigurationSidebar.css';
-import SpecCompiler from '../../TemplateModel/SpecCompiler';
 
 interface Props {
   onTemplateChanged: () => void;

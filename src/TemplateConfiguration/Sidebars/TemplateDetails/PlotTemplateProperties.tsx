@@ -2,6 +2,8 @@ import * as React from 'react';
 import { markEncodingGroups, MarkEncodingGroup } from '../../TemplateModel/MarkEncoding';
 import EncodingGroupBlock from './EncodingGroup';
 import PlotTemplate from '../../TemplateModel/PlotTemplate';
+import { Mark } from 'vega-lite/build/src/mark';
+import { MARK_TYPES } from '../../TemplateModel/MarkType';
 
 interface Props {
   template: PlotTemplate;
@@ -16,6 +18,28 @@ export default class PlotTemplateProperties extends React.Component<Props, State
     super(props);
 
     this.renderEncoding = this.renderEncoding.bind(this);
+    this.setMarkType = this.setMarkType.bind(this);
+  }
+
+  private setMarkType(event: React.ChangeEvent<HTMLSelectElement>) {
+    this.props.template.type = event.target.value as Mark;
+    this.props.onTemplateChanged();
+  }
+
+  private renderMarkOption(mark: Mark) {
+    return <option key={ `option${mark}` } value={ mark }>{ mark }</option>;
+  }
+
+  private renderMarkConfig() {
+    const markType = this.props.template.type;
+
+    return (
+      <div className="marks">
+        <select name="markSelection" id="markSelection" value={ markType } onChange={ this.setMarkType }>
+          { MARK_TYPES.map(this.renderMarkOption) }
+        </select>
+      </div>
+    );
   }
 
   private renderEncoding(encoding: MarkEncodingGroup) {
@@ -44,6 +68,7 @@ export default class PlotTemplateProperties extends React.Component<Props, State
   public render() {
     return (
       <div className="plotTemplateProperties">
+        { this.renderMarkConfig() }
         { this.renderEncodings() }
       </div>
     );

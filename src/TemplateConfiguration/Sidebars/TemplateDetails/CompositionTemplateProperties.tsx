@@ -31,9 +31,33 @@ export default class CompositionTemplateProperties extends React.Component<Props
     );
   }
 
+  private setConcatDirection(direction: 'vertical' | 'horizontal') {
+    (this.props.template as ConcatTemplate).isVertical = direction === 'vertical';
+    this.props.onTemplateChanged();
+  }
+
   private renderConcatProperties() {
+    const template = this.props.template as ConcatTemplate;
+    const isVerticalConcat = template.isVertical;
+
     return (
-      <div className="properties"></div>
+      <div className="properties">
+        <input
+          id="verticalConcat"
+          name="concatDirection"
+          type="radio"
+          onChange={ () => this.setConcatDirection('vertical') }
+          checked={ isVerticalConcat }/>
+        <label htmlFor="verticalConcat">Vertical</label>
+
+        <input
+          id="horizontalConcat"
+          name="concatDirection"
+          type="radio"
+          onChange={ () => this.setConcatDirection('horizontal') }
+          checked={ !isVerticalConcat }/>
+        <label htmlFor="horizontalConcat">Horizontal</label>
+      </div>
     );
   }
 
