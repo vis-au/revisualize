@@ -16,6 +16,7 @@ interface Props {
 }
 interface State {
   hidden: boolean;
+  JSONHidden: boolean;
 }
 
 export default class TemplateConfigurationSidebar extends React.Component<Props, State> {
@@ -27,7 +28,10 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.onToggle = this.onToggle.bind(this);
 
     this.specCompiler = new SpecCompiler();
-    this.state = { hidden: true };
+    this.state = {
+      hidden: true,
+      JSONHidden: true
+    };
   }
 
   public onToggle() {
@@ -58,14 +62,21 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     const template = this.props.focusedTemplate;
     const spec = this.specCompiler.getVegaSpecification(template, true, true);
     const specString = JSON.stringify(spec, null, 2);
+    const label = this.state.JSONHidden ? 'show JSON' : 'hide JSON';
 
     return (
-      <textarea
-        contentEditable={ false }
-        id="templateConfigurationSidebarVegaPreview"
-        value={ specString }
-        onChange={ () => null }>
-      </textarea>
+      <div className="vegaLiteContainer">
+        <button onClick={() => this.setState({ JSONHidden: !this.state.JSONHidden })}>
+          { label }
+        </button>
+        <textarea
+          contentEditable={ false }
+          id="templateConfigurationSidebarVegaPreview"
+          className={ this.state.JSONHidden ? 'hidden' : '' }
+          value={ specString }
+          onChange={ () => null }>
+        </textarea>
+      </div>
     );
   }
 

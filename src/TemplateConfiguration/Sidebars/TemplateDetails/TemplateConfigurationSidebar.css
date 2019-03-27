@@ -1,7 +1,7 @@
 #templateConfigurationSidebar {
   background: #fff;
   box-shadow: 0 2px 4px #ccc;
-  top: 50px;
+  top: 40px;
 }
 #templateConfigurationSidebar .toggleButtonWrapper {
   top: 50%;
@@ -18,7 +18,25 @@
   font-size: 15px;
 }
 
+#templateConfigurationSidebar .vegaLiteContainer button {
+  color: teal;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+#templateConfigurationSidebar .vegaLiteContainer button:hover {
+  text-decoration: underline
+}
 textarea#templateConfigurationSidebarVegaPreview {
   width: 95%;
   min-height: 350px;
+  background: url(http://i.imgur.com/2cOaJ.png);
+  background-attachment: local;
+  background-repeat: no-repeat;
+  padding-left: 35px;
+  padding-top: 10px;
+  resize: none;
+}
+textarea#templateConfigurationSidebarVegaPreview.hidden {
+  display: none;
 }
