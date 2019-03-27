@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { markEncodingGroups, MarkEncodingGroup } from '../TemplateModel/MarkEncoding';
+import { markEncodingGroups, MarkEncodingGroup } from '../../TemplateModel/MarkEncoding';
 import EncodingGroupBlock from './EncodingGroup';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
+import PlotTemplate from '../../TemplateModel/PlotTemplate';
 
 interface Props {
   template: PlotTemplate;

@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import Sidebar from '../../Widgets/Sidebar';
-import Template from '../TemplateModel/Template';
-import CompositionTemplate from '../TemplateModel/CompositionTemplate';
+import Sidebar from '../../../Widgets/Sidebar';
+import Template from '../../TemplateModel/Template';
+import CompositionTemplate from '../../TemplateModel/CompositionTemplate';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
+import PlotTemplate from '../../TemplateModel/PlotTemplate';
 import PlotTemplateProperties from './PlotTemplateProperties';
 
 import './TemplateConfigurationSidebar.css';
-import SpecCompiler from '../TemplateModel/SpecCompiler';
+import SpecCompiler from '../../TemplateModel/SpecCompiler';
 
 interface Props {
   onTemplateChanged: () => void;

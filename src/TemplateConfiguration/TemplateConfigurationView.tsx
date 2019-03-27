@@ -5,7 +5,7 @@ import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
-import TemplateConfigurationSidebar from './Sidebars/TemplateConfigurationSidebar';
+import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
 
 import './TemplateConfigurationView.css';
 

@@ -4,8 +4,8 @@ import EncodingBlock from './EncodingBlock';
 import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings,
   keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup,
   markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings,
-  textTooltipChannelEncodings } from '../TemplateModel/MarkEncoding';
-import Template from '../TemplateModel/Template';
+  textTooltipChannelEncodings } from '../../TemplateModel/MarkEncoding';
+import Template from '../../TemplateModel/Template';
 
 import './EncodingGroup.css';
 
