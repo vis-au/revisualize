@@ -82,7 +82,10 @@ export default class VegaJSONInput extends React.Component<Props, State> {
     return (
       <div className={ `overlayWrapper ${isHidden}` }>
         <div className="inputWrapper">
-          <h2>Enter Custom Vega JSON</h2>
+          <div className="row">
+            <h2>Enter Custom Vega JSON</h2>
+            <button onClick={ () => this.setState({ hidden: true })} className="delete"></button>
+          </div>
           <span className="notice">When copying example specs from vega.github.io, make sure to point any data urls to "https://vega.github.io/editor/[PATH]", where [PATH] needs to be replaced with the original url.</span>
           <textarea value={ this.state.currentInput } onChange={ this.onInputChange }></textarea>
           <span className="message">{ this.state.message }</span>
