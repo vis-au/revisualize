@@ -214,7 +214,7 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getCompositionSchema(template: Template, inferData: boolean, useOverwrittenEncodings: boolean) {
+  private getCompositionSchema(template: CompositionTemplate, inferData: boolean, useOverwrittenEncodings: boolean) {
     let schema: any = null;
 
     if (template.visualElements.length === 0) {
@@ -229,6 +229,10 @@ export default class SpecCompiler {
       schema.data = this.getDataInHierarchy(template);
     } else {
       schema.data = template.data;
+    }
+
+    if (template.resolve !== undefined) {
+      schema.resolve = template.resolve;
     }
 
     return schema;

@@ -3,6 +3,7 @@ import Template from "./Template";
 
 export default class ConcatTemplate extends CompositionTemplate {
   public isVertical: boolean = true;
+  public isWrappable: boolean = false;
 
   constructor(visualElements: Template[], parent: Template = null) {
     super('concatenate', visualElements, parent);

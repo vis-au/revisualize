@@ -9,6 +9,7 @@ import LayerTemplate from "./LayerTemplate";
 import FacetTemplate from "./FacetTemplate";
 import ConcatTemplate from "./ConcatTemplate";
 import { isRepeatRef, isFieldDef } from "vega-lite/build/src/fielddef";
+import CompositionTemplate from "./CompositionTemplate";
 
 export default class SchemaDecompiler {
 
@@ -136,7 +137,7 @@ export default class SchemaDecompiler {
   }
 
   private getCompositionTemplate(schema: any) {
-    let template: Template = null;
+    let template: CompositionTemplate = null;
 
     if (isRepeatSchema(schema)) {
       template = this.getRepeatTemplate(schema);
@@ -148,6 +149,7 @@ export default class SchemaDecompiler {
       template = this.getConcatTemplate(schema);
     }
 
+    template.resolve = schema.resolve;
     template.visualElements.forEach(t => t.parent = template);
 
     return template;

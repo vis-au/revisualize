@@ -188,6 +188,9 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
   if (schema.config !== undefined) {
     abstraction.config = JSON.parse(JSON.stringify(schema.config));
   }
+  if (schema.resolve !== undefined) {
+    abstraction.resolve = JSON.parse(JSON.stringify(schema.resolve));
+  }
 
   return abstraction;
 };
