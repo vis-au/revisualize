@@ -90,7 +90,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
     this.makePreviewResizable();
   }
 
-  public shouldComponentUpdate(nextProps: Props) {
+  public shouldComponentUpdate(nextProps: Props, nextState: State) {
     // TODO: this is a quick-and-dirty way to prevent the preview from updating, whenever the
     // template has not changed. It is necessary, because the spec passed to the vegarenderer is
     // computed here instead of in the template, therefore a new object is created every time the
@@ -101,6 +101,10 @@ export default class TemplatePreview extends React.Component<Props, State> {
     const nextSpec = this.specCompiler.getVegaSpecification(template, true, true);
     const nextSchemaString = JSON.stringify(nextSpec);
 
-    return nextSchemaString !== this.latestSchemaString;
+    const widthIsTheSame = nextState.width === this.state.width;
+    const heightIsTheSame = nextState.height === this.state.height;
+    const sizeIsTheSame = widthIsTheSame && heightIsTheSame;
+
+    return nextSchemaString !== this.latestSchemaString || !sizeIsTheSame;
   }
 }
