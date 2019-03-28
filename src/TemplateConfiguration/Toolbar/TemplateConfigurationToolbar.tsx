@@ -4,7 +4,7 @@ import { BaseSpec } from 'vega-lite/build/src/spec';
 import Toolbar from '../../Widgets/Toolbar';
 import SpecParser from '../TemplateModel/SpecParser';
 import Template from '../TemplateModel/Template';
-import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
+import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, londonTube, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
 
 import './TemplateConfigurationToolbar.css';
@@ -41,6 +41,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.specPresets.set('streamGraph', streamGraphPreset);
     this.specPresets.set('stackedArea', stackedAreaPreset);
     this.specPresets.set('CO2', carbonDioxide);
+    this.specPresets.set('londonTube', londonTube);
   }
 
   private addTemplateFromSpec(spec: BaseSpec) {
