@@ -42,7 +42,9 @@ export default class VegaRenderer extends React.Component<Props, {}> {
       width: this.props.width || 600,
       height: this.props.height || 400,
     }).then((value: Result) => {
-      this.props.onRenderComplete();
+      if (this.props.onRenderComplete !== undefined) {
+        this.props.onRenderComplete();
+      }
     });
   }
 

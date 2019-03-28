@@ -14,9 +14,10 @@ interface Props {
   templateVersion: number;
   level: number;
   focused: boolean;
-  toggleChildTemplate: (template: Template) => void;
   delete: () => void;
   focus: () => void;
+  toggleChildTemplate: (template: Template) => void;
+  toggleTemplateFullscreenPreview: (visible?: boolean) => void
 }
 interface State {
   minimized: boolean;
@@ -139,12 +140,16 @@ export default class TemplateBlock extends React.Component<Props, State> {
     return (
       <div className="footer">
         <button className="expand" onClick={ this.togglePreviewMinimized }>
-          <i className="material-icons icon">aspect_ratio</i>
+          <i className="material-icons icon">bubble_chart</i>
           <span>preview</span>
         </button>
         <button className="childNodes" onClick={ () => null }>
           <i className="material-icons icon">timeline</i>
           <span>child nodes</span>
+        </button>
+        <button className="childNodes" onClick={ () => this.props.toggleTemplateFullscreenPreview() }>
+          <i className="material-icons icon">aspect_ratio</i>
+          <span>fullscreen</span>
         </button>
       </div>
     );

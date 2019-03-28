@@ -8,6 +8,7 @@ import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import AddTemplateButton from './AddTemplateButton';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
+import FullscreenTemplatePreview from './FullscreenTemplatePreview';
 import './LayeredDiagramEditor.css';
 
 interface Props {
@@ -27,6 +28,7 @@ interface State {
   hiddenTemplatesMap: Map<string, boolean>,
   userDefinedLayerNumber: number;
   collapsedLayers: number[];
+  fullscreenPreviewTemplate: Template;
 }
 
 const plumbingConfig = {
@@ -43,6 +45,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
 
     this.renderTemplate = this.renderTemplate.bind(this);
     this.toggleCollapseLayer = this.toggleCollapseLayer.bind(this);
+    this.toggleFullscreenPreview = this.toggleFullscreenPreview.bind(this);
     this.onLayerClicked = this.onLayerClicked.bind(this);
 
     this.buttonObserver = new AddTemplateButtonObserver();
@@ -50,7 +53,8 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     this.state = {
       userDefinedLayerNumber: 0,
       collapsedLayers: [],
-      hiddenTemplatesMap: new Map()
+      hiddenTemplatesMap: new Map(),
+      fullscreenPreviewTemplate: null
     }
   }
 
@@ -84,6 +88,18 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     window.setTimeout(this.props.dragPlumbing.repaintEverything, 500);
   }
 
+  private toggleFullscreenPreview(template: Template) {
+    if (this.state.fullscreenPreviewTemplate === template) {
+      this.setState({
+        fullscreenPreviewTemplate: null
+      });
+    } else {
+      this.setState({
+        fullscreenPreviewTemplate: template
+      });
+    }
+  }
+
   private onLayerClicked() {
     this.props.focusTemplate(null);
   }
@@ -92,14 +108,15 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     return (
       <TemplateBlock
         key={ template.id }
-        delete={ () => this.props.deleteTemplate(template) }
         dragPlumbing={ this.props.dragPlumbing }
         template={ template }
         templateVersion={ this.props.templateVersion }
         level={ layer }
         focused={ template === this.props.focusedTemplate }
         focus={ () => this.props.focusTemplate(template) }
+        delete={ () => this.props.deleteTemplate(template) }
         toggleChildTemplate={ () => null }
+        toggleTemplateFullscreenPreview={ () => this.toggleFullscreenPreview(template) }
       />
     );
   }
@@ -200,6 +217,16 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     );
   }
 
+  private renderFullscreenPreview() {
+    return (
+      <FullscreenTemplatePreview
+        template={ this.state.fullscreenPreviewTemplate }
+        visible={ this.state.fullscreenPreviewTemplate !== null }
+        toggle={ this.toggleFullscreenPreview }
+      />
+    );
+  }
+
   public render() {
     let numberOfLayers = 0;
     const layerMap = this.getTemplatesPerLayer();
@@ -218,6 +245,7 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
             { this.renderPlaceholderLayer(numberOfLayers) }
           </div>
         </div>
+        { this.renderFullscreenPreview() }
       </div>
     );
   }
