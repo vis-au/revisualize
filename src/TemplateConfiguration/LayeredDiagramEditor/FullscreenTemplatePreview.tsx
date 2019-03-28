@@ -26,7 +26,7 @@ export default class FullscreenTemplatePreview extends React.Component<Props, St
       return null;
     }
 
-    const schema: any = this.specCompiler.getVegaSpecification(this.props.template);
+    const schema: any = this.specCompiler.getVegaSpecification(this.props.template, true, true);
 
     return (
       <div className="fullscreenPreviewContainer">
