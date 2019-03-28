@@ -1,4 +1,4 @@
-import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
+import { Connection, EndpointOptions, EndpointSpec, jsPlumb, jsPlumbInstance, PaintStyle } from 'jsplumb';
 import * as React from 'react';
 
 import Template from '../TemplateModel/Template';
@@ -17,14 +17,14 @@ interface State {
   connectionTemplateMap: Map<string, Template[]>
 }
 
-const templateEditorPlumbingConfig = {
+export const templatePlumbingEndpointStyle = { strokeWidth: 2, fill: 'teal', radius: 5 };
+
+export const templateEditorPlumbingConfig = {
   Anchor: ['Left', 'Right'],
-  Connector: [ 'Bezier', { stub: 5 } ],
+  Connector: [ 'Flowchart', { stub: 0, stroke: 'teal', fill: 'none' } ],
   PaintStyle: { strokeWidth: 2, stroke: 'teal' },
-  overlays: [
-    'Arrow', [ 'Label', { label:'foo', location:0.25, id:'myLabel' } ]
-  ],
 };
+
 
 export default class TemplatePlumbingWrapper extends React.Component<Props, State> {
   private dragPlumbing: jsPlumbInstance;
@@ -201,29 +201,38 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
       (this.dragPlumbing as any).connect({
         source: sourceSelector,
         target: targetSelector,
-        endpointStyle: { fill: 'teal', radius: 5 }
+        endpointStyle: templatePlumbingEndpointStyle
       });
     });
   }
 
   public render() {
     return (
-      <LayeredDiagramEditor
-        id={ 'layeredTemplateDiagramEditor' }
-        templates={ this.props.templates }
-        templateVersion={ this.props.templateVersion }
-        focusedTemplate={ this.props.focusedTemplate }
-        addTemplate={ this.props.addTemplate }
-        deleteTemplate={ this.onDeleteTemplate }
-        focusTemplate={ this.props.focusTemplate }
-        onConnectionMoved={ this.onConnectionMoved }
-        onDetachedConnection={ this.onDetachedConnection }
-        onNewConnection={ this.onNewConnection }
-        dragPlumbing={ this.dragPlumbing } />
+      <div id="templatePlumbingWrapper">
+        <LayeredDiagramEditor
+          id={ 'layeredTemplateDiagramEditor' }
+          templates={ this.props.templates }
+          templateVersion={ this.props.templateVersion }
+          focusedTemplate={ this.props.focusedTemplate }
+          addTemplate={ this.props.addTemplate }
+          deleteTemplate={ this.onDeleteTemplate }
+          focusTemplate={ this.props.focusTemplate }
+          onConnectionMoved={ this.onConnectionMoved }
+          onDetachedConnection={ this.onDetachedConnection }
+          onNewConnection={ this.onNewConnection }
+          dragPlumbing={ this.dragPlumbing } />
+
+        <div id="plumbingElements"></div>
+      </div>
+
     );
   }
 
   public componentDidMount() {
+    const plumbingContainer = document.querySelector('#plumbingElements');
+    this.dragPlumbing.setContainer(plumbingContainer);
+    this.dragPlumbing.importDefaults(templateEditorPlumbingConfig);
+
     this.props.templates
       .filter(t => t.parent === null)
       .forEach(this.renderTemplateLinks);

@@ -22,7 +22,7 @@ export default class VegaJSONInput extends React.Component<Props, State> {
     this.loadInputIntoApp = this.loadInputIntoApp.bind(this);
 
     this.state = {
-      hidden: false,
+      hidden: true,
       currentInput: '',
       message: null,
       inputValid: null

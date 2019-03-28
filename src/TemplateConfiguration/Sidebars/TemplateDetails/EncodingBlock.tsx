@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FieldDef, isFieldDef, isValueDef, ValueDef } from 'vega-lite/build/src/fielddef';
+import { isFieldDef, isValueDef } from 'vega-lite/build/src/fielddef';
 
 import './EncodingBlock.css';
 
 interface Props {
   encoding: string;
-  value: FieldDef<any> | ValueDef;
+  value: any;
   delete: () => void;
 }
 interface State {

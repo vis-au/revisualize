@@ -1,16 +1,13 @@
 import * as React from 'react';
+import { BaseSpec } from 'vega-lite/build/src/spec';
 
 import Toolbar from '../../Widgets/Toolbar';
-import LayerTemplate from '../TemplateModel/LayerTemplate';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
-import RepeatTemplate from '../TemplateModel/RepeatTemplate';
 import SpecDecompiler from '../TemplateModel/SpecDecompiler';
 import Template from '../TemplateModel/Template';
 import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
-
-import { BaseSpec } from 'vega-lite/build/src/spec';
-import './TemplateConfigurationToolbar.css';
 import VegaJSONInput from './VegaJSONInput';
+
+import './TemplateConfigurationToolbar.css';
 
 interface Props {
   addTemplate: (template: Template) => void;
