@@ -53,21 +53,49 @@ export default class CompositionTemplateProperties extends React.Component<Props
     );
   }
 
+  private renderAddRepeatedFieldButton(rowOrColumn: 'row'|'column') {
+    return (
+      <button className="floatingAddButton">+</button>
+    );
+  }
+
+  private renderAvailableFieldForRepeat(field: string) {
+    return (
+      <div key={ `availableField${field}` }className="availableField">{ field }</div>
+    );
+  }
+
+  private renderAvailableFieldsForRepeat(rowOrColumn: 'row'|'column') {
+    // FIXME: relate to actual data source here
+    const availableFields = ['asdf', 'sdfg', 'dfgh'];
+
+    return (
+      <div className="availableFields">
+        { availableFields.map(this.renderAvailableFieldForRepeat) }
+      </div>
+    );
+  }
+
   private renderRepeatProperties() {
     const template = this.props.template as RepeatTemplate;
     const repeat = template.repeat;
 
     return (
       <div className="properties repeat">
+        <h2>Repeated Fields</h2>
         <div className="repeatedFields">
-          <h2>Column</h2>
+          <h3>Column</h3>
           <div className="column">
             { repeat.column.map(d => this.renderRepeatedField(true, d)) }
+            { this.renderAddRepeatedFieldButton('column') }
           </div>
-          <h2>Row</h2>
+          { this.renderAvailableFieldsForRepeat('column') }
+          <h3>Row</h3>
           <div className="row">
             { repeat.row.map(d => this.renderRepeatedField(false, d)) }
+            { this.renderAddRepeatedFieldButton('row') }
           </div>
+          { this.renderAvailableFieldsForRepeat('row') }
         </div>
       </div>
     );

@@ -1,3 +1,7 @@
+.compositionTemplateProperties .properties.repeat h3 {
+  font-size: 12px;
+}
+
 .compositionTemplateProperties .properties.repeat .column,
 .compositionTemplateProperties .properties.repeat .row {
   display: flex;
@@ -23,4 +27,7 @@
 .repeatedFields .repeatedField .delete {
   margin-left: 0.25rem;
   color: #fff;
+}
+.repeatedFields button.floatingAddButton {
+  margin-left: 1rem;
 }
