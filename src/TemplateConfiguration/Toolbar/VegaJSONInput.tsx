@@ -51,20 +51,22 @@ export default class VegaJSONInput extends React.Component<Props, State> {
     } catch(e) {
       this.setState({
         message: e.message,
-        inputValid: false,
-        currentInput: ''
+        inputValid: false
       });
 
       return;
     }
 
     this.props.loadSpec(inputAsSpec)
-    this.setState({ hidden: true });
+    this.setState({
+      hidden: true,
+      currentInput: ''
+    });
   }
 
   private renderInlineToggleButton() {
     return (
-      <button className="toggleInputVisible" onClick={ this.toggleHidden }>toggle</button>
+      <button className="toggleInputVisible" onClick={ this.toggleHidden }>show</button>
     );
   }
 
@@ -86,7 +88,8 @@ export default class VegaJSONInput extends React.Component<Props, State> {
             <h2>Enter Custom Vega-lite JSON</h2>
             <button onClick={ () => this.setState({ hidden: true })} className="delete"></button>
           </div>
-          <span className="notice">When copying example specs from vega.github.io, make sure to point any data urls to "https://vega.github.io/editor/[PATH]", where [PATH] needs to be replaced with the original url.</span>
+          <span className="notice">
+            When copying example specs from <a target="_blank" rel="noopener noreferrer" href="https://vega.github.io/vega-lite/examples/">the Vega Example page<i className="material-icons icon">open_in_new</i></a>, make sure to point any data urls to "https://vega.github.io/editor/[PATH]", where [PATH] needs to be replaced with the original url.</span>
           <textarea value={ this.state.currentInput } onChange={ this.onInputChange }></textarea>
           <span className="message">{ this.state.message }</span>
           { this.renderLoadingWidgets() }

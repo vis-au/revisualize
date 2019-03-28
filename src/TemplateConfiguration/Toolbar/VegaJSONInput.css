@@ -15,15 +15,32 @@ div.inputWrapper {
   display: flex;
   flex-direction: column;
   background: #fff;
+  max-width: 50vw;
   padding: 1.5rem 2rem 1rem;
   border-radius: 4px;
   visibility: visible;
   opacity: 1;
+  font-size: 12px;
   transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out;
 }
 div.overlayWrapper.hidden div.inputWrapper {
   visibility: hidden;
   opacity: 0;
+}
+div.inputWrapper a {
+  width: auto;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: teal;
+}
+div.inputWrapper a:hover {
+  text-decoration: underline;
+}
+div.inputWrapper a i.icon {
+  padding-right: 0.25rem;
+  font-size: 14px;
 }
 
 div.inputWrapper .row {
@@ -52,8 +69,10 @@ div.inputWrapper span.notice {
   padding-bottom: 1rem;
 }
 div.inputWrapper textarea {
+  border: 1px solid #ccc;
+  font-family: monospace;
   height: 45vh;
-  width: 60vw;
+  width: 90%;
   background: url(http://i.imgur.com/2cOaJ.png);
   background-attachment: local;
   background-repeat: no-repeat;
