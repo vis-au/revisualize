@@ -69,7 +69,6 @@ export default class App extends React.Component<{}, State> {
   }
 
   private onTemplatesChanged() {
-    console.log('ooph')
     this.setState({
       templates: this.state.templates,
       templateVersion: this.state.templateVersion + 1

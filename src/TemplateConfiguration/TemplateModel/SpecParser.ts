@@ -11,7 +11,7 @@ import RepeatTemplate from './RepeatTemplate';
 import { getMarkPropertiesAsMap, isCompositionSchema, isConcatenateSchema, isFacetSchema, isOverlaySchema, isPlotSchema, isRepeatSchema } from './SpecUtils';
 import Template from './Template';
 
-export default class SchemaDecompiler {
+export default class SchemaParser {
 
   private getEncodingsMapFromPlotSchema(schema: any) {
     const templateEncodings = new Map<MarkEncoding, any>();
@@ -59,7 +59,7 @@ export default class SchemaDecompiler {
    * In a repeat spec, the bindings inside the child templates can reference the repeated fields
    * instead of fields from the data. In order to render such a template without its parent,
    * modify this binding to the first entries in the repeated fields of the parent
-   **/
+   */
   private removeRepeatFromChildTemplates(template: RepeatTemplate) {
     const nonRepeatSubTemplates = this.getNonRepeatSubtrees(template);
 
@@ -85,7 +85,7 @@ export default class SchemaDecompiler {
   private getRepeatTemplate(schema: any) {
     const template = new RepeatTemplate([]);
     template.repeat = schema.repeat;
-    const childTemplate = this.decompile(schema.spec);
+    const childTemplate = this.parse(schema.spec);
     template.visualElements = [childTemplate];
     this.removeRepeatFromChildTemplates(template);
 
@@ -103,7 +103,7 @@ export default class SchemaDecompiler {
     }
 
     schema.layer.forEach((layer: any) => {
-      template.visualElements.push(this.decompile(layer));
+      template.visualElements.push(this.parse(layer));
     });
 
     return template;
@@ -124,12 +124,12 @@ export default class SchemaDecompiler {
     if (isVConcatSpec(schema)) {
       template.isVertical = true;
       schema.vconcat.forEach((layer: any) => {
-        template.visualElements.push(this.decompile(layer));
+        template.visualElements.push(this.parse(layer));
       });
     } else if (isHConcatSpec(schema)) {
       template.isVertical = false;
       schema.hconcat.forEach((layer: any) => {
-        template.visualElements.push(this.decompile(layer));
+        template.visualElements.push(this.parse(layer));
       });
     }
 
@@ -169,7 +169,7 @@ export default class SchemaDecompiler {
     return plotTemplate;
   }
 
-  public decompile(schema: any) {
+  public parse(schema: any) {
     let template: Template = null;
 
     if (isCompositionSchema(schema)) {

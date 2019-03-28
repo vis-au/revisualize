@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BaseSpec } from 'vega-lite/build/src/spec';
 
 import Toolbar from '../../Widgets/Toolbar';
-import SpecDecompiler from '../TemplateModel/SpecDecompiler';
+import SpecParser from '../TemplateModel/SpecParser';
 import Template from '../TemplateModel/Template';
 import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
@@ -18,12 +18,15 @@ interface Props {
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
   private specPresets: Map<string, any>;
+  private specParser: SpecParser;
 
   constructor(props: Props) {
     super(props);
 
     this.addTemplateFromSpec = this.addTemplateFromSpec.bind(this);
     this.onPlumbingToggleClicked = this.onPlumbingToggleClicked.bind(this);
+
+    this.specParser = new SpecParser();
 
     this.specPresets = new Map();
     this.specPresets.set('population', populationLayerChart);
@@ -41,10 +44,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   }
 
   private addTemplateFromSpec(spec: BaseSpec) {
-    const decompiler = new SpecDecompiler();
-
-    const decompilation = decompiler.decompile(spec);
-    this.props.addTemplates(decompilation.getFlatHierarchy());
+    const parsedTemplate = this.specParser.parse(spec);
+    this.props.addTemplates(parsedTemplate.getFlatHierarchy());
   }
 
   private onPlumbingToggleClicked(event: React.ChangeEvent<HTMLInputElement>) {
