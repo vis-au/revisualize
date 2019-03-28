@@ -20,7 +20,6 @@ interface State {
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
   templates: Template[];
-  templateVersion: number;
 }
 
 export default class App extends React.Component<{}, State> {
@@ -53,7 +52,6 @@ export default class App extends React.Component<{}, State> {
       width: window.innerWidth,
       dataflowVisible: false,
       templates: [],
-      templateVersion: 0
     };
 
     window.addEventListener('resize', () => {
@@ -70,8 +68,7 @@ export default class App extends React.Component<{}, State> {
 
   private onTemplatesChanged() {
     this.setState({
-      templates: this.state.templates,
-      templateVersion: this.state.templateVersion + 1
+      templates: this.state.templates
     });
   }
 
@@ -121,7 +118,6 @@ export default class App extends React.Component<{}, State> {
             activeTab={ this.state.activeTab }
             templates={ this.state.templates }
             onTemplatesChanged={ this.onTemplatesChanged }
-            templateVersion={ this.state.templateVersion }
           />
           {/* <PreviewComponentView
             activeTab={ this.state.activeTab }

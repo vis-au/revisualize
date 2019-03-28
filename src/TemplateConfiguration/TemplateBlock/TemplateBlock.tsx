@@ -11,7 +11,6 @@ import './TemplateBlock.css';
 interface Props {
   dragPlumbing: any;
   template: Template;
-  templateVersion: number;
   level: number;
   focused: boolean;
   delete: () => void;
@@ -91,7 +90,6 @@ export default class TemplateBlock extends React.Component<Props, State> {
     return (
       <div className="previewContainer">
         <TemplatePreview
-          templateVersion={ this.props.templateVersion }
           onRenderComplete={ () => setTimeout(this.props.dragPlumbing.repaintEverything, 250) }
           key={ this.props.template.visualElements.map(v => v.id).join('_') }
           template={ this.props.template }/>

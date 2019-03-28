@@ -13,7 +13,6 @@ interface Props {
   activeTab: Tab;
   className: string;
   templates: Template[];
-  templateVersion: number;
   onTemplatesChanged: () => void;
 }
 interface State {
@@ -123,7 +122,6 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         <div id="templateConfigurationBody">
           <TemplatePlumbingWrapper
             templates={ this.props.templates }
-            templateVersion={ this.props.templateVersion }
             focusedTemplate={ this.state.focusedTemplate }
             plumbingVisible={ this.state.plumbingVisible }
             onTemplatesChanged={ this.props.onTemplatesChanged }

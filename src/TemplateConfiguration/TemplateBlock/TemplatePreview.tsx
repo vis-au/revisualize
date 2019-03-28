@@ -11,7 +11,6 @@ import './TemplatePreview.css';
 
 interface Props {
   template: Template,
-  templateVersion: number,
   onRenderComplete: () => void
 }
 interface State {
@@ -21,14 +20,13 @@ interface State {
 
 export default class TemplatePreview extends React.Component<Props, State> {
   private specCompiler: SpecCompiler;
-  private templateVersion: number;
+  private latestSchemaString: string;
 
   constructor(props: Props) {
     super(props);
 
     this.specCompiler = new SpecCompiler();
 
-    this.templateVersion = this.props.templateVersion;
     this.state = {
       width: 100,
       height: 100
@@ -40,6 +38,7 @@ export default class TemplatePreview extends React.Component<Props, State> {
     const axisPadding = 25;
     const template = this.props.template;
     let spec = this.specCompiler.getVegaSpecification(template, true, true);
+    this.latestSchemaString = JSON.stringify(spec);
 
     if (spec === null) {
       spec = {} as any;
@@ -91,12 +90,17 @@ export default class TemplatePreview extends React.Component<Props, State> {
     this.makePreviewResizable();
   }
 
-  public shouldComponentUpdate() {
-    // return this.props.templateVersion !== this.templateVersion;
-    return true;
-  }
+  public shouldComponentUpdate(nextProps: Props) {
+    // TODO: this is a quick-and-dirty way to prevent the preview from updating, whenever the
+    // template has not changed. It is necessary, because the spec passed to the vegarenderer is
+    // computed here instead of in the template, therefore a new object is created every time the
+    // list of templates in app.tsx changes. A better approach is to use a proxy for the template
+    // class, which updates the spec every time a property was modified and then accesssing this
+    // spec from the previewcomponent.
+    const template = nextProps.template;
+    const nextSpec = this.specCompiler.getVegaSpecification(template, true, true);
+    const nextSchemaString = JSON.stringify(nextSpec);
 
-  public componentDidUpdate() {
-    this.templateVersion = this.props.templateVersion;
+    return nextSchemaString !== this.latestSchemaString;
   }
 }

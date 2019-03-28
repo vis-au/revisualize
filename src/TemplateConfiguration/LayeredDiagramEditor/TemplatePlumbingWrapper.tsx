@@ -6,7 +6,6 @@ import LayeredDiagramEditor from './LayeredDiagramEditor';
 
 interface Props {
   templates: Template[],
-  templateVersion: number,
   focusedTemplate: Template,
   plumbingVisible: boolean,
   onTemplatesChanged: () => void,
@@ -213,7 +212,6 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
         <LayeredDiagramEditor
           id={ 'layeredTemplateDiagramEditor' }
           templates={ this.props.templates }
-          templateVersion={ this.props.templateVersion }
           focusedTemplate={ this.props.focusedTemplate }
           addTemplate={ this.props.addTemplate }
           deleteTemplate={ this.onDeleteTemplate }

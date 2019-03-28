@@ -15,7 +15,6 @@ interface Props {
   id: string,
   dragPlumbing: any,
   templates: Template[],
-  templateVersion: number,
   focusedTemplate: Template,
   onNewConnection: (event: any) => void,
   onDetachedConnection: (event: any) => void,
@@ -110,7 +109,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
         key={ template.id }
         dragPlumbing={ this.props.dragPlumbing }
         template={ template }
-        templateVersion={ this.props.templateVersion }
         level={ layer }
         focused={ template === this.props.focusedTemplate }
         focus={ () => this.props.focusTemplate(template) }
