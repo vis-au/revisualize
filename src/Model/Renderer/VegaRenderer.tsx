@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Spec } from 'vega';
 import vegaEmbed, { Actions, Result } from 'vega-embed';
 
+import { isRepeatSchema } from '../../TemplateConfiguration/TemplateModel/SpecUtils';
 import './VegaRenderer.css';
 
 interface Props {
@@ -28,6 +29,20 @@ export default class VegaRenderer extends React.Component<Props, {}> {
   }
 
   private embed() {
+
+    let width = this.props.width || 600;
+    let height = this.props.height || 400;
+
+    // with and height in embed are applied to the singular views, not the compositions
+    if (isRepeatSchema(this.props.schema)) {
+      if ((this.props.schema as any).repeat.column !== undefined) {
+        width = width / (this.props.schema as any).repeat.column.length;
+      }
+      if ((this.props.schema as any).repeat.row !== undefined) {
+        height = height / (this.props.schema as any).repeat.row.length;
+      }
+    }
+
     const exportActions: Actions = {
       export: {
         svg: this.props.showExportOptions,
@@ -39,8 +54,8 @@ export default class VegaRenderer extends React.Component<Props, {}> {
     };
     vegaEmbed(`#vegaContainer${ this.props.id }` , this.props.schema, {
       actions: exportActions,
-      width: this.props.width || 600,
-      height: this.props.height || 400,
+      width,
+      height
     }).then((value: Result) => {
       if (this.props.onRenderComplete !== undefined) {
         this.props.onRenderComplete();
