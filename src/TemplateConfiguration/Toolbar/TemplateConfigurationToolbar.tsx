@@ -10,8 +10,10 @@ import VegaJSONInput from './VegaJSONInput';
 import './TemplateConfigurationToolbar.css';
 
 interface Props {
+  plumbingVisible: boolean;
   addTemplate: (template: Template) => void;
   addTemplates: (templates: Template[]) => void;
+  togglePlumbingVisible: (visible?: boolean) => void;
 }
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
@@ -21,6 +23,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     super(props);
 
     this.addTemplateFromSpec = this.addTemplateFromSpec.bind(this);
+    this.onPlumbingToggleClicked = this.onPlumbingToggleClicked.bind(this);
 
     this.specPresets = new Map();
     this.specPresets.set('population', populationLayerChart);
@@ -44,6 +47,10 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.props.addTemplates(decompilation.getFlatHierarchy());
   }
 
+  private onPlumbingToggleClicked(event: React.ChangeEvent<HTMLInputElement>) {
+    this.props.togglePlumbingVisible(event.target.checked);
+  }
+
   private renderPresetSpec(label: string) {
     return (
       <button key={ label } onClick={ () => this.addTemplateFromSpec(this.specPresets.get(label)) }>{ label }</button>
@@ -60,6 +67,19 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     return specs;
   }
 
+  private renderPlumbingToggle() {
+    return (
+      <div className="plumbingToggleContainer">
+        <input
+          type="checkbox"
+          id="plumbingToggle"
+          checked={ this.props.plumbingVisible }
+          onChange={ this.onPlumbingToggleClicked } />
+        <label htmlFor="plumbingToggle">Show Connections</label>
+      </div>
+    );
+  }
+
   public render() {
     return (
       <Toolbar id="templateToolbar">
@@ -70,6 +90,9 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
         <div className="column">
           <h2>JSON</h2>
           <VegaJSONInput loadSpec={ this.addTemplateFromSpec } />
+        </div>
+        <div className="column">
+          { this.renderPlumbingToggle() }
         </div>
       </Toolbar>
     );

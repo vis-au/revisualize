@@ -18,6 +18,7 @@ interface Props {
 }
 interface State {
   focusedTemplate: Template;
+  plumbingVisible: boolean;
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -28,9 +29,11 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.addTemplates = this.addTemplates.bind(this);
     this.deleteTemplate = this.deleteTemplate.bind(this);
     this.focusTemplate = this.focusTemplate.bind(this);
+    this.togglePlumbingVisible = this.togglePlumbingVisible.bind(this);
 
     this.state = {
-      focusedTemplate: null
+      focusedTemplate: null,
+      plumbingVisible: true
     };
   }
 
@@ -95,6 +98,14 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.props.onTemplatesChanged();
   }
 
+  private togglePlumbingVisible(visible?: boolean) {
+    if (visible !== undefined) {
+      this.setState({ plumbingVisible: visible });
+    } else {
+      this.setState({ plumbingVisible: !this.state.plumbingVisible });
+    }
+  }
+
   public render() {
     return (
       <ViewContainer
@@ -104,6 +115,8 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         activeContainerName={ this.props.activeTab.name }>
 
         <TemplateConfigurationToolbar
+          plumbingVisible={ this.state.plumbingVisible }
+          togglePlumbingVisible={ this.togglePlumbingVisible }
           addTemplate={ this.addTemplate }
           addTemplates={ this.addTemplates } />
 
@@ -112,6 +125,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
             templates={ this.props.templates }
             templateVersion={ this.props.templateVersion }
             focusedTemplate={ this.state.focusedTemplate }
+            plumbingVisible={ this.state.plumbingVisible }
             onTemplatesChanged={ this.props.onTemplatesChanged }
             focusTemplate={ this.focusTemplate }
             addTemplate={ this.addTemplate }

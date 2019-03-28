@@ -1,4 +1,4 @@
-import { Connection, EndpointOptions, EndpointSpec, jsPlumb, jsPlumbInstance, PaintStyle } from 'jsplumb';
+import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
 import Template from '../TemplateModel/Template';
@@ -8,6 +8,7 @@ interface Props {
   templates: Template[],
   templateVersion: number,
   focusedTemplate: Template,
+  plumbingVisible: boolean,
   onTemplatesChanged: () => void,
   addTemplate: (template: Template) => void,
   deleteTemplate: (template: Template) => void,
@@ -222,7 +223,7 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
           onNewConnection={ this.onNewConnection }
           dragPlumbing={ this.dragPlumbing } />
 
-        <div id="plumbingElements"></div>
+        <div id="plumbingElements" className={ this.props.plumbingVisible ? '' : 'hidden' }></div>
       </div>
 
     );
