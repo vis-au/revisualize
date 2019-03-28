@@ -80,19 +80,27 @@ export default class CompositionTemplateProperties extends React.Component<Props
     const template = this.props.template as RepeatTemplate;
     const repeat = template.repeat;
 
+    const columnRepeatedFields = template.repeat.column !== undefined
+      ? repeat.column.map(d => this.renderRepeatedField(true, d))
+      : null;
+
+    const rowRepeatedFields = template.repeat.row !== undefined
+      ? repeat.row.map(d => this.renderRepeatedField(false, d))
+      : null;
+
     return (
       <div className="properties repeat">
         <h2>Repeated Fields</h2>
         <div className="repeatedFields">
           <h3>Column</h3>
           <div className="column">
-            { repeat.column.map(d => this.renderRepeatedField(true, d)) }
+            { columnRepeatedFields }
             { this.renderAddRepeatedFieldButton('column') }
           </div>
           { this.renderAvailableFieldsForRepeat('column') }
           <h3>Row</h3>
           <div className="row">
-            { repeat.row.map(d => this.renderRepeatedField(false, d)) }
+            { rowRepeatedFields }
             { this.renderAddRepeatedFieldButton('row') }
           </div>
           { this.renderAvailableFieldsForRepeat('row') }
