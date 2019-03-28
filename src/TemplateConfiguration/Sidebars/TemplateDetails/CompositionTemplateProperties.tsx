@@ -4,6 +4,7 @@ import FacetTemplate from '../../TemplateModel/FacetTemplate';
 import LayerTemplate from '../../TemplateModel/LayerTemplate';
 import RepeatTemplate from '../../TemplateModel/RepeatTemplate';
 import Template from '../../TemplateModel/Template';
+import './CompositionTemplateProperties.css';
 
 interface Props {
   template: Template;
@@ -13,9 +14,62 @@ interface State {
 }
 
 export default class CompositionTemplateProperties extends React.Component<Props, State> {
-  private renderRepeatProperties() {
+  constructor(props: Props) {
+    super(props);
+
+    this.onDeleteRepeatedField = this.onDeleteRepeatedField.bind(this);
+  }
+
+  private onDeleteRepeatedField(fromColumn: boolean, field: string) {
+    const template = this.props.template as RepeatTemplate;
+
+    const repeatedFields = fromColumn ? template.repeat.column : template.repeat.row;
+    const indexInRepeatedFields = repeatedFields.indexOf(field);
+
+    if (indexInRepeatedFields === -1) {
+      return;
+    }
+
+    repeatedFields.splice(indexInRepeatedFields, 1);
+
+    if (fromColumn) {
+      template.repeat.column = repeatedFields;
+    } else {
+      template.repeat.row = repeatedFields;
+    }
+
+    this.props.onTemplateChanged();
+  }
+
+  private renderRepeatedField(isColumnField: boolean, field: string) {
     return (
-      <div className="properties"></div>
+      <div key={ field } className="repeatedField">
+        <span>{ field }</span>
+        <div
+          className="delete"
+          onClick={ () => this.onDeleteRepeatedField(isColumnField, field) } />
+
+      </div>
+    );
+  }
+
+  private renderRepeatProperties() {
+    const template = this.props.template as RepeatTemplate;
+    const repeat = template.repeat;
+
+    return (
+      <div className="properties repeat">
+        <div className="repeatedFields">
+          <h2>Column</h2>
+          <div className="column">
+            { repeat.column.map(d => this.renderRepeatedField(true, d)) }
+          </div>
+          <h2>Row</h2>
+          <div className="row">
+            { repeat.row.map(d => this.renderRepeatedField(false, d)) }
+          </div>
+        </div>
+      </div>
     );
   }
 

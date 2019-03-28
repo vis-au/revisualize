@@ -101,6 +101,6 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   }
 
   public componentDidMount() {
-    // this.addTemplateFromSpec(this.specPresets.get('concat'));
+    this.addTemplateFromSpec(this.specPresets.get('scattMatrx'));
   }
 }

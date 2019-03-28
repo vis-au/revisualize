@@ -1,0 +1,26 @@
+.compositionTemplateProperties .properties.repeat .column,
+.compositionTemplateProperties .properties.repeat .row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.repeatedFields {
+  margin-bottom: 2rem;
+}
+.repeatedFields .repeatedField {
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0.25rem;
+  background: steelblue;
+  color: #fff;
+  padding: 0.25rem 0.75rem 0.3rem;
+  border-radius: 1rem;
+}
+.repeatedFields .repeatedField .delete {
+  margin-left: 0.25rem;
+  color: #fff;
+}
