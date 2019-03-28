@@ -88,7 +88,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
           { this.renderPresetSpecs() }
         </div>
         <div className="column">
-          <h2>JSON</h2>
+          <h2>Vega-lite JSON</h2>
           <VegaJSONInput loadSpec={ this.addTemplateFromSpec } />
         </div>
         <div className="column">
