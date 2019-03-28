@@ -115,3 +115,8 @@
 .layeredDiagramEditor .layerWidgets.bottom i.icon {
   transform: rotate(90deg);
 }
+#templatePlumbingWrapper {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
