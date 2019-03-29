@@ -194,7 +194,7 @@ export default class SpecCompiler {
       schema.data = data;
     }
 
-    schema.mark = template.type;
+    schema.mark = template.mark;
 
     if (template.selection !== undefined) {
       schema.selection = template.selection;

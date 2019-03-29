@@ -172,8 +172,7 @@ export default class SchemaParser {
 
   private getPlotTemplate(schema: any) {
     const plotTemplate = new PlotTemplate(null);
-    const markType = typeof schema.mark === 'string' ? schema.mark : schema.mark.type;
-    plotTemplate.type = markType;
+    plotTemplate.mark = schema.mark;
 
     const encodings = this.getEncodingsMapFromPlotSchema(schema);
     const properties = getMarkPropertiesAsMap(schema.mark);
