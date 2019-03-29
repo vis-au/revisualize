@@ -31,3 +31,37 @@
 .repeatedFields button.floatingAddButton {
   margin-left: 1rem;
 }
+
+.compositionTemplateProperties .properties .compositionLayers {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer {
+  box-shadow: 0 2px 4px #ccc;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 2px;
+  padding: 0.5rem 1rem 0.6rem;
+  margin: 0.25rem 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  transition: background 0.2s ease-in-out;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer:hover {
+  background: #eee;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer.grabbing {
+  cursor: grabbing;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer i.icon {
+  margin-right: 1rem;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayerPlaceholder {
+  height: 2rem;
+  width: 100%;
+  border: 1px dashed #ccc;
+  background: #eee;
+}

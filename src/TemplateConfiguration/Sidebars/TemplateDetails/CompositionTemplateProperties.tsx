@@ -123,7 +123,10 @@ export default class CompositionTemplateProperties extends React.Component<Props
   private renderTemplateAsLayer(layer: Template) {
     const identifier =  `${LAYER_PREFIX}${layer.id}`;
     return (
-      <div key={ identifier } id={ identifier } className="compositionLayer">{ layer.id }</div>
+      <div key={ identifier } id={ identifier } className="compositionLayer">
+        <i className="material-icons icon">drag_indicator</i>
+        <span>{ layer.id }</span>
+      </div>
     );
   }
 
@@ -206,28 +209,21 @@ export default class CompositionTemplateProperties extends React.Component<Props
     $(`.compositionTemplateProperties .compositionLayers`).sortable({
       placeholder: 'compositionLayerPlaceholder',
       start: (event, ui) => {
+        event.target.classList.add('grabbing');
         (ui.item as any).indexAtStart = ui.item.index();
       },
-      sort: (event, ui) => {
-      },
-      change: (event, ui) => {},
       stop: (event, ui) => {
         const newIndex = ui.item.index();
         const oldIndex = (ui.item as any).indexAtStart;
+        event.target.classList.remove('grabbing');
 
         if (newIndex >= this.props.template.visualElements.length) {
           return;
         }
 
-        const templateID = ui.item[0].id.split(LAYER_PREFIX)[1];
-        const template = this.props.template.visualElements[oldIndex];
-        const swapTemplate = this.props.template.visualElements[newIndex];
-
-        this.props.template.visualElements.splice(oldIndex, 0, template);
-        this.props.template.visualElements.splice(newIndex, 0, swapTemplate);
-
-        this.props.template.visualElements.splice(oldIndex, 1);
-        this.props.template.visualElements.splice(newIndex + 1, 1);
+        const temporary = this.props.template.visualElements[oldIndex];
+        this.props.template.visualElements[oldIndex] = this.props.template.visualElements[newIndex];
+        this.props.template.visualElements[newIndex] = temporary;
 
         this.props.onTemplateChanged();
       },
