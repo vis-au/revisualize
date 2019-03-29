@@ -172,6 +172,8 @@ export default class CompositionTemplateProperties extends React.Component<Props
           onChange={ () => this.setConcatDirection('horizontal') }
           checked={ !isVerticalConcat }/>
         <label htmlFor="horizontalConcat">Horizontal</label>
+
+        { this.renderSortableLayers() }
       </div>
     );
   }
@@ -200,7 +202,7 @@ export default class CompositionTemplateProperties extends React.Component<Props
     );
   }
 
-  public componentDidMount() {
+  private makeLayersSortable() {
     $(`.compositionTemplateProperties .compositionLayers`).sortable({
       placeholder: 'compositionLayerPlaceholder',
       start: (event, ui) => {
@@ -230,5 +232,13 @@ export default class CompositionTemplateProperties extends React.Component<Props
         this.props.onTemplateChanged();
       },
     });
+  }
+
+  public componentDidMount() {
+    this.makeLayersSortable();
+  }
+
+  public componentDidUpdate() {
+    this.makeLayersSortable();
   }
 }
