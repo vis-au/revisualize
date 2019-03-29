@@ -39,7 +39,6 @@ export default class SchemaParser {
     template.spacing = schema.spacing;
     template.width = schema.width;
     template.height = schema.height;
-    template.transform = schema.transform;
     template.config = schema.config;
   }
 

@@ -1,21 +1,21 @@
-import { Data } from 'vega-lite/build/src/data';
-
 import { Config } from 'vega-lite';
 import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
-import { Transform } from 'vega-lite/build/src/transform';
+
+import GraphNode from '../VegaLiteData/GraphNode';
 import { LayoutType } from './LayoutType';
 import { MarkEncoding } from './MarkEncoding';
 
 export default abstract class Template {
   public id: string;
   public hierarchyLevel: number;
-  public data: Data;
+
+  public data: GraphNode;
+
   public description: string;
   public bounds: any;
   public spacing: BarBinSpacingMixins;
   public width: number;
   public height: number;
-  public transform: Transform;
   public config: Config;
 
   public encodings: Map<MarkEncoding, any>;

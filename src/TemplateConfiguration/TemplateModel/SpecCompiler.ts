@@ -43,12 +43,11 @@ export default class SpecCompiler {
     if (template.width !== undefined) {
       schema.width = template.width;
     }
-    if (template.transform !== undefined) {
-      schema.transform = template.transform;
-    }
     if (template.config !== undefined) {
       schema.config = template.config;
     }
+
+    schema.transform = template.data.getTransforms();
 
     return schema;
   }
@@ -106,14 +105,14 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getDataInHierarchy(template: Template) {
+  private getDataInHierarchy(template: Template): Data {
     // data can be stored either in a child node or on the top level template, therefore find the
     // top level, get its flat hierarchy and find a template with a dataset bound to it
     let topLevelTemplate: Template = template;
 
     while (topLevelTemplate.parent !== null) {
       if (topLevelTemplate.data !== undefined && topLevelTemplate.data !== null) {
-        return topLevelTemplate.data;
+        return topLevelTemplate.data.getSchema();
       }
 
       topLevelTemplate = topLevelTemplate.parent;
@@ -131,7 +130,7 @@ export default class SpecCompiler {
       };
     }
 
-    return dataTemplate.data;
+    return dataTemplate.data.getSchema();
   }
 
   private getRepeatSpec(parentTemplate: Template): TopLevelSpec {
@@ -188,7 +187,7 @@ export default class SpecCompiler {
     if (inferData) {
       data = this.getDataInHierarchy(template);
     } else {
-      data = template.data;
+      data = template.data.getSchema();
     }
 
     if (data !== undefined && data !== null) {
