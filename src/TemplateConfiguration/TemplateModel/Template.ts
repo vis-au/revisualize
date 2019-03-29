@@ -1,11 +1,8 @@
 import { Config } from 'vega-lite';
+import { Data } from 'vega-lite/build/src/data';
 import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
-
-import { Data, isInlineData, isNamedData, isUrlData } from 'vega-lite/build/src/data';
 import { Transform } from 'vega-lite/build/src/transform';
-import InlineDatasetNode from '../VegaLiteData/Datasets/InlineDatasetNode';
-import NamedDataSourceNode from '../VegaLiteData/Datasets/NamedDataSourceNode';
-import URLDatasetNode from '../VegaLiteData/Datasets/URLDatasetNode';
+
 import GraphNode from '../VegaLiteData/GraphNode';
 import { LayoutType } from './LayoutType';
 import { MarkEncoding } from './MarkEncoding';
@@ -15,7 +12,6 @@ export default abstract class Template {
   public hierarchyLevel: number;
 
   private dataNode: GraphNode;
-  private transforms: Transform[];
 
   public description: string;
   public bounds: any;
@@ -32,7 +28,6 @@ export default abstract class Template {
     this.hierarchyLevel = -1;
 
     this.dataNode = null;
-    this.transforms = [];
 
     this.encodings = new Map();
     this.overwrittenEncodings = new Map();
@@ -81,46 +76,29 @@ export default abstract class Template {
     return this.encodings.get(encoding);
   }
 
-  public get data(): Data {
-    if (this.dataNode === null) {
-      return this.dataNode as any;
-    } else {
-      return this.dataNode.getSchema();
-    }
+  public set dataTransformationNode(transformNode: GraphNode) {
+    this.dataNode = transformNode;
   }
 
-  public set data(data: Data) {
-    if (data === undefined) {
-      return;
-    }
+  public get dataTransformationNode() {
+    return this.dataNode;
+  }
 
+  public get data(): Data {
     if (this.dataNode === null) {
-      if (isUrlData(data)) {
-        this.dataNode = new URLDatasetNode();
-      } else if (isNamedData(data)) {
-        this.dataNode = new NamedDataSourceNode();
-      } else if (isInlineData(data)) {
-        this.dataNode = new InlineDatasetNode();
-      }
+      return null;
     }
 
-    this.dataNode.setSchema(data);
+    const data = this.dataNode.getSchema();
+    return data;
   }
 
   public get transform(): Transform[] {
-    // if (this.dataNode === null) {
-    //   return this.transforms;
-    // }
-
-    // return this.dataNode.getTransformList();
-    return this.transforms;
-  }
-
-  public set transform(transforms: Transform[]) {
-    if (transforms === undefined) {
-      return;
+    if (this.dataNode === null) {
+      return [];
     }
 
-    this.transforms = transforms;
+    const transforms = this.dataNode.getTransformList();
+    return transforms;
   }
 }

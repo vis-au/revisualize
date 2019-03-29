@@ -8,7 +8,9 @@ export default abstract class GraphNode {
   public children: TransformNode[];
 
   constructor() {
-    this.id = `node${Math.random()}`
+    this.id = `node${Math.random()}`;
+    this.parent = null;
+    this.children = [];
   }
 
   public abstract getSchema(): Data;

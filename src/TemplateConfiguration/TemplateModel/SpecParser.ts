@@ -3,9 +3,13 @@ import { isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec';
 import { Data, isInlineData, isNamedData, isUrlData } from 'vega-lite/build/src/data';
 import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
 import { isConcatSpec } from 'vega-lite/build/src/spec/concat';
+import { Transform } from 'vega-lite/build/src/transform';
+import DatasetNode from '../VegaLiteData/Datasets/DatasetNode';
 import InlineDatasetNode from '../VegaLiteData/Datasets/InlineDatasetNode';
 import NamedDataSourceNode from '../VegaLiteData/Datasets/NamedDataSourceNode';
 import URLDatasetNode from '../VegaLiteData/Datasets/URLDatasetNode';
+import GraphNode from '../VegaLiteData/GraphNode';
+import TransformNode from '../VegaLiteData/Transforms/TranformNode';
 import CompositionTemplate from './CompositionTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import FacetTemplate from './FacetTemplate';
@@ -38,8 +42,6 @@ export default class SchemaParser {
 
   private setSingleViewProperties(schema: any, template: Template) {
     template.description = schema.description;
-    template.data = schema.data;
-    template.transform = schema.transform;
     template.bounds = schema.bounds;
     template.spacing = schema.spacing;
     template.width = schema.width;
@@ -182,6 +184,63 @@ export default class SchemaParser {
     return plotTemplate;
   }
 
+  private getRootDatasetNode(schema: any): DatasetNode {
+    const data = schema.data;
+
+    if (data === undefined) {
+      return null;
+    }
+
+    let rootNode: DatasetNode = null;
+
+    if (isUrlData(data)) {
+      rootNode = new URLDatasetNode();
+    } else if (isNamedData(data)) {
+      rootNode = new NamedDataSourceNode();
+    } else if (isInlineData(data)) {
+      rootNode = new InlineDatasetNode();
+    }
+
+    rootNode.setSchema(data);
+
+    return rootNode;
+  }
+
+  private getLeafTransformNode(schema: any, rootNode: DatasetNode): GraphNode {
+    const transforms: Transform[] = schema.transform;
+    let workingNode: GraphNode = rootNode;
+
+    if (transforms === undefined) {
+      return rootNode;
+    }
+
+    // create linear transformation list from the spec by creating a new transformation node for
+    // each entry in the spec and linking it to the existin graph
+    if (transforms !== undefined) {
+      transforms.forEach(t => {
+        const transformNode = new TransformNode();
+        transformNode.transform = t;
+
+        transformNode.parent = workingNode;
+        workingNode.children.push(transformNode);
+
+        workingNode = transformNode;
+      });
+    }
+
+    return workingNode;
+  }
+
+  private parseDataTransformation(schema: any): GraphNode {
+    const rootDataset = this.getRootDatasetNode(schema);
+
+    if (rootDataset === null) {
+      return rootDataset;
+    } else {
+      return this.getLeafTransformNode(schema, rootDataset);
+    }
+  }
+
   public parse(schema: any) {
     let template: Template = null;
 
@@ -192,6 +251,9 @@ export default class SchemaParser {
     }
 
     this.setSingleViewProperties(schema, template);
+
+    const dataTransformation = this.parseDataTransformation(schema);
+    template.dataTransformationNode = dataTransformation;
 
     if (template instanceof PlotTemplate) {
       template.selection = schema.selection;

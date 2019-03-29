@@ -69,13 +69,15 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     if (template.data !== null || template.data !== undefined) {
       if (template.parent !== null) {
         if (template.parent.data === null || template.parent.data === undefined) {
-          template.parent.data = JSON.parse(JSON.stringify(template.data));
+          // template.parent.data = JSON.parse(JSON.stringify(template.data));
+          template.parent.dataTransformationNode = template.dataTransformationNode;
         }
       }
 
       template.visualElements.forEach(t => {
         if (t.data === null || t.data === undefined) {
-          t.data = JSON.parse(JSON.stringify(template.data));
+          // t.data = JSON.parse(JSON.stringify(template.data));
+          t.dataTransformationNode = template.dataTransformationNode;
         }
       });
     }
