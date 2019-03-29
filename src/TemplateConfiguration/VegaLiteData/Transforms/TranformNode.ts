@@ -9,7 +9,11 @@ export default class TransformNode extends GraphNode {
     return {} as Data;
   }
 
-  public getTransforms() {
+  public setSchema(data: Data) {
+    return;
+  }
+
+  public getTransformList() {
     return [ this.transform ];
   }
 }

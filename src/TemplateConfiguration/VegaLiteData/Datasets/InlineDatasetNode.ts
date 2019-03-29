@@ -13,4 +13,10 @@ export default class InlineDatasetNode extends DatasetNode {
       format: this.format
     };
   }
+
+  public setSchema(data: InlineData) {
+    this.name = data.name;
+    this.values = data.values;
+    this.format = data.format;
+  }
 }

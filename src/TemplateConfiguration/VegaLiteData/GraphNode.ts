@@ -13,5 +13,7 @@ export default abstract class GraphNode {
 
   public abstract getSchema(): Data;
 
-  public abstract getTransforms(): Transform[];
+  public abstract setSchema(schema: Data): void;
+
+  public abstract getTransformList(): Transform[];
 }

@@ -13,4 +13,10 @@ export default class URLDatasetNode extends DatasetNode {
       format: this.format
     }
   }
+
+  public setSchema(data: UrlData) {
+    this.name = data.name;
+    this.url = data.url;
+    this.format = data.format;
+  }
 }

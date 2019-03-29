@@ -11,4 +11,9 @@ export default class NamedDataSourceNode extends DatasetNode {
       format: this.format
     }
   }
+
+  public setSchema(data: NamedData) {
+    this.name = data.name;
+    this.format = data.format;
+  }
 }

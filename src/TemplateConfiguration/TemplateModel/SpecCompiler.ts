@@ -28,7 +28,7 @@ export default class SpecCompiler {
   }
 
   private setToplevelProperties(schema: any, template: Template, includeData: boolean = true) {
-    if (includeData && template.data !== undefined) {
+    if (includeData && template.data !== null) {
       schema.data = template.data;
     }
     if (template.bounds !== undefined) {
@@ -47,7 +47,7 @@ export default class SpecCompiler {
       schema.config = template.config;
     }
 
-    schema.transform = template.data.getTransforms();
+    schema.transform = template.transform;
 
     return schema;
   }
@@ -112,7 +112,7 @@ export default class SpecCompiler {
 
     while (topLevelTemplate.parent !== null) {
       if (topLevelTemplate.data !== undefined && topLevelTemplate.data !== null) {
-        return topLevelTemplate.data.getSchema();
+        return topLevelTemplate.data;
       }
 
       topLevelTemplate = topLevelTemplate.parent;
@@ -130,7 +130,7 @@ export default class SpecCompiler {
       };
     }
 
-    return dataTemplate.data.getSchema();
+    return dataTemplate.data;
   }
 
   private getRepeatSpec(parentTemplate: Template): TopLevelSpec {
@@ -187,7 +187,7 @@ export default class SpecCompiler {
     if (inferData) {
       data = this.getDataInHierarchy(template);
     } else {
-      data = template.data.getSchema();
+      data = template.data;
     }
 
     if (data !== undefined && data !== null) {
@@ -257,8 +257,6 @@ export default class SpecCompiler {
       const rootTemplate = this.getRootTemplate(template);
       schema = this.setToplevelProperties(schema, rootTemplate, false);
     }
-
-    console.log(schema);
 
     return schema;
   }

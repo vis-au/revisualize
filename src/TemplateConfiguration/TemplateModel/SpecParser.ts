@@ -1,7 +1,11 @@
 import { isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec';
 
+import { Data, isInlineData, isNamedData, isUrlData } from 'vega-lite/build/src/data';
 import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
 import { isConcatSpec } from 'vega-lite/build/src/spec/concat';
+import InlineDatasetNode from '../VegaLiteData/Datasets/InlineDatasetNode';
+import NamedDataSourceNode from '../VegaLiteData/Datasets/NamedDataSourceNode';
+import URLDatasetNode from '../VegaLiteData/Datasets/URLDatasetNode';
 import CompositionTemplate from './CompositionTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import FacetTemplate from './FacetTemplate';
@@ -35,6 +39,7 @@ export default class SchemaParser {
   private setSingleViewProperties(schema: any, template: Template) {
     template.description = schema.description;
     template.data = schema.data;
+    template.transform = schema.transform;
     template.bounds = schema.bounds;
     template.spacing = schema.spacing;
     template.width = schema.width;
