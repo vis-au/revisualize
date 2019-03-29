@@ -62,7 +62,7 @@ export default class CompositionTemplateProperties extends React.Component<Props
   private renderRepeatedField(isColumnField: boolean, field: string) {
     return (
       <div key={ field } className="repeatedField">
-        <span>{ field }</span>
+        <span className="label">{ field }</span>
         <div
           className="delete"
           onClick={ () => this.onDeleteRepeatedField(isColumnField, field) } />
@@ -111,14 +111,18 @@ export default class CompositionTemplateProperties extends React.Component<Props
         <h2>Repeated Fields</h2>
         <div className="repeatedFields">
           <h3>Column</h3>
-          <div className="column">
-            { columnRepeatedFields }
+          <div className="type column">
+            <div className="fieldsGroup">
+              { columnRepeatedFields }
+            </div>
             { this.renderAddRepeatedFieldButton('column') }
           </div>
           { this.renderAvailableFieldsForRepeat('column') }
           <h3>Row</h3>
-          <div className="row">
-            { rowRepeatedFields }
+          <div className="type row">
+            <div className="fieldsGroup">
+              { rowRepeatedFields }
+            </div>
             { this.renderAddRepeatedFieldButton('row') }
           </div>
           { this.renderAvailableFieldsForRepeat('row') }
@@ -224,7 +228,7 @@ export default class CompositionTemplateProperties extends React.Component<Props
   }
 
   private makeLayersSortable() {
-    $(`.compositionTemplateProperties .compositionLayers`).sortable({
+    $('.compositionTemplateProperties .compositionLayers').sortable({
       handle: '.label',
       placeholder: 'compositionLayerPlaceholder',
       start: (event, ui) => {
@@ -249,11 +253,51 @@ export default class CompositionTemplateProperties extends React.Component<Props
     });
   }
 
+  private makeRepeatedFieldsOfTypeSortable(type: 'column' | 'row') {
+    $(`.compositionTemplateProperties .properties.repeat .${type} .fieldsGroup`).sortable({
+      handle: '.label',
+      start: (event, ui) => {
+        (ui.item as any).indexAtStart = ui.item.index();
+      },
+      stop: (event, ui) => {
+        const template = this.props.template as RepeatTemplate;
+        const newIndex = ui.item.index();
+        const oldIndex = (ui.item as any).indexAtStart;
+
+        if (newIndex >= template.repeat[type].length) {
+          return;
+        }
+        if (oldIndex === newIndex) {
+          return;
+        }
+
+        const temporary = template.repeat[type][oldIndex];
+        template.repeat[type][oldIndex] = template.repeat[type][newIndex];
+        template.repeat[type][newIndex] = temporary;
+
+        this.props.onTemplateChanged();
+      }
+    });
+  }
+
+  private makeRepeatedFieldsSortable() {
+    this.makeRepeatedFieldsOfTypeSortable('column');
+    this.makeRepeatedFieldsOfTypeSortable('row');
+  }
+
   public componentDidMount() {
-    this.makeLayersSortable();
+    if (this.props.template instanceof RepeatTemplate) {
+      this.makeRepeatedFieldsSortable();
+    } else {
+      this.makeLayersSortable();
+    }
   }
 
   public componentDidUpdate() {
-    this.makeLayersSortable();
+    if (this.props.template instanceof RepeatTemplate) {
+      this.makeRepeatedFieldsSortable();
+    } else {
+      this.makeLayersSortable();
+    }
   }
 }

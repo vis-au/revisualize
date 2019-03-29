@@ -2,16 +2,19 @@
   font-size: 12px;
 }
 
-.compositionTemplateProperties .properties.repeat .column,
-.compositionTemplateProperties .properties.repeat .row {
+.repeatedFields {
+  margin-bottom: 2rem;
+}
+.repeatedFields .type {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
 }
-
-.repeatedFields {
-  margin-bottom: 2rem;
+.repeatedFields .fieldsGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .repeatedFields .repeatedField {
   font-size: 14px;
