@@ -19,6 +19,13 @@
   font-size: 15px;
 }
 
+#templateConfigurationSidebar .previewContainer {
+  border: 1px solid #ccc;
+  margin: 2rem 0;
+  padding: 1rem;
+  overflow: auto;
+}
+
 #templateConfigurationSidebar .vegaLiteContainer button {
   color: teal;
   background: transparent;

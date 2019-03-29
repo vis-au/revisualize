@@ -8,6 +8,7 @@ import Template from '../../TemplateModel/Template';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplateProperties from './PlotTemplateProperties';
 
+import VegaRenderer from '../../../Model/Renderer/VegaRenderer';
 import './TemplateConfigurationSidebar.css';
 
 interface Props {
@@ -54,6 +55,25 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     }
   }
 
+  private renderPreview() {
+    if (this.props.focusedTemplate === null) {
+      return null;
+    }
+
+    const template = this.props.focusedTemplate;
+    const schema = this.specCompiler.getVegaSpecification(template, true, true);
+
+    return (
+      <div className="previewContainer">
+        <VegaRenderer
+          schema={ schema }
+          width={ 300 }
+          height={ 200 }
+        />
+      </div>
+    );
+  }
+
   private renderVegaLiteCode() {
     if (this.props.focusedTemplate === null) {
       return null;
@@ -91,6 +111,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
 
         <div className="sidebarContainer">
           { this.renderFocusedTemplateProperties() }
+          { this.renderPreview() }
           { this.renderVegaLiteCode() }
         </div>
 
