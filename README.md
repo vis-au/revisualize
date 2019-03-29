@@ -1,19 +1,20 @@
 # Toolkit Protoype
 ## Prerequisites
-* ```nodeJS ``` (v.XX or newer) and ```npm ```(v.XX or newer) installed
-* Webbrowser (Firefox XX or Chrome XX)
+* ```nodeJS ``` (v10.15.3 or newer) and ```npm ```(6.4.1 or newer) installed
+* Global installation of latest versions of [yarn](https://github.com/stepaside/Yarn) and [TypeScript](https://typescript.com)
+* Modern webbrowser (Chrome v60 or later, Firefox v54)
 
-## Installation
-* Open a command prompt in the ```prototype/``` directory
-* Install ```yarn``` globally:
+## Getting Started
+
+Install the dependencies using yarn:
 ```
-npm install -g yarn
+yarn install
 ```
 
-* install the packages for the toolkit locally:
+Now you can run the application:
+
 ```
-yarn
+yarn start
 ```
-* run the application:
-```yarn start```
-* at this point, your webbrowser should automatically open and display the toolkit. If not, open [localhost:8080](localhost:8080) manually.
+
+Then, open your browser and navigate to [localhost:8080](http://localhost:8080).
