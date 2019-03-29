@@ -30,7 +30,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
 
     this.specCompiler = new SpecCompiler();
     this.state = {
-      hidden: false,
+      hidden: true,
       JSONHidden: true
     };
   }
