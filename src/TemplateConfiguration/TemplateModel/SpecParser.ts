@@ -1,6 +1,7 @@
 import { isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec';
 
 import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
+import { isConcatSpec } from 'vega-lite/build/src/spec/concat';
 import CompositionTemplate from './CompositionTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import FacetTemplate from './FacetTemplate';
@@ -123,12 +124,20 @@ export default class SchemaParser {
 
     if (isVConcatSpec(schema)) {
       template.isVertical = true;
+      template.isWrappable = false;
       schema.vconcat.forEach((layer: any) => {
         template.visualElements.push(this.parse(layer));
       });
     } else if (isHConcatSpec(schema)) {
       template.isVertical = false;
+      template.isWrappable = false;
       schema.hconcat.forEach((layer: any) => {
+        template.visualElements.push(this.parse(layer));
+      });
+    } else if (isConcatSpec(schema)) {
+      template.isVertical = false;
+      template.isWrappable = true;
+      schema.concat.forEach((layer: any) => {
         template.visualElements.push(this.parse(layer));
       });
     }

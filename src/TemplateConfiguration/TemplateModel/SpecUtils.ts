@@ -1,4 +1,5 @@
 import { ExtendedLayerSpec, GenericHConcatSpec, GenericVConcatSpec, isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedRepeatSpec, NormalizedUnitSpec } from 'vega-lite/build/src/spec';
+import { isConcatSpec, isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec/concat';
 import { Composition, Plot } from './LayoutType';
 import { MarkEncoding, markEncodings } from './MarkEncoding';
 
@@ -16,7 +17,7 @@ export function isRepeatSchema(schema: any): boolean {
 };
 
 export function isConcatenateSchema(schema: any): boolean {
-  return isAnyConcatSpec(schema);
+  return isAnyConcatSpec(schema) || isConcatSpec(schema);
 };
 
 export function isFacetSchema(schema: any): boolean {
@@ -93,11 +94,11 @@ export function getConcatAbstraction(schema: NormalizedConcatSpec) {
   let currentConcat: any = null;
   let concatProp: string = null;
 
-  if ((schema as any).concat !== undefined) {
+  if (isConcatSpec(schema)) {
     concatProp = 'concat';
-  } else if ((schema as GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>).hconcat !== undefined)  {
+  } else if (isHConcatSpec(schema))  {
     concatProp = 'hconcat';
-  } else if ((schema as GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>).vconcat !== undefined) {
+  } else if (isVConcatSpec(schema)) {
     concatProp = 'vconcat';
   }
 
