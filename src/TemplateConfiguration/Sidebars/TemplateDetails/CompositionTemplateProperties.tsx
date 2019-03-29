@@ -232,21 +232,22 @@ export default class CompositionTemplateProperties extends React.Component<Props
       handle: '.label',
       placeholder: 'compositionLayerPlaceholder',
       start: (event, ui) => {
-        event.target.classList.add('grabbing');
         (ui.item as any).indexAtStart = ui.item.index();
       },
       stop: (event, ui) => {
         const newIndex = ui.item.index();
         const oldIndex = (ui.item as any).indexAtStart;
-        event.target.classList.remove('grabbing');
 
         if (newIndex >= this.props.template.visualElements.length) {
           return;
         }
+        if (newIndex === oldIndex) {
+          return;
+        }
 
-        const temporary = this.props.template.visualElements[oldIndex];
-        this.props.template.visualElements[oldIndex] = this.props.template.visualElements[newIndex];
-        this.props.template.visualElements[newIndex] = temporary;
+        const template = this.props.template.visualElements[oldIndex];
+        this.props.template.visualElements.splice(oldIndex, 1);
+        this.props.template.visualElements.splice(newIndex, 0, template);
 
         this.props.onTemplateChanged();
       },
@@ -271,9 +272,9 @@ export default class CompositionTemplateProperties extends React.Component<Props
           return;
         }
 
-        const temporary = template.repeat[type][oldIndex];
-        template.repeat[type][oldIndex] = template.repeat[type][newIndex];
-        template.repeat[type][newIndex] = temporary;
+        const field = template.repeat[type][oldIndex];
+        template.repeat[type].splice(oldIndex, 1);
+        template.repeat[type].splice(newIndex, 0, field);
 
         this.props.onTemplateChanged();
       }
