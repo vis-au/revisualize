@@ -1,0 +1,16 @@
+import { DataFormat, UrlData } from 'vega-lite/build/src/data';
+import DatasetNode from './DatasetNode';
+
+export default class URLDatasetNode extends DatasetNode {
+  public url: string;
+  public name: string;
+  public format: DataFormat;
+
+  public getSchema(): UrlData {
+    return {
+      name: this.name,
+      url: this.url,
+      format: this.format
+    }
+  }
+}
