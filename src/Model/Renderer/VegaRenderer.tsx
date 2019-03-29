@@ -13,6 +13,7 @@ interface Props {
   height?: number;
   style?: React.CSSProperties;
   onRenderComplete?: () => void;
+  onRenderRejected?: () => void;
 }
 
 export default class VegaRenderer extends React.Component<Props, {}> {
@@ -60,6 +61,11 @@ export default class VegaRenderer extends React.Component<Props, {}> {
       if (this.props.onRenderComplete !== undefined) {
         this.props.onRenderComplete();
       }
+    }).catch(onrejected => {
+      if (this.props.onRenderRejected !== undefined) {
+        this.props.onRenderRejected();
+      }
+      console.log(onrejected);
     });
   }
 

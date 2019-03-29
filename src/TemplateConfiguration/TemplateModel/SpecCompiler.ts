@@ -3,6 +3,7 @@ import { TopLevelSpec } from 'vega-lite';
 import { Data } from 'vega-lite/build/src/data';
 import CompositionTemplate from './CompositionTemplate';
 import ConcatTemplate from './ConcatTemplate';
+import FacetTemplate from './FacetTemplate';
 import LayerTemplate from './LayerTemplate';
 import { Composition } from './LayoutType';
 import PlotTemplate from './PlotTemplate';
@@ -13,6 +14,7 @@ import Template from './Template';
 
 export default class SpecCompiler {
   public getBasicSchema(template?: Template): any {
+    // check for empty templates, which should also generate valid specs
     if (template && template.visualElements.length === 0 && template.parent === null) {
       return {
         $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
@@ -25,7 +27,7 @@ export default class SpecCompiler {
     };
   }
 
-  private setSingleViewProperties(schema: any, template: Template, includeData: boolean = true) {
+  private setToplevelProperties(schema: any, template: Template, includeData: boolean = true) {
     if (includeData && template.data !== undefined) {
       schema.data = template.data;
     }
@@ -104,20 +106,6 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getSingleLayerSpec(parentTemplate: Template): TopLevelSpec {
-    const template = parentTemplate.visualElements[0];
-    const layout = parentTemplate.layout;
-    let schema: any = null;
-
-    schema = this.getVegaSpecification(template, false);
-
-    if (schema !== null) {
-      schema = this.applyCompositionLayout(template, schema, layout as Composition);
-    }
-
-    return schema;
-  }
-
   private getDataInHierarchy(template: Template) {
     // data can be stored either in a child node or on the top level template, therefore find the
     // top level, get its flat hierarchy and find a template with a dataset bound to it
@@ -146,7 +134,21 @@ export default class SpecCompiler {
     return dataTemplate.data;
   }
 
-  private getMultiLayerSpec(template: Template, useOverwrittenEncodings: boolean): TopLevelSpec {
+  private getRepeatSpec(parentTemplate: Template): TopLevelSpec {
+    const template = parentTemplate.visualElements[0];
+    const layout = parentTemplate.layout;
+    let schema: any = null;
+
+    schema = this.getVegaSpecification(template, false);
+
+    if (schema !== null) {
+      schema = this.applyCompositionLayout(template, schema, layout as Composition);
+    }
+
+    return schema;
+  }
+
+  private getMultiViewSpec(template: CompositionTemplate, useOverwrittenEncodings: boolean): TopLevelSpec {
     const templates = template.visualElements;
     const schema: any = this.getBasicSchema();
     const overwriteChildEncodings = !(template instanceof RepeatTemplate) && useOverwrittenEncodings;
@@ -219,10 +221,13 @@ export default class SpecCompiler {
 
     if (template.visualElements.length === 0) {
       schema = this.getBasicSchema(template);
-    } else if (template.visualElements.length === 1) {
-      schema = this.getSingleLayerSpec(template);
-    } else if (template.visualElements.length > 1) {
-      schema = this.getMultiLayerSpec(template, useOverwrittenEncodings);
+    } else if (template instanceof RepeatTemplate) {
+      schema = this.getRepeatSpec(template);
+    } else if (template instanceof FacetTemplate) {
+      // TODO
+      schema = this.getBasicSchema(template);
+    } else {
+      schema = this.getMultiViewSpec(template, useOverwrittenEncodings);
     }
 
     if (inferData) {
@@ -247,11 +252,11 @@ export default class SpecCompiler {
       schema = this.getCompositionSchema(template, inferProperties, useOverwrittenEncodings);
     }
 
-    schema = this.setSingleViewProperties(schema, template);
+    schema = this.setToplevelProperties(schema, template);
 
     if (inferProperties) {
       const rootTemplate = this.getRootTemplate(template);
-      schema = this.setSingleViewProperties(schema, rootTemplate, false);
+      schema = this.setToplevelProperties(schema, rootTemplate, false);
     }
 
     console.log(schema);
