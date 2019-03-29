@@ -1,5 +1,4 @@
 import * as $ from 'jquery';
-import 'jquery-ui/ui/widgets/draggable';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
 

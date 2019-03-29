@@ -13,11 +13,14 @@ interface Props {
 interface State {
 }
 
+const LAYER_PREFIX = 'sidebarLayer';
+
 export default class CompositionTemplateProperties extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.onDeleteRepeatedField = this.onDeleteRepeatedField.bind(this);
+    this.renderTemplateAsLayer = this.renderTemplateAsLayer.bind(this);
   }
 
   private onDeleteRepeatedField(fromColumn: boolean, field: string) {
@@ -115,9 +118,29 @@ export default class CompositionTemplateProperties extends React.Component<Props
     );
   }
 
+  private renderTemplateAsLayer(layer: Template) {
+    const identifier =  `${LAYER_PREFIX}${layer.id}`;
+    return (
+      <div key={ identifier } id={ identifier } className="compositionLayer">{ layer.id }</div>
+    );
+  }
+
+  private renderSortableLayers() {
+    const layers: Template[] = this.props.template.visualElements;
+
+    return (
+      <div className="compositionLayers">
+        { layers.map(this.renderTemplateAsLayer) }
+      </div>
+    );
+  }
+
   private renderLayerProperties() {
     return (
-      <div className="properties"></div>
+      <div className="properties">
+        <h2>Layers</h2>
+        { this.renderSortableLayers() }
+      </div>
     );
   }
 
