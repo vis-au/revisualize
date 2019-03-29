@@ -1,3 +1,5 @@
+import * as $ from 'jquery';
+import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
 import ConcatTemplate from '../../TemplateModel/ConcatTemplate';
 import FacetTemplate from '../../TemplateModel/FacetTemplate';
@@ -196,5 +198,37 @@ export default class CompositionTemplateProperties extends React.Component<Props
         { this.renderProperties() }
       </div>
     );
+  }
+
+  public componentDidMount() {
+    $(`.compositionTemplateProperties .compositionLayers`).sortable({
+      placeholder: 'compositionLayerPlaceholder',
+      start: (event, ui) => {
+        (ui.item as any).indexAtStart = ui.item.index();
+      },
+      sort: (event, ui) => {
+      },
+      change: (event, ui) => {},
+      stop: (event, ui) => {
+        const newIndex = ui.item.index();
+        const oldIndex = (ui.item as any).indexAtStart;
+
+        if (newIndex >= this.props.template.visualElements.length) {
+          return;
+        }
+
+        const templateID = ui.item[0].id.split(LAYER_PREFIX)[1];
+        const template = this.props.template.visualElements[oldIndex];
+        const swapTemplate = this.props.template.visualElements[newIndex];
+
+        this.props.template.visualElements.splice(oldIndex, 0, template);
+        this.props.template.visualElements.splice(newIndex, 0, swapTemplate);
+
+        this.props.template.visualElements.splice(oldIndex, 1);
+        this.props.template.visualElements.splice(newIndex + 1, 1);
+
+        this.props.onTemplateChanged();
+      },
+    });
   }
 }
