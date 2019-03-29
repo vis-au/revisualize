@@ -46,14 +46,24 @@
   margin: 0.25rem 0;
   font-size: 14px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  cursor: grab;
   transition: background 0.2s ease-in-out;
 }
 .compositionTemplateProperties .compositionLayers .compositionLayer:hover {
   background: #eee;
 }
-.compositionTemplateProperties .compositionLayers .compositionLayer.grabbing {
+
+.compositionTemplateProperties .compositionLayers .compositionLayer .column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer .label {
+  width: 100%;
+  cursor: grab;
+}
+.compositionTemplateProperties .compositionLayers .compositionLayer.grabbing .layer {
   cursor: grabbing;
 }
 .compositionTemplateProperties .compositionLayers .compositionLayer i.icon {

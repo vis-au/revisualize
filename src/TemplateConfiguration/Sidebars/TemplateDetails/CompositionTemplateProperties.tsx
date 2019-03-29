@@ -22,6 +22,7 @@ export default class CompositionTemplateProperties extends React.Component<Props
     super(props);
 
     this.onDeleteRepeatedField = this.onDeleteRepeatedField.bind(this);
+    this.onDeleteLayer = this.onDeleteLayer.bind(this);
     this.renderTemplateAsLayer = this.renderTemplateAsLayer.bind(this);
   }
 
@@ -43,6 +44,18 @@ export default class CompositionTemplateProperties extends React.Component<Props
       template.repeat.row = repeatedFields;
     }
 
+    this.props.onTemplateChanged();
+  }
+
+  private onDeleteLayer(layer: Template) {
+    const parent = this.props.template;
+    const indexInParent = parent.visualElements.indexOf(layer);
+
+    if (indexInParent === -1) {
+      return;
+    }
+
+    parent.visualElements.splice(indexInParent, 1);
     this.props.onTemplateChanged();
   }
 
@@ -124,8 +137,13 @@ export default class CompositionTemplateProperties extends React.Component<Props
     const identifier =  `${LAYER_PREFIX}${layer.id}`;
     return (
       <div key={ identifier } id={ identifier } className="compositionLayer">
-        <i className="material-icons icon">drag_indicator</i>
-        <span>{ layer.id }</span>
+        <div className="column label">
+          <i className="material-icons icon">drag_indicator</i>
+          <span>{ layer.id }</span>
+        </div>
+        <div className="column">
+          <div className="delete" onClick={ () => this.onDeleteLayer(layer) }></div>
+        </div>
       </div>
     );
   }
@@ -207,6 +225,7 @@ export default class CompositionTemplateProperties extends React.Component<Props
 
   private makeLayersSortable() {
     $(`.compositionTemplateProperties .compositionLayers`).sortable({
+      handle: '.label',
       placeholder: 'compositionLayerPlaceholder',
       start: (event, ui) => {
         event.target.classList.add('grabbing');
