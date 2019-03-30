@@ -6,6 +6,7 @@ import './EncodingBlock.css';
 interface Props {
   encoding: string;
   value: any;
+  isInferred: boolean;
   delete: () => void;
 }
 interface State {
@@ -34,9 +35,29 @@ export default class EncodingBlock extends React.Component<Props, State> {
     );
   }
 
-  public render() {
+  private renderIcon() {
+    const value: any = this.props.value;
+    let icon: string = 'bookmark';
+
+    if (isFieldDef(value)) {
+      icon = 'view_headline';
+    } else if (isValueDef) {
+      icon = 'bar_chart';
+    }
+
     return (
-      <div className="encoding">
+      <i className="icon material-icons">{ icon }</i>
+    );
+  }
+
+  public render() {
+    const isInferred = this.props.isInferred ? 'inferred' : '';
+    const title = `${this.props.encoding}: ${JSON.stringify(this.props.value)}`
+    const titlePrefix = this.props.isInferred ? 'inferred from parent: ': '';
+
+    return (
+      <div className={`encoding ${isInferred}`} title={ `${titlePrefix} ${title}` }>
+        { this.renderIcon() }
         { this.renderEncodedProperty() }
         { this.renderValue() }
         <span className="delete" onClick={ this.props.delete }></span>

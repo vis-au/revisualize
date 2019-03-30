@@ -141,8 +141,12 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   private renderEncoding(encoding: MarkEncoding) {
-    const value = this.props.template.getEncodedValue(encoding);
+    let value = this.props.template.getEncodedValue(encoding);
+    const overwrittenValue = this.props.template.overwrittenEncodings.get(encoding);
 
+    if (overwrittenValue !== undefined && overwrittenValue !== null) {
+      value = overwrittenValue;
+    }
     if (value === undefined || value === null) {
       return null;
     }
@@ -151,6 +155,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       <EncodingBlock
         key={ `encoding${encoding}` }
         encoding={ encoding }
+        isInferred={ overwrittenValue !== undefined && overwrittenValue !== null }
         value={ value as any }
         delete={ () => this.onDeleteEncoding(encoding)}
       />
@@ -159,6 +164,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
   private renderEncodings() {
     const encodings = this.getEncodingsForGroup();
+
     return (
       <div className="encodings">
         { encodings.map(this.renderEncoding) }

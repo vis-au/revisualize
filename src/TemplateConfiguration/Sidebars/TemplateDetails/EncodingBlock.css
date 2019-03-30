@@ -8,7 +8,14 @@ div.encoding {
   align-items: center;
   font-size: 14px;
 }
+div.encoding.inferred {
+  background: salmon;
+}
 
+div.encoding .icon {
+  margin-right: 0.5rem;
+
+}
 div.encoding .property {
   font-weight: bold;
 }
