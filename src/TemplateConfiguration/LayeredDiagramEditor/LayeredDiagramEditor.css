@@ -1,26 +1,27 @@
 .layeredDiagramContainer {
-  overflow: hidden;
   background: #fafafa;
   width: 100%;
   flex-grow: 1;
+  padding-top: 1rem;
+  height: 100vh;
 }
 .layeredDiagramEditor {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-  margin-top: 0.5rem;
-  height: 100%;
+  width: 100%;
 }
 .layeredDiagramEditor .column {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  max-width: 92vw;
 }
-.layeredDiagramEditor .placeholder {
+.layeredDiagramEditor .column.placeholder {
   margin: 0 1rem;
-  width: 5rem;
+  max-width: 5vw;
   height: 92vh;
 }
 .layeredDiagramEditor .widgets {
@@ -42,8 +43,8 @@
   justify-content: center;
   align-items: center;
   background: #fff;
-  /* border: 1px solid #ccc; */
   box-shadow: 0 2px 2px #ccc;
+  border-top: 1px solid #eee;
   margin: 0;
   min-width: 100px;
   min-height: 100px;
@@ -116,8 +117,4 @@
   transform: rotate(90deg);
 }
 #templatePlumbingWrapper {
-  overflow: hidden;
-  position: absolute;
-  height: 100vh;
-  width: 100vw;
 }

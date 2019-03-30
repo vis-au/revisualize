@@ -29,12 +29,6 @@ interface State {
   fullscreenPreviewTemplate: Template;
 }
 
-const plumbingConfig = {
-  Anchor: ['Left', 'Right'],
-  Connector: [ 'Bezier', { stub: 5 } ],
-  PaintStyle: { strokeWidth: 2, stroke: 'teal' }
-};
-
 export default class LayeredDiagramEditor extends React.Component<Props, State> {
   private buttonObserver: AddTemplateButtonObserver;
 
@@ -233,12 +227,12 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
     });
 
     return (
-      <div id={ this.props.id } className="layeredDiagramContainer" style={{ height: window.innerHeight - 75 }}>
+      <div id={ this.props.id } className="layeredDiagramContainer">
         <div className="layeredDiagramEditor">
           <div className="column">
             { this.renderLayersLazy(numberOfLayers) }
           </div>
-          <div className="column placeholder" style={{ height: window.innerHeight - 100 }}>
+          <div className="column placeholder">
             { this.renderPlaceholderLayer(numberOfLayers) }
           </div>
         </div>
@@ -259,23 +253,6 @@ export default class LayeredDiagramEditor extends React.Component<Props, State> 
       },
 
     });
-  }
-
-  private configurePlumbing() {
-    const plumbing = this.props.dragPlumbing;
-
-    plumbing.bind('connection', this.props.onNewConnection);
-    plumbing.bind('connectionDetached', this.props.onDetachedConnection);
-    plumbing.bind('connectionMoved', this.props.onConnectionMoved);
-
-    const container = document.querySelector(`#${this.props.id} .diagram`);
-
-    plumbing.setContainer(container);
-    plumbing.importDefaults(plumbingConfig);
-  }
-
-  public componentDidMount() {
-    this.configurePlumbing();
   }
 
   public componentDidUpdate() {

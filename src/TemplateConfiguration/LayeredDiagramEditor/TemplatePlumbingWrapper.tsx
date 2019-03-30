@@ -25,7 +25,6 @@ export const templateEditorPlumbingConfig = {
   PaintStyle: { strokeWidth: 2, stroke: 'teal' },
 };
 
-
 export default class TemplatePlumbingWrapper extends React.Component<Props, State> {
   private dragPlumbing: jsPlumbInstance;
   private templateConnectionsMap: Map<string, Connection[]>;
@@ -227,16 +226,25 @@ export default class TemplatePlumbingWrapper extends React.Component<Props, Stat
     );
   }
 
-  public componentDidMount() {
-    const plumbingContainer = document.querySelector('#plumbingElements');
-    this.dragPlumbing.setContainer(plumbingContainer);
-    this.dragPlumbing.importDefaults(templateEditorPlumbingConfig);
+  private configurePlumbing() {
+    const plumbing = this.dragPlumbing;
 
+    plumbing.bind('connection', this.onNewConnection);
+    plumbing.bind('connectionDetached', this.onDetachedConnection);
+    plumbing.bind('connectionMoved', this.onConnectionMoved);
+
+    const plumbingContainer = document.querySelector('#plumbingElements');
+    plumbing.setContainer(plumbingContainer);
+    plumbing.importDefaults(templateEditorPlumbingConfig);
+  }
+
+  public componentDidMount() {
     this.props.templates
       .filter(t => t.parent === null)
       .forEach(this.renderTemplateLinks);
 
     window.setTimeout(() => this.dragPlumbing.repaintEverything(), 1000);
+    this.configurePlumbing();
   }
 
   public componentDidUpdate() {
