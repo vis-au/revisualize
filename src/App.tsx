@@ -2,11 +2,12 @@ import * as React from 'react';
 
 import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView';
 import { DEFAULT_DATA_GRAPH, DEFAULT_SCALES, DEFAULT_SIGNALS } from './DefaultValueFactories/DefaultValueFactory';
-import DataflowGraph from './Model/DataFlowGraph/DataflowGraph';
 import PatternGraph from './Model/Pattern/PatternGraph';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import Template from './TemplateConfiguration/TemplateModel/Template';
+import URLDatasetNode from './TemplateConfiguration/VegaLiteData/Datasets/URLDatasetNode';
+import GraphNode from './TemplateConfiguration/VegaLiteData/GraphNode';
 import MainView from './ToolkitView/MainView';
 import Tab from './ToolkitView/Tab';
 
@@ -16,7 +17,7 @@ interface State {
   activeTab: Tab;
   height: number;
   width: number;
-  dataGraph: DataflowGraph;
+  datasets: GraphNode[];
   patternGraph: PatternGraph;
   dataflowVisible: boolean;
   templates: Template[];
@@ -38,6 +39,7 @@ export default class App extends React.Component<{}, State> {
     ];
 
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
+    this.onDatasetsChanged = this.onDatasetsChanged.bind(this);
 
     const patternGraph = new PatternGraph();
     patternGraph.globalSignals = DEFAULT_SIGNALS;
@@ -46,20 +48,13 @@ export default class App extends React.Component<{}, State> {
 
     this.state = {
       activeTab: this.tabs[1],
-      dataGraph: DEFAULT_DATA_GRAPH,
+      datasets: [],
       height: window.innerHeight,
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
       templates: [],
     };
-
-    window.addEventListener('resize', () => {
-      this.setState({
-        height: window.innerHeight,
-        width: window.innerWidth
-      });
-    });
   }
 
   private onDataflowPanelToggle() {
@@ -67,15 +62,45 @@ export default class App extends React.Component<{}, State> {
   }
 
   private onTemplatesChanged() {
+    const urlDatasets: URLDatasetNode[] = this.state.datasets
+      .filter(d => d instanceof URLDatasetNode) as URLDatasetNode[];
+
+    const newDatasets = this.getDatasetsFromTemplates()
+      .filter(d => {
+        if (d instanceof URLDatasetNode) {
+          return urlDatasets.find(ud => ud.url === d.url) === undefined;
+        } else {
+          return this.state.datasets.find(dd => dd.name === d.name) === undefined;
+        }
+      });
+
+    this.state.datasets.push(...newDatasets);
+
     this.setState({
-      templates: this.state.templates
+      templates: this.state.templates,
+      datasets: this.state.datasets
     });
   }
 
-  private updateDataGraph(newGraph: DataflowGraph) {
+  private onDatasetsChanged() {
     this.setState({
-      dataGraph: newGraph
+      datasets: this.state.datasets
     });
+  }
+
+  private getDatasetsFromTemplates() {
+    const datasets: GraphNode[] = this.state.datasets.map(d => d);
+
+    this.state.templates.forEach(template => {
+      const dataset = template.dataTransformationNode;
+
+      if (dataset !== null) {
+        datasets.push(dataset);
+        datasets.push(...dataset.getFullAncestry())
+      }
+    });
+
+    return datasets;
   }
 
   public render() {
@@ -109,14 +134,15 @@ export default class App extends React.Component<{}, State> {
 
             <DataFlowConfigurationView
               activeTab={ new Tab('Data') }
-              graph={ this.state.dataGraph }
-              onDataGraphChanged={ this.updateDataGraph.bind(this) }
+              datasets={ this.state.datasets }
+              onDatasetsChanged={ this.onDatasetsChanged }
             />
           </DataflowSidepanel>
           <TemplateConfigurationView
             className={ this.state.dataflowVisible ? 'faded' : '' }
             activeTab={ this.state.activeTab }
             templates={ this.state.templates }
+            onDatasetsChanged={ this.onDatasetsChanged }
             onTemplatesChanged={ this.onTemplatesChanged }
           />
           {/* <PreviewComponentView

@@ -2,19 +2,19 @@ import { jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
 import FieldBuildingBlock from '../../../BuildingBlocks/FieldBuildingBlock';
-import DataflowGraph from '../../../Model/DataFlowGraph/DataflowGraph';
-import { DataflowNode } from '../../../Model/DataFlowGraph/DataflowNode';
-import DatasetNode from '../../../Model/DataFlowGraph/DatasetNode';
+import DatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
+import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
 import Block from './Block';
 
+import URLDatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/URLDatasetNode';
 import './DatasetBlock.css';
 
 interface Props {
   node: DatasetNode;
-  focusedNode: DataflowNode;
+  focusedNode: GraphNode;
   dragPlumbing: jsPlumbInstance;
   onClick: (event: any) => void;
-  updateGraph: (newGraph: DataflowGraph) => void;
+  updateGraph: () => void;
 }
 
 export default class DatasetBlock extends React.Component<Props, {}> {
@@ -25,7 +25,7 @@ export default class DatasetBlock extends React.Component<Props, {}> {
         id={ field }
         key={ field }
         className="field"
-        datasetName={ this.props.node.data.name }
+        datasetName={ this.props.node.name || this.props.node.id }
         field={ field }
       />
     );
@@ -40,13 +40,13 @@ export default class DatasetBlock extends React.Component<Props, {}> {
   }
 
   private renderFooter() {
-    if ((this.props.node.data as any).url === undefined) {
+    if (!(this.props.node instanceof URLDatasetNode)) {
       return null;
     }
 
     return (
       <div className="url">
-        <span>{ (this.props.node.data as any).url }</span>
+        <span>{ this.props.node.url }</span>
       </div>
     );
   }

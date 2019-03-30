@@ -8,12 +8,14 @@ import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
+import DataImporter from './VegaLiteData/DataImporter';
 
 interface Props {
   activeTab: Tab;
   className: string;
   templates: Template[];
   onTemplatesChanged: () => void;
+  onDatasetsChanged: () => void;
 }
 interface State {
   focusedTemplate: Template;
@@ -21,6 +23,8 @@ interface State {
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
+  private dataImporter: DataImporter;
+
   constructor(props: Props) {
     super(props);
 
@@ -29,6 +33,9 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.deleteTemplate = this.deleteTemplate.bind(this);
     this.focusTemplate = this.focusTemplate.bind(this);
     this.togglePlumbingVisible = this.togglePlumbingVisible.bind(this);
+
+    this.dataImporter = new DataImporter();
+    this.dataImporter.onNewDataset = this.props.onDatasetsChanged;
 
     this.state = {
       focusedTemplate: null,
@@ -55,6 +62,13 @@ export default class TemplateConfigurationView extends React.Component<Props, St
   private addTemplates(templates: Template[]) {
     const currentTemplates = this.props.templates;
     currentTemplates.push(...templates);
+
+    templates.forEach(template => {
+      if (template.dataTransformationNode !== null) {
+        this.dataImporter.loadFieldsAndValuesToNode(template.dataTransformationNode);
+      }
+    });
+
     this.props.onTemplatesChanged();
   }
 

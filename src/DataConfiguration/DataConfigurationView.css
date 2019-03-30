@@ -9,3 +9,9 @@
   flex-direction: row;
   justify-content: space-between;
 }
+button#addNewDataset {
+  position: absolute;
+  top: 90%;
+  left: 5rem;
+  background: steelblue;
+}

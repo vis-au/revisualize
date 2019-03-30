@@ -1,11 +1,10 @@
 import {jsPlumb, jsPlumbInstance} from 'jsplumb';
 import * as React from 'react';
 
-import DataflowGraph from '../../Model/DataFlowGraph/DataflowGraph';
 import DatasetLink from '../../Model/DataFlowGraph/DataflowLink';
-import { DataflowNode } from '../../Model/DataFlowGraph/DataflowNode';
-import DatasetNode from '../../Model/DataFlowGraph/DatasetNode';
-import TransformNode from '../../Model/DataFlowGraph/TransformNode';
+import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
+import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
+import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 import DiagramEditor from '../../Widgets/DiagramEditor';
 import DatasetBlock from './Blocks/DatasetBlock';
 import TransformBlock from './Blocks/TransformBlock';
@@ -25,11 +24,11 @@ const dataflowDiagramPlumbingConfig = {
 };
 
 interface Props {
-  graph: DataflowGraph;
-  focusedNode: DataflowNode;
-  selectFocusedNode: (newNode: DataflowNode) => void;
+  datasets: GraphNode[];
+  focusedNode: GraphNode;
+  selectFocusedNode: (newNode: GraphNode) => void;
   deselectFocusedNode: () => void;
-  updateGraph: (newGraph: DataflowGraph) => void;
+  updateGraph: () => void;
 }
 
 export default class DataFlowDiagram extends React.Component<Props, {}> {
@@ -46,27 +45,19 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
     newLink.connection = event.connection;
 
     // source can either be a dataset or transform node, so id is stored in different elements
-    const sourceNode = this.props.graph.nodes.find(node => {
+    const sourceNode = this.props.datasets.find(node => {
       return node.id === event.source.parentNode.id || node.id === event.source.id;
     });
-    // target can only be transform node
-    const targetNode = this.props.graph.nodes.find(node => node.id === event.target.id);
 
-    newLink.source = sourceNode;
-    newLink.target = targetNode;
-
-    this.props.graph.addLink(newLink);
-    this.props.updateGraph(this.props.graph);
+    this.props.updateGraph();
   }
 
   private onConnectionMoved(event: any) {
-
+    this.props.updateGraph();
   }
 
   private onDetachedConnection(event: any) {
-    const link = this.props.graph.links.find((l: DatasetLink) => l.connection === event.connection);
-    this.props.graph.removeLink(link);
-    this.props.updateGraph(this.props.graph);
+    this.props.updateGraph();
   }
 
   private onNodeChanged() {
@@ -75,7 +66,7 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
       this.dragPlumbing.repaintEverything();
     }
 
-    this.props.updateGraph(this.props.graph);
+    this.props.updateGraph();
   }
 
   private renderTransformBlock(node: TransformNode) {
@@ -104,7 +95,7 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
   }
 
   private renderNodesAsBlocks() {
-    return this.props.graph.nodes.map(node => {
+    return this.props.datasets.map(node => {
       if (node instanceof TransformNode) {
         return this.renderTransformBlock(node);
       } else if (node instanceof DatasetNode) {

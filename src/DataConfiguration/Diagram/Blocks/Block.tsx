@@ -1,18 +1,19 @@
 import * as React from 'react';
 
 import DataflowGraph from '../../../Model/DataFlowGraph/DataflowGraph';
-import { DataflowNode } from '../../../Model/DataFlowGraph/DataflowNode';
+import TransformNode from '../../../Model/DataFlowGraph/TransformNode';
+import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
 import CONFIG from '../DataFlowConfig';
 
-import TransformNode from '../../../Model/DataFlowGraph/TransformNode';
+import DatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import './Block.css';
 
 interface BlockProps {
   name: string;
   body: JSX.Element;
   footer?: JSX.Element;
-  node: DataflowNode;
-  focusedNode: DataflowNode;
+  node: GraphNode;
+  focusedNode: GraphNode;
   className?: string;
   indicators?: any;
   plumbing: any; // cannot set jsplumbinstance because typing is inconsistent
@@ -31,7 +32,6 @@ export default class Block extends React.Component<BlockProps, {}> {
   private addPlumbing() {
     const nodeSelector = document.querySelector(`#${this.props.node.id}`);
     const bodySelector = document.querySelector(`#${this.props.node.id} .body`);
-    const headerSelector = document.querySelector(`#${this.props.node.id} .patternHeader`);
 
     const plumbing = this.props.plumbing;
 
@@ -49,13 +49,13 @@ export default class Block extends React.Component<BlockProps, {}> {
   }
 
   private deleteNodeFromGraph() {
-    const graph = this.props.node.graph;
-    const nodes = graph.nodes;
-    const indexInNodes = nodes.indexOf(this.props.node);
+    // const graph = this.props.node.graph;
+    // const nodes = graph.nodes;
+    // const indexInNodes = nodes.indexOf(this.props.node);
 
-    nodes.splice(indexInNodes, 1);
+    // nodes.splice(indexInNodes, 1);
 
-    this.props.updateGraph(graph);
+    // this.props.updateGraph(graph);
   }
 
   private deletePlumbing() {
@@ -81,7 +81,7 @@ export default class Block extends React.Component<BlockProps, {}> {
   }
 
   private getClassName() {
-    const nodeTypeClass = (this.props.node.type || '');
+    const nodeTypeClass = this.props.node instanceof DatasetNode ? 'dataset' : 'transform';
     const classNameProp = (this.props.className || '');
     const isfocusedNode = this.props.focusedNode === this.props.node;
     const focusedNodeClass = isfocusedNode ? 'focus' : '';

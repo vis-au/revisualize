@@ -1,5 +1,6 @@
 import * as React from 'react';
-import DatasetNode from '../../Model/DataFlowGraph/DatasetNode';
+
+import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 
 import './DatasetPreview.css';
 
@@ -35,29 +36,36 @@ export default class DatasetPreview extends React.Component<Props, State> {
     );
   }
 
-  private renderValueEntry(entry: string) {
+  private renderValueEntry(entry: string, key: string) {
     return (
-      <td key={ entry } title={ entry }>{ entry }</td>
+      <td key={ `entry${entry}${key}` } title={ entry }>{ entry }</td>
     );
   }
 
-  private renderValueRow(row: any, index: number) {
+  private renderObjectAsRow(row: any, index: number) {
     const valueKeys = Object.keys(row).sort();
 
     return (
-      <tr className={ index % 2 === 0 ? 'even' : 'odd' } key={ index }>
-        { valueKeys.map(key => this.renderValueEntry(JSON.stringify(row[key]))) }
+      <tr className={ index % 2 === 0 ? 'even' : 'odd' } key={ `row${index}` }>
+        { valueKeys.map(key => this.renderValueEntry(JSON.stringify(row[key as any]), key)) }
       </tr>
     );
   }
 
   private renderTableBody() {
     const values = this.props.datasetNode.values;
-    const firstTenValues = values.slice(0, 10);
+
+    if (!(values instanceof Array)) {
+      return null;
+    } else if (!(typeof values[0] === 'object')) {
+      return null;
+    }
+
+    const firstTenValues = values.slice(0, 10) as any[];
 
     return (
       <tbody>
-        { firstTenValues.map((row, i) => this.renderValueRow(row, i)) }
+        { firstTenValues.map((row, i) => this.renderObjectAsRow(row, i)) }
       </tbody>
     );
   }

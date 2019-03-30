@@ -1,4 +1,6 @@
-export interface DatasetPreset { url: string; name: string;}
+import { DataFormat } from 'vega-lite/build/src/data';
+
+export interface DatasetPreset { url: string; name: string; format?: DataFormat }
 
 export const PRESET_DATASETS: DatasetPreset[] = [
   { name: 'Cars', url: 'https://vega.github.io/vega-lite/data/cars.json'},

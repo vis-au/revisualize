@@ -21,27 +21,6 @@ export default class TransformNode extends GraphNode {
     return workingNode;
   }
 
-  private getTransformsOnPathToRoot(): TransformNode[] {
-    const transformsOnPathToRoot: TransformNode[] = [];
-    let workingNode: GraphNode = this.parent;
-
-    // go up in the node's hierarchy as far as possible
-    while (workingNode.parent !== null) {
-
-      if (workingNode instanceof TransformNode) {
-        transformsOnPathToRoot.push(workingNode);
-      }
-
-      workingNode = workingNode.parent;
-    }
-
-    if (!(workingNode instanceof DatasetNode)) {
-      return [];
-    }
-
-    return transformsOnPathToRoot.reverse();
-  }
-
   public getSchema() {
     const rootDataset = this.getRootDatasetNode();
     return rootDataset.getSchema();
@@ -52,8 +31,10 @@ export default class TransformNode extends GraphNode {
   }
 
   public getTransformList(): Transform[] {
-    const transformNodesOnPathToRoot = this.getTransformsOnPathToRoot();
-    const transforms = transformNodesOnPathToRoot.map(n => n.transform);
+    const transformNodesOnPathToRoot = this.getFullAncestry();
+    const transforms = transformNodesOnPathToRoot
+      .filter(n => n instanceof TransformNode)
+      .map((n: TransformNode) => n.transform);
 
     return transforms;
   }

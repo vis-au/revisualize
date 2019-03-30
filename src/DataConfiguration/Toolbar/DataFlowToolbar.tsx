@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Transform } from 'vega';
+import { Transform } from 'vega-lite/build/src/transform';
 
-import DataflowGraph from '../../Model/DataFlowGraph/DataflowGraph';
-import TransformNode from '../../Model/DataFlowGraph/TransformNode';
 import { TransformGroupName, transformGroupNames } from '../../Model/DataFlowGraph/TransformTypes';
+import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
+import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 import Toolbar from '../../Widgets/Toolbar';
 import TransformGroupBlock from './TransformGroup';
 
 import './DataFlowToolbar.css';
 
 interface Props {
-  graph: DataflowGraph;
-  updateGraph: (newGraph: DataflowGraph) => void;
+  datasets: GraphNode[];
+  updateGraph: () => void;
 }
 interface State {
   visibleGroup: string;
@@ -29,16 +29,12 @@ export default class DataFlowToolbar extends React.Component<Props, State> {
   }
 
   private addTransformNode(transform: Transform) {
-    const graph = this.props.graph;
-    const nodes = graph.nodes;
-
     const newTransformNode = new TransformNode();
+
     newTransformNode.transform = transform;
-    newTransformNode.graph = this.props.graph;
 
-    nodes.push(newTransformNode);
-
-    this.props.updateGraph(graph);
+    this.props.datasets.push(newTransformNode);
+    this.props.updateGraph();
   }
 
   private renderTransformGroup(key: TransformGroupName) {

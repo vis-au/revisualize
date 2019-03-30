@@ -74,10 +74,3 @@ div#dataflowSidebarDatasetNodeConfiguration .datasetNodeConfigurationEntry .key{
   margin-right: 1.5rem;
   width: 25%;
 }
-
-button#addNewDataset {
-  position: absolute;
-  top: 95%;
-  left: -3rem;
-  background: steelblue;
-}

@@ -1,17 +1,16 @@
 import * as React from 'react';
 
-import { DataflowNode } from '../../Model/DataFlowGraph/DataflowNode';
-import DatasetNode from '../../Model/DataFlowGraph/DatasetNode';
-import TransformNode from '../../Model/DataFlowGraph/TransformNode';
+import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
+import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
+import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 import Sidebar from '../../Widgets/Sidebar';
 import DatasetPreview from './DatasetPreview';
 
 import './DataFlowSidebar.css';
 
 interface Props {
-  focusedNode: DataflowNode;
+  focusedNode: GraphNode;
   updateFocusedNode: () => void;
-  showDataImport: () => void;
 }
 interface State {
   isTitleInputVisible: boolean;
@@ -55,13 +54,10 @@ export default class DataFlowsidebar extends React.Component<Props, State> {
   }
 
   private renderDatasetNodeConfigurationEntry(key: string) {
-    if ((this.props.focusedNode.data as any)[key] === undefined) {
-      return false;
-    }
 
-    let value: string = (this.props.focusedNode.data as any)[key];
+    let value: string = (this.props.focusedNode.getSchema() as any)[key];
 
-    if (typeof value !== 'string') {
+    if (typeof value !== 'string' && value !== undefined) {
       value = JSON.stringify(value, null, 2);
     }
 
@@ -87,7 +83,7 @@ export default class DataFlowsidebar extends React.Component<Props, State> {
       return false;
     }
 
-    const nodeConfigurationKeys = Object.keys(this.props.focusedNode.data);
+    const nodeConfigurationKeys = Object.keys(this.props.focusedNode.getSchema());
 
     return (
       <div id="dataflowSidebarDatasetNodeConfiguration">
@@ -103,18 +99,13 @@ export default class DataFlowsidebar extends React.Component<Props, State> {
   }
 
   private getNodeType() {
-    if (this.props.focusedNode === null) { return ''; }
-    if (this.props.focusedNode === undefined) { return ''; }
+    let type: string = 'data';
 
-    return this.props.focusedNode.type;
-  }
+    if (this.props.focusedNode instanceof TransformNode) {
+      type = 'transform';
+    }
 
-  private saveTransformChanges() {
-    const textArea = document.querySelector('#dataflowSidebarTransformNodeConfiguration textarea');
-
-    if (textArea === undefined) { return; }
-
-    const newTransform = JSON.parse(textArea.textContent);
+    return type;
   }
 
   private onTransformTextareaChanged(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -205,14 +196,6 @@ export default class DataFlowsidebar extends React.Component<Props, State> {
 
         { this.renderTitle() }
         { this.renderFocusedNodeConfiguration() }
-
-        <button
-          className="floatingAddButton"
-          id="addNewDataset"
-          onClick={ this.props.showDataImport }>
-
-          +
-        </button>
       </Sidebar>
     );
   }

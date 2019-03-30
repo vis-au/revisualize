@@ -16,12 +16,6 @@
   margin-right: 0.1rem;
   background: steelblue;
 }
-.component.indicators .marker.hidden {
-  display: none;
-}
-.component.transform .indicators .marker.leaf {
-  background: orange;
-}
 .component.transform .body {
   padding: 0.25rem;
   transition: background 0.35s cubic-bezier(0.075, 0.82, 0.165, 1);
