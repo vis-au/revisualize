@@ -5,7 +5,7 @@
   z-index: 100;
 }
 #templateConfigurationSidebar .toggleButtonWrapper {
-  top: 50%;
+  top: 10%;
   background: teal;
   opacity: 1;
 }

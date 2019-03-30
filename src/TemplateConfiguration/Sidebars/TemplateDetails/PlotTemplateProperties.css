@@ -1,8 +1,13 @@
-div.marks {
+div.markContainer {
   padding: 1rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
-div.marks select {
-  padding: 0.25rem 0.5rem 0.3rem;
+div.markContainer select {
+  padding: 0.15rem 0.5rem;
+  margin-left: 2rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 1.25rem;

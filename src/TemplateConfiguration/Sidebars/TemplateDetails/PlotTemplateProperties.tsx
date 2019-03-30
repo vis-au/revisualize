@@ -37,7 +37,7 @@ export default class PlotTemplateProperties extends React.Component<Props, State
     const markType = this.props.template.type;
 
     return (
-      <div className="marks">
+      <div className="markContainer">
         <h2>Mark</h2>
         <select name="markSelection" id="markSelection" value={ markType } onChange={ this.setMarkType }>
           { MARK_TYPES.map(this.renderMarkOption) }
