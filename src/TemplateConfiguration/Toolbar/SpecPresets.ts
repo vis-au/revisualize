@@ -1145,3 +1145,30 @@ export const londonTube: any = {
     }
   ]
 };
+
+export const trellisBarleyPreset = {
+  'name': 'trellis_barley',
+  'data': {'url': 'data/barley.json'},
+  'mark': 'point',
+  'columns': 2,
+  'encoding': {
+    'facet': {
+      'field': 'site',
+      'type': 'ordinal',
+      'sort': {'op': 'median', 'field': 'yield'}
+    },
+    'x': {
+      'aggregate': 'median',
+      'field': 'yield',
+      'type': 'quantitative',
+      'scale': {'zero': false}
+    },
+    'y': {
+      'field': 'variety',
+      'type': 'ordinal',
+      'sort': {'encoding': 'x', 'order': 'descending'},
+      'scale': {'rangeStep': 12}
+    },
+    'color': {'field': 'year', 'type': 'nominal'}
+  }
+};

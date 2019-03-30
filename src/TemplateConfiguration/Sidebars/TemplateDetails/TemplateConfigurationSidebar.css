@@ -15,6 +15,27 @@
   max-width: 100%;
   padding: 1rem 0.75rem;
 }
+
+#templateConfigurationSidebar .sidebarContainer .datasetSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+#templateConfigurationSidebar .datasetSection .dataset {
+  margin-left: 2rem;
+  color: steelblue;
+  background: transparent;
+  border: 1px solid steelblue;
+  padding: 0.25rem 0.5rem 0.2rem;
+  border-radius: 1rem;
+}
+#templateConfigurationSidebar .datasetSection.unbound .dataset {
+  border-style: dashed;
+  color: steelblue;
+  background: #fff;
+}
+
 #templateConfigurationSidebar h2 {
   font-size: 15px;
 }
