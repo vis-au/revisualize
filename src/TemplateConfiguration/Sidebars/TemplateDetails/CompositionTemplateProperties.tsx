@@ -6,6 +6,8 @@ import FacetTemplate from '../../TemplateModel/FacetTemplate';
 import LayerTemplate from '../../TemplateModel/LayerTemplate';
 import RepeatTemplate from '../../TemplateModel/RepeatTemplate';
 import Template from '../../TemplateModel/Template';
+import DatasetNode from '../../VegaLiteData/Datasets/DatasetNode';
+import TransformNode from '../../VegaLiteData/Transforms/TranformNode';
 import './CompositionTemplateProperties.css';
 
 interface Props {
@@ -13,6 +15,8 @@ interface Props {
   onTemplateChanged: () => void;
 }
 interface State {
+  rowAvailableFieldsHidden: boolean,
+  columnAvailableFieldsHidden: boolean
 }
 
 const LAYER_PREFIX = 'sidebarLayer';
@@ -24,6 +28,40 @@ export default class CompositionTemplateProperties extends React.Component<Props
     this.onDeleteRepeatedField = this.onDeleteRepeatedField.bind(this);
     this.onDeleteLayer = this.onDeleteLayer.bind(this);
     this.renderTemplateAsLayer = this.renderTemplateAsLayer.bind(this);
+
+    this.state = {
+      rowAvailableFieldsHidden: true,
+      columnAvailableFieldsHidden: true
+    }
+  }
+
+  private isFieldInRepeat(field: string, rowOrColumn: 'row'|'column') {
+    const template = this.props.template as RepeatTemplate;
+
+    if (template.repeat[rowOrColumn] === undefined) {
+      return true;
+    }
+
+    return template.repeat[rowOrColumn].find(f => f === field) === undefined;
+  }
+
+  private getAvailableFields( rowOrColumn: 'row'|'column') {
+    const template = this.props.template as RepeatTemplate;
+    const datasetNode = template.dataTransformationNode;
+    let availableFields: string[] = [];
+
+    if (datasetNode instanceof DatasetNode) {
+      availableFields = datasetNode.fields
+        .filter(field => this.isFieldInRepeat(field, rowOrColumn));
+    } else if (datasetNode instanceof TransformNode) {
+      const rootDataset = datasetNode.getRootDatasetNode();
+      if (rootDataset !== null) {
+        availableFields = rootDataset.fields
+          .filter(field => this.isFieldInRepeat(field, rowOrColumn));
+      }
+    }
+
+    return availableFields;
   }
 
   private onDeleteRepeatedField(fromColumn: boolean, field: string) {
@@ -59,6 +97,12 @@ export default class CompositionTemplateProperties extends React.Component<Props
     this.props.onTemplateChanged();
   }
 
+  private addFieldToRepeat(field: string, rowOrColumn: 'row'|'column') {
+    const template = this.props.template as RepeatTemplate;
+    template.repeat[rowOrColumn].push(field);
+    this.props.onTemplateChanged();
+  }
+
   private renderRepeatedField(isColumnField: boolean, field: string) {
     return (
       <div key={ field } className="repeatedField">
@@ -73,23 +117,45 @@ export default class CompositionTemplateProperties extends React.Component<Props
 
   private renderAddRepeatedFieldButton(rowOrColumn: 'row'|'column') {
     return (
-      <button className="floatingAddButton">+</button>
+      <button className="floatingAddButton" onClick={ () => {
+        if (rowOrColumn === 'row') {
+          this.setState({
+            rowAvailableFieldsHidden: !this.state.rowAvailableFieldsHidden
+          });
+        } else {
+          this.setState({
+            columnAvailableFieldsHidden: !this.state.columnAvailableFieldsHidden
+          });
+        }
+      }}>+</button>
     );
   }
 
-  private renderAvailableFieldForRepeat(field: string) {
+  private renderAvailableFieldForRepeat(field: string, rowOrColumn: 'row' | 'column') {
     return (
-      <div key={ `availableField${field}` }className="availableField">{ field }</div>
+      <div
+        key={ `availableField${field}`}
+        className="availableField"
+        onClick={ () => this.addFieldToRepeat(field, rowOrColumn) }>
+
+        { field }
+      </div>
     );
   }
 
   private renderAvailableFieldsForRepeat(rowOrColumn: 'row'|'column') {
-    // FIXME: relate to actual data source here
-    const availableFields = ['asdf', 'sdfg', 'dfgh'];
+    const availableFields = this.getAvailableFields(rowOrColumn);
+    let isHidden = '';
+
+    if (rowOrColumn === 'row') {
+      isHidden = this.state.rowAvailableFieldsHidden ? 'hidden' : '';
+    } else {
+      isHidden = this.state.columnAvailableFieldsHidden ? 'hidden' : '';
+    }
 
     return (
-      <div className="availableFields">
-        { availableFields.map(this.renderAvailableFieldForRepeat) }
+      <div className={ `availableFields ${isHidden}` }>
+        { availableFields.map(f => this.renderAvailableFieldForRepeat(f, rowOrColumn)) }
       </div>
     );
   }
