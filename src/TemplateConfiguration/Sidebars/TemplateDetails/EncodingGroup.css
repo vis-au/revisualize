@@ -2,6 +2,9 @@
   border-top: 1px solid #ccc;
   padding-bottom: 1rem;
 }
+.encodingGroup.hidden {
+  display: none;
+}
 
 .encodingGroup .row {
   display: flex;

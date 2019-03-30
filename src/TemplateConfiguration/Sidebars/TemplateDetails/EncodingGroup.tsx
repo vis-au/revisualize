@@ -4,13 +4,13 @@ import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEnc
   keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup,
   markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings,
   textTooltipChannelEncodings } from '../../TemplateModel/MarkEncoding';
-import Template from '../../TemplateModel/Template';
+import PlotTemplate from '../../TemplateModel/PlotTemplate';
 import EncodingBlock from './EncodingBlock';
 
 import './EncodingGroup.css';
 
 interface Props {
-  template: Template;
+  template: PlotTemplate;
   groupType: MarkEncodingGroup;
   onTemplateChanged: () => void;
 }
@@ -70,6 +70,22 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     }
 
     return encodings;
+  }
+
+  private isGroupHiddenInMarkType(): boolean {
+    let isGroupHiddenInMarkType = false;
+    const markType = this.props.template.type;
+
+    if (this.props.groupType === 'geographic') {
+      if (markType !== 'geoshape') {
+        isGroupHiddenInMarkType = true;
+      }
+    } else if (this.props.groupType === 'facet channel') {
+      isGroupHiddenInMarkType = true;
+    }
+
+
+    return isGroupHiddenInMarkType;
   }
 
   private toggleEncodingsHidden() {
@@ -251,8 +267,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   public render() {
+    const isHidden = this.isGroupHiddenInMarkType() ? 'hidden' : '';
+
     return (
-      <div className="encodingGroup">
+      <div className={`encodingGroup ${isHidden}`}>
         <div className="row">
           <h2>{ this.props.groupType }</h2>
           <button className="addNewEncoding" onClick={ this.toggleEncodingsHidden }>
