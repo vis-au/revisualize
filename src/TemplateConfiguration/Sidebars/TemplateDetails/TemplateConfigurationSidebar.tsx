@@ -39,6 +39,26 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     this.setState({ hidden: !this.state.hidden });
   }
 
+  private renderDatasetSection() {
+    if (this.props.focusedTemplate === null) {
+      return null;
+    }
+
+    const hasData = this.props.focusedTemplate.dataTransformationNode !== null;
+    const hasDataClassName = hasData ? '' : 'unbound';
+
+    const label = hasData
+      ? this.props.focusedTemplate.dataTransformationNode.name
+      : 'none'
+
+    return (
+      <div className={ `datasetSection ${hasDataClassName}` }>
+        <h2>Dataset</h2>
+        <div className="dataset">{ label }</div>
+      </div>
+    );
+  }
+
   private renderFocusedTemplateProperties() {
     if (this.props.focusedTemplate instanceof CompositionTemplate) {
       return (
@@ -110,6 +130,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         toggle={ this.onToggle }>
 
         <div className="sidebarContainer">
+          { this.renderDatasetSection() }
           { this.renderFocusedTemplateProperties() }
           { this.renderPreview() }
           { this.renderVegaLiteCode() }
