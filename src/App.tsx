@@ -15,7 +15,6 @@ import './App.css';
 
 interface State {
   activeTab: Tab;
-  height: number;
   width: number;
   datasets: GraphNode[];
   patternGraph: PatternGraph;
@@ -49,7 +48,6 @@ export default class App extends React.Component<{}, State> {
     this.state = {
       activeTab: this.tabs[1],
       datasets: [],
-      height: window.innerHeight,
       patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
@@ -105,9 +103,7 @@ export default class App extends React.Component<{}, State> {
 
   public render() {
     return (
-      <div
-        className="App"
-        style={{ height: this.state.height }}>
+      <div className="App">
 
         {/* <TabNavigation
           tabs={ this.tabs }
@@ -115,7 +111,7 @@ export default class App extends React.Component<{}, State> {
           getActiveTab={ this.getActiveTab.bind(this) }
         /> */}
 
-        <MainView height={ this.state.height }>
+        <MainView>
           {/* <PatternConfigurationView
             activeTab={ this.state.activeTab }
             patternGraph={ this.state.patternGraph }

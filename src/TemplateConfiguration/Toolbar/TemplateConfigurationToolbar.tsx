@@ -4,7 +4,7 @@ import { BaseSpec } from 'vega-lite/build/src/spec';
 import Toolbar from '../../Widgets/Toolbar';
 import SpecParser from '../TemplateModel/SpecParser';
 import Template from '../TemplateModel/Template';
-import { barchartSpec, candlestickSpec, carbonDioxide, concatenateSpec, londonTube, mosaicPreset, parallelCoordinatesPreset, populationLayerChart, repeatOverlayPreset, scatterplotMatrixSpec, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset } from './SpecPresets';
+import { barchartSpec as barchartPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, londonTube as londonTubePrest, mosaicPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
 
 import './TemplateConfigurationToolbar.css';
@@ -29,19 +29,20 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.specParser = new SpecParser();
 
     this.specPresets = new Map();
-    this.specPresets.set('population', populationLayerChart);
-    this.specPresets.set('barchart', barchartSpec);
-    this.specPresets.set('scattMatrx', scatterplotMatrixSpec);
-    this.specPresets.set('candlestick', candlestickSpec);
-    this.specPresets.set('concat', concatenateSpec);
+    this.specPresets.set('population', populationLayerChartPreset);
+    this.specPresets.set('barchart', barchartPreset);
+    this.specPresets.set('scattMatrx', scatterplotMatrixPreset);
+    this.specPresets.set('candlestick', candlestickPreset);
+    this.specPresets.set('concat', concatenatePreset);
     this.specPresets.set('stackedBC', stackedBarchartPreset);
     this.specPresets.set('parallelCoords', parallelCoordinatesPreset);
     this.specPresets.set('repeatOverlay', repeatOverlayPreset);
     this.specPresets.set('mosaic', mosaicPreset);
     this.specPresets.set('streamGraph', streamGraphPreset);
     this.specPresets.set('stackedArea', stackedAreaPreset);
-    this.specPresets.set('CO2', carbonDioxide);
-    this.specPresets.set('londonTube', londonTube);
+    this.specPresets.set('CO2', carbonDioxidePreset);
+    this.specPresets.set('londonTube', londonTubePrest);
+    this.specPresets.set('trellisBarley', trellisBarleyPreset);
   }
 
   private addTemplateFromSpec(spec: BaseSpec) {
