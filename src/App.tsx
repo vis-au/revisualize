@@ -9,12 +9,10 @@ import Template from './TemplateConfiguration/TemplateModel/Template';
 import URLDatasetNode from './TemplateConfiguration/VegaLiteData/Datasets/URLDatasetNode';
 import GraphNode from './TemplateConfiguration/VegaLiteData/GraphNode';
 import MainView from './ToolkitView/MainView';
-import Tab from './ToolkitView/Tab';
 
 import './App.css';
 
 interface State {
-  activeTab: Tab;
   width: number;
   datasets: GraphNode[];
   patternGraph: PatternGraph;
@@ -23,19 +21,8 @@ interface State {
 }
 
 export default class App extends React.Component<{}, State> {
-  private tabs: Tab[];
-
   constructor(props: {}) {
     super(props);
-
-    this.tabs = [
-      new Tab('Data'),
-      // new Tab('Scales'),
-      new Tab('Templates'),
-      // new Tab('Interactions'),
-      // new Tab('Patterns'),
-      // new Tab('Dashboard')
-    ];
 
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
     this.onDatasetsChanged = this.onDatasetsChanged.bind(this);
@@ -46,7 +33,6 @@ export default class App extends React.Component<{}, State> {
     patternGraph.globalDatasets = DEFAULT_DATA_GRAPH.getDatasetNodes();
 
     this.state = {
-      activeTab: this.tabs[1],
       datasets: [],
       patternGraph,
       width: window.innerWidth,
@@ -104,49 +90,22 @@ export default class App extends React.Component<{}, State> {
   public render() {
     return (
       <div className="App">
-
-        {/* <TabNavigation
-          tabs={ this.tabs }
-          updateActiveTab={ this.updateActiveTab.bind(this) }
-          getActiveTab={ this.getActiveTab.bind(this) }
-        /> */}
-
         <MainView>
-          {/* <PatternConfigurationView
-            activeTab={ this.state.activeTab }
-            patternGraph={ this.state.patternGraph }
-            datasetGraph={ this.state.dataGraph }
-            onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
-          /> */}
-          {/* <InteractionConfigurationView
-            activeTab={ this.state.activeTab }
-            datasetGraph={ this.state.dataGraph }
-            patternGraph={ this.state.patternGraph }
-            onPatternGraphChanged={ this.updatePatternGraph.bind(this) }
-          /> */}
           <DataflowSidepanel
             onToggle={ this.onDataflowPanelToggle.bind(this) }
             hidden={ !this.state.dataflowVisible }>
 
             <DataFlowConfigurationView
-              activeTab={ new Tab('Data') }
               datasets={ this.state.datasets }
               onDatasetsChanged={ this.onDatasetsChanged }
             />
           </DataflowSidepanel>
           <TemplateConfigurationView
             className={ this.state.dataflowVisible ? 'faded' : '' }
-            activeTab={ this.state.activeTab }
             templates={ this.state.templates }
             onDatasetsChanged={ this.onDatasetsChanged }
             onTemplatesChanged={ this.onTemplatesChanged }
           />
-          {/* <PreviewComponentView
-            activeTab={ this.state.activeTab }
-            width={ this.state.width - 100 }
-            height={ this.state.height - 100 }
-            patternGraph={ this.state.patternGraph }
-          /> */}
         </MainView>
       </div>
     );

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import DatasetNode from '../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import GraphNode from '../TemplateConfiguration/VegaLiteData/GraphNode';
-import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import DataFlowDiagram from './Diagram/DataFlowDiagram';
 import DataFlowSidebar from './Sidebar/DataFlowSidebar';
@@ -12,7 +11,6 @@ import DataImportPanel from './Toolbar/DataImportPanel';
 import './DataConfigurationView.css';
 
 interface Props {
-  activeTab: Tab;
   datasets: GraphNode[];
   onDatasetsChanged: () => void;
 }
@@ -77,7 +75,7 @@ export default class DataConfigurationView extends React.Component<Props, State>
 
   public render() {
     return (
-      <ViewContainer id="dataFlowComponent" name="Data" activeContainerName={ this.props.activeTab.name }>
+      <ViewContainer id="dataFlowComponent" name="Data" activeContainerName="Data">
         { this.renderDataImportPanel() }
         <DataFlowToolbar
           datasets={ this.props.datasets }

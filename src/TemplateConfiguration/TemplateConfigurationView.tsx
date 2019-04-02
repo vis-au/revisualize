@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import Tab from '../ToolkitView/Tab';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
@@ -11,7 +10,6 @@ import './TemplateConfigurationView.css';
 import DataImporter from './VegaLiteData/DataImporter';
 
 interface Props {
-  activeTab: Tab;
   className: string;
   templates: Template[];
   onTemplatesChanged: () => void;
@@ -127,7 +125,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         id="templateConfiguration"
         name="Templates"
         className={ this.props.className }
-        activeContainerName={ this.props.activeTab.name }>
+        activeContainerName="Templates">
 
         <TemplateConfigurationToolbar
           plumbingVisible={ this.state.plumbingVisible }
