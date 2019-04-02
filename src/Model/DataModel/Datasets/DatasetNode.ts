@@ -14,8 +14,8 @@ export default abstract class DatasetNode extends GraphNode {
     this.values = [];
   }
 
-  public getTransformList() {
+  public getTransform(): Transform[] {
     // datasets are roots in a data graph and therefore do not have parent or child transforms
-    return [] as Transform[];
+    return [];
   }
 }

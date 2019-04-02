@@ -2,10 +2,10 @@ import { Config } from 'vega-lite';
 import { Data } from 'vega-lite/build/src/data';
 import { Transform } from 'vega-lite/build/src/transform';
 
+import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 import GraphNode from '../DataModel/GraphNode';
 import { LayoutType } from './LayoutType';
 import { MarkEncoding } from './MarkEncoding';
-import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 
 export default abstract class Template {
   public id: string;
@@ -106,7 +106,7 @@ export default abstract class Template {
       return [];
     }
 
-    const transforms = this.dataNode.getTransformList();
-    return transforms;
+    const transform = this.dataNode.getTransform();
+    return transform;
   }
 }

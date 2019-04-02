@@ -21,7 +21,7 @@ export default abstract class GraphNode {
 
   public abstract setSchema(schema: Data): void;
 
-  public abstract getTransformList(): Transform[];
+  public abstract getTransform(): Transform[];
 
   public getDatasets(): Datasets {
     return null;
@@ -38,11 +38,11 @@ export default abstract class GraphNode {
   }
 
   public getFullAncestry(): GraphNode[] {
-    const allParentNodes: GraphNode[] = [];
+    const allParentNodes: GraphNode[] = [this];
     let workingNode: GraphNode = this.parent;
 
     if (this.parent === null) {
-      return [];
+      return allParentNodes;
     }
 
     // go up in the node's hierarchy as far as possible

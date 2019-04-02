@@ -40,7 +40,7 @@ export default class TransformNode extends GraphNode {
     return;
   }
 
-  public getTransformList(): Transform[] {
+  public getTransform(): Transform[] {
     const transformNodesOnPathToRoot = this.getFullAncestry();
     const transforms = transformNodesOnPathToRoot
       .filter(n => n instanceof TransformNode)

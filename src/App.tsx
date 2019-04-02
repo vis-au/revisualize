@@ -70,7 +70,6 @@ export default class App extends React.Component<{}, State> {
       const dataset = template.dataTransformationNode;
 
       if (dataset !== null) {
-        datasets.push(dataset);
         datasets.push(...dataset.getFullAncestry())
       }
     });
