@@ -215,3 +215,21 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
 
   return abstraction;
 };
+
+export function setSchemaSize(schema: any, width: number, height: number) {
+  if (isPlotSchema(schema)) {
+    schema.width = width;
+    schema.height = height;
+  } else if (isConcatenateSchema(schema)) {
+    schema.width = width;
+    schema.height = height;
+  } else if (isRepeatSchema(schema)) {
+    schema.spec.width = width;
+    schema.spec.height = height;
+  } else if (isFacetSchema(schema)) {
+    schema.spec.width = width;
+    schema.spec.height = height;
+  }
+
+  return schema;
+};

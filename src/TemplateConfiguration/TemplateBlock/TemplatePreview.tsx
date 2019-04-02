@@ -7,6 +7,7 @@ import VegaRenderer from '../../Model/Renderer/VegaRenderer';
 import SpecCompiler from '../TemplateModel/SpecCompiler';
 import Template from '../TemplateModel/Template';
 
+import { setSchemaSize } from '../TemplateModel/SpecUtils';
 import './TemplatePreview.css';
 
 interface Props {
@@ -28,20 +29,25 @@ export default class TemplatePreview extends React.Component<Props, State> {
     this.specCompiler = new SpecCompiler();
 
     this.state = {
-      width: 100,
+      width: 400,
       height: 100
     };
   }
 
   private renderVegaPreview() {
-    const legendPadding = 25;
+    const legendPadding = 150;
     const axisPadding = 25;
+    const width = this.state.width * 0.9 - legendPadding - axisPadding;
+    const height = this.state.height * 0.9 - axisPadding;
     const template = this.props.template;
-    let spec = this.specCompiler.getVegaSpecification(template, true, true);
-    this.latestSchemaString = JSON.stringify(spec);
 
-    if (spec === null) {
-      spec = {} as any;
+    let schema = this.specCompiler.getVegaSpecification(template, true, true);
+    this.latestSchemaString = JSON.stringify(schema);
+
+    schema = setSchemaSize(schema, width, height);
+
+    if (schema === null) {
+      schema = {} as any;
     }
 
     return (
@@ -49,9 +55,9 @@ export default class TemplatePreview extends React.Component<Props, State> {
         id={ `renderer${this.props.template.id}` }
         onRenderComplete={ this.props.onRenderComplete }
         showExportOptions={ false }
-        width={ this.state.width * 0.9 - legendPadding - axisPadding }
-        height={ this.state.height * 0.9 - axisPadding }
-        schema={ spec }
+        width={ width }
+        height={ height }
+        schema={ schema }
       />
     );
   }
