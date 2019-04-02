@@ -21,6 +21,16 @@ export default class TransformNode extends GraphNode {
     return workingNode;
   }
 
+  public getDatasets() {
+    const rootDataset = this.getRootDatasetNode();
+
+    if (rootDataset instanceof DatasetNode) {
+      return rootDataset.getDatasets();
+    }
+
+    return null;
+  }
+
   public getSchema() {
     const rootDataset = this.getRootDatasetNode();
     return rootDataset.getSchema();

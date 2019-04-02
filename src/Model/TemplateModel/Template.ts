@@ -5,6 +5,7 @@ import { Transform } from 'vega-lite/build/src/transform';
 import GraphNode from '../DataModel/GraphNode';
 import { LayoutType } from './LayoutType';
 import { MarkEncoding } from './MarkEncoding';
+import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 
 export default abstract class Template {
   public id: string;
@@ -89,6 +90,15 @@ export default abstract class Template {
 
     const data = this.dataNode.getSchema();
     return data;
+  }
+
+  public get datasets(): Datasets {
+    if (this.dataNode === null) {
+      return null;
+    }
+
+    const datasets = this.dataNode.getDatasets();
+    return datasets;
   }
 
   public get transform(): Transform[] {

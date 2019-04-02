@@ -1,6 +1,7 @@
 import { Data } from 'vega-lite/build/src/data';
+import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 import { Transform } from 'vega-lite/build/src/transform';
-import DatasetNode from './Datasets/DatasetNode';
+
 import TransformNode from './Transforms/TranformNode';
 
 export default abstract class GraphNode {
@@ -21,6 +22,10 @@ export default abstract class GraphNode {
   public abstract setSchema(schema: Data): void;
 
   public abstract getTransformList(): Transform[];
+
+  public getDatasets(): Datasets {
+    return null;
+  }
 
   public getAllChildNodes(): TransformNode[] {
     const allChildNodes = this.children;

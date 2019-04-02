@@ -212,6 +212,7 @@ export default class SchemaParser {
       rootNode = new URLDatasetNode();
     } else if (isNamedData(data)) {
       rootNode = new NamedDataSourceNode();
+      (rootNode as NamedDataSourceNode).datasets = schema.datasets;
     } else if (isInlineData(data)) {
       rootNode = new InlineDatasetNode();
     }
