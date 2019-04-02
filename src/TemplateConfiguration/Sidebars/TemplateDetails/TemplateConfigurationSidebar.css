@@ -47,13 +47,13 @@
   overflow: auto;
 }
 
-#templateConfigurationSidebar .vegaLiteContainer button {
+#templateConfigurationSidebar button.JSONToggle {
   color: teal;
   background: transparent;
   border: none;
   cursor: pointer;
 }
-#templateConfigurationSidebar .vegaLiteContainer button:hover {
+#templateConfigurationSidebar button.JSONToggle:hover {
   text-decoration: underline
 }
 textarea#templateConfigurationSidebarVegaPreview {

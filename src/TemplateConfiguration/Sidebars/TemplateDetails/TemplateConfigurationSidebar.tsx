@@ -79,6 +79,9 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     if (this.props.focusedTemplate === null) {
       return null;
     }
+    if (!this.state.JSONHidden) {
+      return null;
+    }
 
     const template = this.props.focusedTemplate;
     const schema = this.specCompiler.getVegaSpecification(template, true, true);
@@ -102,13 +105,9 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     const template = this.props.focusedTemplate;
     const spec = this.specCompiler.getVegaSpecification(template, true, true);
     const specString = JSON.stringify(spec, null, 2);
-    const label = this.state.JSONHidden ? 'show JSON' : 'hide JSON';
 
     return (
       <div className="vegaLiteContainer">
-        <button onClick={() => this.setState({ JSONHidden: !this.state.JSONHidden })}>
-          { label }
-        </button>
         <textarea
           contentEditable={ false }
           id="templateConfigurationSidebarVegaPreview"
@@ -121,6 +120,8 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
   }
 
   public render() {
+    const label = this.state.JSONHidden ? 'show JSON' : 'show Preview';
+
     return (
       <Sidebar
         id="templateConfigurationSidebar"
@@ -132,6 +133,10 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         <div className="sidebarContainer">
           { this.renderDatasetSection() }
           { this.renderFocusedTemplateProperties() }
+
+          <button className="JSONToggle" onClick={() => this.setState({ JSONHidden: !this.state.JSONHidden })}>
+            { label }
+          </button>
           { this.renderPreview() }
           { this.renderVegaLiteCode() }
         </div>
