@@ -13,6 +13,19 @@ export default class DataImporter {
     this.onNewDataset = null;
   }
 
+  private getFileNameFromURL(url: string) {
+    let name = url;
+
+    // trim off the file type and use the string before it in the url
+    if (url.includes('.json')) {
+      name = url.match(/\/(\w+)\.json/)[1];
+    } else if (url.includes('.csv')) {
+      name = url.match(/\/(\w+)\.csv/)[1];
+    }
+
+    return name;
+  }
+
   // adapted from https://stackoverflow.com/a/26298948
   public readFileFromDisk(e: any) {
 
@@ -51,6 +64,8 @@ export default class DataImporter {
       const dataArray = csvParse(e.srcElement.result);
       node.fields = Object.keys(dataArray[0]);
       node.values = dataArray;
+      node.name = this.getFileNameFromURL(preset.url);
+      node.url = preset.url;
 
       if (this.onNewDataset !== null) {
         this.onNewDataset(node);
@@ -69,7 +84,7 @@ export default class DataImporter {
         node.fields = Object.keys(dataArray[0]);
         node.values = dataArray;
 
-        node.name = preset.name;
+        node.name = this.getFileNameFromURL(preset.url);
         node.url = preset.url;
         node.format = preset.format;
 
