@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import VegaRenderer from '../Model/Renderer/VegaRenderer';
+import VegaRenderer from '../Widgets/Renderer/VegaRenderer';
 
 import './MiniPreview.css';
 

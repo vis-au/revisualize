@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import VegaRenderer from '../../../Widgets/Renderer/VegaRenderer';
 import Sidebar from '../../../Widgets/Sidebar';
 import CompositionTemplate from '../../TemplateModel/CompositionTemplate';
 import PlotTemplate from '../../TemplateModel/PlotTemplate';
@@ -8,7 +9,6 @@ import Template from '../../TemplateModel/Template';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplateProperties from './PlotTemplateProperties';
 
-import VegaRenderer from '../../../Model/Renderer/VegaRenderer';
 import './TemplateConfigurationSidebar.css';
 
 interface Props {

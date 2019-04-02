@@ -3,11 +3,11 @@ import 'jquery-ui/themes/base/resizable.css';
 import 'jquery-ui/ui/widgets/resizable';
 import * as React from 'react';
 
-import VegaRenderer from '../../Model/Renderer/VegaRenderer';
+import VegaRenderer from '../../Widgets/Renderer/VegaRenderer';
 import SpecCompiler from '../TemplateModel/SpecCompiler';
+import { setSchemaSize } from '../TemplateModel/SpecUtils';
 import Template from '../TemplateModel/Template';
 
-import { setSchemaSize } from '../TemplateModel/SpecUtils';
 import './TemplatePreview.css';
 
 interface Props {
