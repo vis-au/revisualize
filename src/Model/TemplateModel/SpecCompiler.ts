@@ -1,6 +1,6 @@
 import { TopLevelSpec } from 'vega-lite';
 
-import { Data } from 'vega-lite/build/src/data';
+import { Data, isNamedData } from 'vega-lite/build/src/data';
 import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 import NamedDataSourceNode from '../DataModel/Datasets/NamedDataSourceNode';
 import CompositionTemplate from './CompositionTemplate';
@@ -43,6 +43,8 @@ export default class SpecCompiler {
   private setToplevelProperties(schema: any, template: Template, includeData: boolean = true) {
     if (includeData && template.data !== null) {
       schema.data = template.data;
+    }
+    if (includeData && !!template.datasets) {
       schema.datasets = template.datasets;
     }
     if (template.bounds !== undefined) {
@@ -78,7 +80,7 @@ export default class SpecCompiler {
   }
 
   private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
-    const abstraction: any = getAbstraction(schema, compositionProperty);
+    const abstraction: any = getAbstraction(schema);
 
     if (compositionProperty === 'spec' || compositionProperty === 'facet') {
       schema[compositionProperty] = abstraction;
@@ -137,19 +139,17 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private getDataInHierarchy(template: Template): { data: Data, datasets?: Datasets } {
+  private getDataInHierarchy(template: Template): Data {
     // data can be stored either in a child node or on the top level template, therefore find the
     // top level, get its flat hierarchy and find a template with a dataset bound to it
     let topLevelTemplate: Template = template;
     let data: Data = null;
-    let datasets: Datasets = null;
 
     while (topLevelTemplate.parent !== null) {
       if (topLevelTemplate.data !== undefined && topLevelTemplate.data !== null) {
         data = topLevelTemplate.data;
-        datasets = topLevelTemplate.datasets;
 
-        return { data, datasets };
+        return data;
       }
 
       topLevelTemplate = topLevelTemplate.parent;
@@ -163,17 +163,32 @@ export default class SpecCompiler {
     // could occur when template has no parent, no visualelements and no data (i.e. is "empty")
     if (dataTemplate === undefined) {
       return {
-        data: {
-          values: [],
-        },
-        datasets: null
+        values: [],
       };
     }
 
     data = dataTemplate.data;
-    datasets = dataTemplate.datasets;
 
-    return { data,datasets };
+    return data;
+  }
+
+  private getDatasetsInAncestry(template: Template): Datasets {
+    // if the template references a namedDataset, also include that dataset.
+    if (template.data !== null && !isNamedData(template.data)) {
+      return null;
+    }
+
+    let workingNode = template;
+
+    while (workingNode !== null && (workingNode.datasets === null || workingNode.datasets === undefined)) {
+      workingNode = workingNode.parent;
+    }
+
+    if (workingNode === null) {
+      return null;
+    }
+
+    return workingNode.datasets;
   }
 
   private getRepeatSpec(parentTemplate: Template): TopLevelSpec {
@@ -242,9 +257,8 @@ export default class SpecCompiler {
     let datasets: Datasets = template.datasets;
 
     if (inferData) {
-      const inferredData = this.getDataInHierarchy(template);
-      data = inferredData.data;
-      datasets = inferredData.datasets;
+      data = this.getDataInHierarchy(template);
+      datasets = this.getDatasetsInAncestry(template);
     }
 
     if (data !== undefined && data !== null) {
@@ -291,9 +305,8 @@ export default class SpecCompiler {
     }
 
     if (inferData) {
-      const inferredData = this.getDataInHierarchy(template);
-      data = inferredData.data;
-      datasets = inferredData.datasets;
+      data = this.getDataInHierarchy(template);
+      datasets = this.getDatasetsInAncestry(template);
     } else {
       data = template.data;
       datasets = template.datasets;

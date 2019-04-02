@@ -23,10 +23,6 @@ export default abstract class GraphNode {
 
   public abstract getTransform(): Transform[];
 
-  public getDatasets(): Datasets {
-    return null;
-  }
-
   public getAllChildNodes(): TransformNode[] {
     const allChildNodes = this.children;
 

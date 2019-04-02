@@ -4,17 +4,12 @@ import DatasetNode from './DatasetNode';
 
 export default class NamedDataSourceNode extends DatasetNode {
   public format: DataFormat;
-  public datasets: Datasets;
 
   public getSchema(): NamedData {
     return {
       name: this.name,
       format: this.format
     }
-  }
-
-  public getDatasets(): Datasets {
-    return this.datasets;
   }
 
   public setSchema(data: NamedData) {

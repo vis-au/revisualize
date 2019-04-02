@@ -12,6 +12,7 @@ export default abstract class Template {
   public hierarchyLevel: number;
 
   private dataNode: GraphNode;
+  public datasets: Datasets;
 
   public description: string;
   public bounds: any;
@@ -90,15 +91,6 @@ export default abstract class Template {
 
     const data = this.dataNode.getSchema();
     return data;
-  }
-
-  public get datasets(): Datasets {
-    if (this.dataNode === null) {
-      return null;
-    }
-
-    const datasets = this.dataNode.getDatasets();
-    return datasets;
   }
 
   public get transform(): Transform[] {

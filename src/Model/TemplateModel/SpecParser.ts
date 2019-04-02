@@ -47,6 +47,7 @@ export default class SchemaParser {
     template.width = schema.width;
     template.height = schema.height;
     template.config = schema.config;
+    template.datasets = schema.datasets;
 
     if (template instanceof CompositionTemplate) {
       template.spacing = schema.spacing;
@@ -212,7 +213,6 @@ export default class SchemaParser {
       rootNode = new URLDatasetNode();
     } else if (isNamedData(data)) {
       rootNode = new NamedDataSourceNode();
-      (rootNode as NamedDataSourceNode).datasets = schema.datasets;
     } else if (isInlineData(data)) {
       rootNode = new InlineDatasetNode();
     }

@@ -204,6 +204,9 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
   if (schema.data !== undefined) {
     abstraction.data = JSON.parse(JSON.stringify(schema.data));
   }
+  if (schema.datasets !== undefined) {
+    abstraction.datasets = JSON.parse(JSON.stringify(schema.datasets));
+  }
   if (schema.transform !== undefined) {
     abstraction.transform = JSON.parse(JSON.stringify(schema.transform));
   }
@@ -217,7 +220,7 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
   return abstraction;
 };
 
-export function getAbstraction(schema: any, compositionProperty?: string): any {
+export function getAbstraction(schema: any): any {
   let abstraction: any = null;
 
   if (isAtomicSchema(schema)) {
