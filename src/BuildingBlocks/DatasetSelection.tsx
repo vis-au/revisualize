@@ -1,18 +1,19 @@
 import * as React from 'react';
-import DataflowGraph from '../Model/DataFlowGraph/DataflowGraph';
-import DatasetNode from '../Model/DataFlowGraph/DatasetNode';
-import TransformNode from '../Model/DataFlowGraph/TransformNode';
 import DatasetBuildingBlock from './DatasetBuildingBlock';
+
+import DatasetNode from '../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
+import GraphNode from '../TemplateConfiguration/VegaLiteData/GraphNode';
+import TransformNode from '../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 
 import './DatasetSelection.css';
 
 interface Props {
-  datasetGraph: DataflowGraph;
+  datasets: GraphNode[];
 }
 
 export default class DataflowNodeSelection extends React.Component<Props, {}> {
   private renderDatasetNode(node: DatasetNode) {
-    const childNodes = this.props.datasetGraph.getChildNodes(node);
+    const childNodes = node.getAllChildNodes();
 
     return (
       <div key={ node.id } className="branch">
@@ -29,7 +30,7 @@ export default class DataflowNodeSelection extends React.Component<Props, {}> {
   }
 
   private renderTransformNode(node: TransformNode) {
-    const childNodes = this.props.datasetGraph.getChildNodes(node);
+    const childNodes = node.getAllChildNodes();
 
     return (
       <div key={ node.id } className="branch">
@@ -46,7 +47,7 @@ export default class DataflowNodeSelection extends React.Component<Props, {}> {
   }
 
   private renderNoDatasetsNotice() {
-    if (this.props.datasetGraph.nodes.length > 0) { return false; }
+    if (this.props.datasets.length > 0) { return false; }
 
     return (
       <div id="noDatasetNotice">no datasets</div>
@@ -54,13 +55,11 @@ export default class DataflowNodeSelection extends React.Component<Props, {}> {
   }
 
   public render() {
-    const datasetNodes = this.props.datasetGraph.getDatasetNodes();
-
     return (
       <div id="datasetSelectionComponent">
         <h2>Datasets</h2>
         <div id="datasetSelectionList" >
-          { datasetNodes.map(this.renderDatasetNode.bind(this)) }
+          { this.props.datasets.map(this.renderDatasetNode.bind(this)) }
         </div>
         { this.renderNoDatasetsNotice() }
       </div>

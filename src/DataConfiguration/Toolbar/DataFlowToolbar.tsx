@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Transform } from 'vega-lite/build/src/transform';
 
-import { TransformGroupName, transformGroupNames } from '../../Model/DataFlowGraph/TransformTypes';
 import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
 import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
+import { TransformGroup, transformGroups } from '../../TemplateConfiguration/VegaLiteData/Transforms/TransformTypes';
 import Toolbar from '../../Widgets/Toolbar';
 import TransformGroupBlock from './TransformGroup';
 
@@ -37,7 +37,7 @@ export default class DataFlowToolbar extends React.Component<Props, State> {
     this.props.updateGraph();
   }
 
-  private renderTransformGroup(key: TransformGroupName) {
+  private renderTransformGroup(key: TransformGroup) {
     return (
       <TransformGroupBlock
         className="transform"
@@ -53,7 +53,7 @@ export default class DataFlowToolbar extends React.Component<Props, State> {
   private renderTransformGroups() {
     return (
       <div id="dataflowToolbarTransformGroups">
-        { transformGroupNames.map(this.renderTransformGroup.bind(this)) }
+        { transformGroups.map(this.renderTransformGroup.bind(this)) }
       </div>
     );
   }

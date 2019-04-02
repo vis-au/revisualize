@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import DataflowGraph from '../../../Model/DataFlowGraph/DataflowGraph';
 import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
 import TransformNode from '../../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 import Block from './Block';
@@ -12,7 +11,7 @@ interface Props {
   focusedNode: GraphNode;
   dragPlumbing: any;
   onClick: (event: any) => void;
-  updateGraph: (newGraph: DataflowGraph) => void;
+  updateGraph: () => void;
   onNodeChanged: () => void;
 }
 

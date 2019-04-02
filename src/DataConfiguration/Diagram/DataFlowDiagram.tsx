@@ -1,7 +1,6 @@
 import {jsPlumb, jsPlumbInstance} from 'jsplumb';
 import * as React from 'react';
 
-import DatasetLink from '../../Model/DataFlowGraph/DataflowLink';
 import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
 import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
@@ -41,15 +40,15 @@ export default class DataFlowDiagram extends React.Component<Props, {}> {
   }
 
   private onNewConnection(event: any) {
-    const newLink = new DatasetLink();
-    newLink.connection = event.connection;
+    // const newLink = new DatasetLink();
+    // newLink.connection = event.connection;
 
-    // source can either be a dataset or transform node, so id is stored in different elements
-    const sourceNode = this.props.datasets.find(node => {
-      return node.id === event.source.parentNode.id || node.id === event.source.id;
-    });
+    // // source can either be a dataset or transform node, so id is stored in different elements
+    // const sourceNode = this.props.datasets.find(node => {
+    //   return node.id === event.source.parentNode.id || node.id === event.source.id;
+    // });
 
-    this.props.updateGraph();
+    // this.props.updateGraph();
   }
 
   private onConnectionMoved(event: any) {

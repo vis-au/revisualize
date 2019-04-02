@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DatasetNode from '../../Model/DataFlowGraph/DatasetNode';
 import DataImporter from '../../TemplateConfiguration/VegaLiteData/DataImporter';
+import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import { DatasetPreset, PRESET_DATASETS } from './DatasetPreset';
 
 import './DataImportPanel.css';

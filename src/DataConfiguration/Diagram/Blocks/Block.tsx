@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import DataflowGraph from '../../../Model/DataFlowGraph/DataflowGraph';
-import TransformNode from '../../../Model/DataFlowGraph/TransformNode';
+import DatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
+import TransformNode from '../../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
 import CONFIG from '../DataFlowConfig';
 
-import DatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
 import './Block.css';
 
 interface BlockProps {
@@ -18,7 +17,7 @@ interface BlockProps {
   indicators?: any;
   plumbing: any; // cannot set jsplumbinstance because typing is inconsistent
 
-  updateGraph: (newGraph: DataflowGraph) => void;
+  updateGraph: () => void;
   onClick: (event: any) => void;
 }
 

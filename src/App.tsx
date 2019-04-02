@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView';
-import { DEFAULT_DATA_GRAPH, DEFAULT_SCALES, DEFAULT_SIGNALS } from './DefaultValueFactories/DefaultValueFactory';
-import PatternGraph from './Model/Pattern/PatternGraph';
+
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import Template from './TemplateConfiguration/TemplateModel/Template';
@@ -15,7 +14,6 @@ import './App.css';
 interface State {
   width: number;
   datasets: GraphNode[];
-  patternGraph: PatternGraph;
   dataflowVisible: boolean;
   templates: Template[];
 }
@@ -27,14 +25,8 @@ export default class App extends React.Component<{}, State> {
     this.onTemplatesChanged = this.onTemplatesChanged.bind(this);
     this.onDatasetsChanged = this.onDatasetsChanged.bind(this);
 
-    const patternGraph = new PatternGraph();
-    patternGraph.globalSignals = DEFAULT_SIGNALS;
-    patternGraph.globalScales = DEFAULT_SCALES;
-    patternGraph.globalDatasets = DEFAULT_DATA_GRAPH.getDatasetNodes();
-
     this.state = {
       datasets: [],
-      patternGraph,
       width: window.innerWidth,
       dataflowVisible: false,
       templates: [],

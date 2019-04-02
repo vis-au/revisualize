@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Transform } from 'vega';
 
-import { TransformGroupName, TransformsByGroup } from '../../Model/DataFlowGraph/TransformTypes';
+import { TransformGroup } from '../../TemplateConfiguration/VegaLiteData/Transforms/TransformTypes';
 
 import './TransformGroup.css';
 
 interface Props {
-  groupName: TransformGroupName;
+  groupName: TransformGroup;
   addBlock: (transform: Transform) => void;
   className: string;
   visible: boolean;
@@ -39,18 +39,18 @@ export default class TransformGroupBlock extends React.Component<Props, {}> {
   }
 
   private renderTransforms() {
-    const transformsByName = TransformsByGroup.get(this.props.groupName);
-    const transforms: JSX.Element[] = [];
+    // const transformsByName = transformGroups.get(this.props.groupName);
+    // const transforms: JSX.Element[] = [];
 
-    transformsByName.forEach((value, key) => {
-      transforms.push(this.renderTransform(value));
-    });
+    // transformsByName.forEach((value, key) => {
+    //   transforms.push(this.renderTransform(value));
+    // });
 
-    return (
-      <div className={`transforms ${this.props.visible ? '' : 'hidden'}`}>
-        { transforms }
-      </div>
-    );
+    // return (
+    //   <div className={`transforms ${this.props.visible ? '' : 'hidden'}`}>
+    //     { transforms }
+    //   </div>
+    // );
   }
 
   public render() {
