@@ -1148,7 +1148,7 @@ export const londonTube: any = {
 
 export const trellisBarleyPreset = {
   'name': 'trellis_barley',
-  'data': {'url': 'data/barley.json'},
+  'data': {'url': 'https://vega.github.io/editor/data/barley.json'},
   'mark': 'point',
   'columns': 2,
   'encoding': {
