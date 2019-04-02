@@ -1172,3 +1172,19 @@ export const trellisBarleyPreset = {
     'color': {'field': 'year', 'type': 'nominal'}
   }
 };
+
+export const facettedBarchartsPreset = {
+  'data': {'url': 'https://vega.github.io/editor/data/cars.json'},
+  'facet': {'row': {'field': 'Origin', 'type': 'nominal'}},
+  'spec': {
+    'mark': 'bar',
+    'encoding': {
+      'x': {
+        'bin': {'maxbins': 15},
+        'field': 'Horsepower',
+        'type': 'quantitative'
+      },
+      'y': {'aggregate': 'count', 'type': 'quantitative'}
+    }
+  }
+};

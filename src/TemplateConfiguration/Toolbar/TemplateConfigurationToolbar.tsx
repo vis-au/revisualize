@@ -4,7 +4,7 @@ import { BaseSpec } from 'vega-lite/build/src/spec';
 import Toolbar from '../../Widgets/Toolbar';
 import SpecParser from '../TemplateModel/SpecParser';
 import Template from '../TemplateModel/Template';
-import { barchartSpec as barchartPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, londonTube as londonTubePrest, mosaicPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
+import { barchartSpec as barchartPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, facettedBarchartsPreset, londonTube as londonTubePrest, mosaicPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
 
 import './TemplateConfigurationToolbar.css';
@@ -43,6 +43,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.specPresets.set('CO2', carbonDioxidePreset);
     this.specPresets.set('londonTube', londonTubePrest);
     this.specPresets.set('trellisBarley', trellisBarleyPreset);
+    this.specPresets.set('facettedBarchart', facettedBarchartsPreset);
   }
 
   private addTemplateFromSpec(spec: BaseSpec) {
