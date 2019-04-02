@@ -1,6 +1,5 @@
 import { csvParse } from 'd3';
 
-import { string } from 'prop-types';
 import { DatasetPreset } from '../../DataConfiguration/Toolbar/DatasetPreset';
 import DatasetNode from './Datasets/DatasetNode';
 import URLDatasetNode from './Datasets/URLDatasetNode';
