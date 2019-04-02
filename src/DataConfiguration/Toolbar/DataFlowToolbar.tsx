@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Transform } from 'vega-lite/build/src/transform';
 
-import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
-import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
-import { TransformGroup, transformGroups } from '../../TemplateConfiguration/VegaLiteData/Transforms/TransformTypes';
+import GraphNode from '../../Model/DataModel/GraphNode';
+import TransformNode from '../../Model/DataModel/Transforms/TranformNode';
+import { TransformGroup, transformGroups } from '../../Model/DataModel/Transforms/TransformTypes';
 import Toolbar from '../../Widgets/Toolbar';
 import TransformGroupBlock from './TransformGroup';
 

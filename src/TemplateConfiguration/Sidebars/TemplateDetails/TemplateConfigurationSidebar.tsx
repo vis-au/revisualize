@@ -1,11 +1,11 @@
 import * as React from 'react';
 
+import CompositionTemplate from '../../../Model/TemplateModel/CompositionTemplate';
+import PlotTemplate from '../../../Model/TemplateModel/PlotTemplate';
+import SpecCompiler from '../../../Model/TemplateModel/SpecCompiler';
+import Template from '../../../Model/TemplateModel/Template';
 import VegaRenderer from '../../../Widgets/Renderer/VegaRenderer';
 import Sidebar from '../../../Widgets/Sidebar';
-import CompositionTemplate from '../../TemplateModel/CompositionTemplate';
-import PlotTemplate from '../../TemplateModel/PlotTemplate';
-import SpecCompiler from '../../TemplateModel/SpecCompiler';
-import Template from '../../TemplateModel/Template';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplateProperties from './PlotTemplateProperties';
 

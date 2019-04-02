@@ -1,12 +1,11 @@
 import * as React from 'react';
 
 import DataFlowConfigurationView from './DataConfiguration/DataConfigurationView';
-
+import URLDatasetNode from './Model/DataModel/Datasets/URLDatasetNode';
+import GraphNode from './Model/DataModel/GraphNode';
+import Template from './Model/TemplateModel/Template';
 import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
-import Template from './TemplateConfiguration/TemplateModel/Template';
-import URLDatasetNode from './TemplateConfiguration/VegaLiteData/Datasets/URLDatasetNode';
-import GraphNode from './TemplateConfiguration/VegaLiteData/GraphNode';
 import MainView from './ToolkitView/MainView';
 
 import './App.css';

@@ -3,8 +3,8 @@ import * as React from 'react';
 import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings,
   keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup,
   markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings,
-  textTooltipChannelEncodings } from '../../TemplateModel/MarkEncoding';
-import PlotTemplate from '../../TemplateModel/PlotTemplate';
+  textTooltipChannelEncodings } from '../../../Model/TemplateModel/MarkEncoding';
+import PlotTemplate from '../../../Model/TemplateModel/PlotTemplate';
 import EncodingBlock from './EncodingBlock';
 
 import './EncodingGroup.css';

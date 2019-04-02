@@ -1,13 +1,15 @@
 import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
-import ConcatTemplate from '../../TemplateModel/ConcatTemplate';
-import FacetTemplate from '../../TemplateModel/FacetTemplate';
-import LayerTemplate from '../../TemplateModel/LayerTemplate';
-import RepeatTemplate from '../../TemplateModel/RepeatTemplate';
-import Template from '../../TemplateModel/Template';
-import DatasetNode from '../../VegaLiteData/Datasets/DatasetNode';
-import TransformNode from '../../VegaLiteData/Transforms/TranformNode';
+
+import DatasetNode from '../../../Model/DataModel/Datasets/DatasetNode';
+import TransformNode from '../../../Model/DataModel/Transforms/TranformNode';
+import ConcatTemplate from '../../../Model/TemplateModel/ConcatTemplate';
+import FacetTemplate from '../../../Model/TemplateModel/FacetTemplate';
+import LayerTemplate from '../../../Model/TemplateModel/LayerTemplate';
+import RepeatTemplate from '../../../Model/TemplateModel/RepeatTemplate';
+import Template from '../../../Model/TemplateModel/Template';
+
 import './CompositionTemplateProperties.css';
 
 interface Props {

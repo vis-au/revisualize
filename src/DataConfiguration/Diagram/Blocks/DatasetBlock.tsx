@@ -2,11 +2,11 @@ import { jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
 
 import FieldBuildingBlock from '../../../BuildingBlocks/FieldBuildingBlock';
-import DatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
-import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
+import DatasetNode from '../../../Model/DataModel/Datasets/DatasetNode';
+import URLDatasetNode from '../../../Model/DataModel/Datasets/URLDatasetNode';
+import GraphNode from '../../../Model/DataModel/GraphNode';
 import Block from './Block';
 
-import URLDatasetNode from '../../../TemplateConfiguration/VegaLiteData/Datasets/URLDatasetNode';
 import './DatasetBlock.css';
 
 interface Props {

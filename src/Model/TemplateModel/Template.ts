@@ -2,7 +2,7 @@ import { Config } from 'vega-lite';
 import { Data } from 'vega-lite/build/src/data';
 import { Transform } from 'vega-lite/build/src/transform';
 
-import GraphNode from '../VegaLiteData/GraphNode';
+import GraphNode from '../DataModel/GraphNode';
 import { LayoutType } from './LayoutType';
 import { MarkEncoding } from './MarkEncoding';
 

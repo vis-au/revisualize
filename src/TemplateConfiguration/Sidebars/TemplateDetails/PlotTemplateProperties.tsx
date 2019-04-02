@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import { Mark } from 'vega-lite/build/src/mark';
-import { MarkEncodingGroup, markEncodingGroups } from '../../TemplateModel/MarkEncoding';
-import { MARK_TYPES } from '../../TemplateModel/MarkType';
-import PlotTemplate from '../../TemplateModel/PlotTemplate';
+import { MarkEncodingGroup, markEncodingGroups } from '../../../Model/TemplateModel/MarkEncoding';
+import { MARK_TYPES } from '../../../Model/TemplateModel/MarkType';
+import PlotTemplate from '../../../Model/TemplateModel/PlotTemplate';
 import EncodingGroupBlock from './EncodingGroup';
 
 import './PlotTemplateProperties.css';

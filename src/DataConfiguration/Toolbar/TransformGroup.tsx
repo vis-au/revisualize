@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Transform } from 'vega';
 
-import { TransformGroup } from '../../TemplateConfiguration/VegaLiteData/Transforms/TransformTypes';
+import { TransformGroup } from '../../Model/DataModel/Transforms/TransformTypes';
 
 import './TransformGroup.css';
 

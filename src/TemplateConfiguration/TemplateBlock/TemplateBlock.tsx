@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import CompositionTemplate from '../TemplateModel/CompositionTemplate';
-import PlotTemplate from '../TemplateModel/PlotTemplate';
-import Template from '../TemplateModel/Template';
+import CompositionTemplate from '../../Model/TemplateModel/CompositionTemplate';
+import PlotTemplate from '../../Model/TemplateModel/PlotTemplate';
+import Template from '../../Model/TemplateModel/Template';
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';
 

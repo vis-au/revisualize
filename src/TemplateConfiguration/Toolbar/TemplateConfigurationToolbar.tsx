@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BaseSpec } from 'vega-lite/build/src/spec';
 
+import SpecParser from '../../Model/TemplateModel/SpecParser';
+import Template from '../../Model/TemplateModel/Template';
 import Toolbar from '../../Widgets/Toolbar';
-import SpecParser from '../TemplateModel/SpecParser';
-import Template from '../TemplateModel/Template';
 import { barchartSpec as barchartPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, facettedBarchartsPreset, londonTube as londonTubePrest, mosaicPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
 

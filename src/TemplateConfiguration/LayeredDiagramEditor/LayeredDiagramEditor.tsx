@@ -2,12 +2,12 @@ import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
 
-import Template from '../../TemplateConfiguration/TemplateModel/Template';
+import Template from '../../Model/TemplateModel/Template';
 import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import AddTemplateButton from './AddTemplateButton';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
-
 import FullscreenTemplatePreview from './FullscreenTemplatePreview';
+
 import './LayeredDiagramEditor.css';
 
 interface Props {

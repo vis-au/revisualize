@@ -1,13 +1,13 @@
 import * as React from 'react';
 
+import DataImporter from '../Model/DataModel/DataImporter';
+import Template from '../Model/TemplateModel/Template';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
-import Template from './TemplateModel/Template';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
-import DataImporter from './VegaLiteData/DataImporter';
 
 interface Props {
   className: string;

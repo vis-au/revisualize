@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Template from '../TemplateModel/Template';
+import Template from '../../Model/TemplateModel/Template';
 
 import './VisualElementBlock.css';
 

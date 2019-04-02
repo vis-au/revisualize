@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import DatasetNode from '../Model/DataModel/Datasets/DatasetNode';
+import GraphNode from '../Model/DataModel/GraphNode';
 import { plumbingProvider } from '../PlumbingProvider';
-import DatasetNode from '../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
-import GraphNode from '../TemplateConfiguration/VegaLiteData/GraphNode';
 import BuildingBlock from './BuildingBlock';
 
 import './DatasetBuildingBlock.css';

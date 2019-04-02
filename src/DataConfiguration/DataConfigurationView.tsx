@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DatasetNode from '../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
-import GraphNode from '../TemplateConfiguration/VegaLiteData/GraphNode';
+import DatasetNode from '../Model/DataModel/Datasets/DatasetNode';
+import GraphNode from '../Model/DataModel/GraphNode';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import DataFlowDiagram from './Diagram/DataFlowDiagram';
 import DataFlowSidebar from './Sidebar/DataFlowSidebar';

@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import GraphNode from '../../../TemplateConfiguration/VegaLiteData/GraphNode';
-import TransformNode from '../../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
+
+import GraphNode from '../../../Model/DataModel/GraphNode';
+import TransformNode from '../../../Model/DataModel/Transforms/TranformNode';
 import Block from './Block';
 
 import './TransformBlock.css';

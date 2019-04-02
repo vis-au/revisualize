@@ -5,12 +5,12 @@ import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
 import { isConcatSpec } from 'vega-lite/build/src/spec/concat';
 import { Transform } from 'vega-lite/build/src/transform';
 
-import DatasetNode from '../VegaLiteData/Datasets/DatasetNode';
-import InlineDatasetNode from '../VegaLiteData/Datasets/InlineDatasetNode';
-import NamedDataSourceNode from '../VegaLiteData/Datasets/NamedDataSourceNode';
-import URLDatasetNode from '../VegaLiteData/Datasets/URLDatasetNode';
-import GraphNode from '../VegaLiteData/GraphNode';
-import TransformNode from '../VegaLiteData/Transforms/TranformNode';
+import DatasetNode from '../DataModel/Datasets/DatasetNode';
+import InlineDatasetNode from '../DataModel/Datasets/InlineDatasetNode';
+import NamedDataSourceNode from '../DataModel/Datasets/NamedDataSourceNode';
+import URLDatasetNode from '../DataModel/Datasets/URLDatasetNode';
+import GraphNode from '../DataModel/GraphNode';
+import TransformNode from '../DataModel/Transforms/TranformNode';
 import CompositionTemplate from './CompositionTemplate';
 import ConcatTemplate from './ConcatTemplate';
 import FacetTemplate from './FacetTemplate';

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
-import GraphNode from '../../TemplateConfiguration/VegaLiteData/GraphNode';
-import TransformNode from '../../TemplateConfiguration/VegaLiteData/Transforms/TranformNode';
+import DatasetNode from '../../Model/DataModel/Datasets/DatasetNode';
+import GraphNode from '../../Model/DataModel/GraphNode';
+import TransformNode from '../../Model/DataModel/Transforms/TranformNode';
 import Sidebar from '../../Widgets/Sidebar';
 import DatasetPreview from './DatasetPreview';
 

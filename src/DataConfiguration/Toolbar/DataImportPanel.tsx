@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DataImporter from '../../TemplateConfiguration/VegaLiteData/DataImporter';
-import DatasetNode from '../../TemplateConfiguration/VegaLiteData/Datasets/DatasetNode';
+import DataImporter from '../../Model/DataModel/DataImporter';
+import DatasetNode from '../../Model/DataModel/Datasets/DatasetNode';
 import { DatasetPreset, PRESET_DATASETS } from './DatasetPreset';
 
 import './DataImportPanel.css';
