@@ -44,10 +44,14 @@ export default class SchemaParser {
   private setSingleViewProperties(schema: any, template: Template) {
     template.description = schema.description;
     template.bounds = schema.bounds;
-    template.spacing = schema.spacing;
     template.width = schema.width;
     template.height = schema.height;
     template.config = schema.config;
+
+    if (template instanceof CompositionTemplate) {
+      template.spacing = schema.spacing;
+      template.columns = schema.columns;
+    }
   }
 
   private getNonRepeatSubtrees(template: Template) {

@@ -192,6 +192,9 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
   if (schema.spacing !== undefined) {
     abstraction.spacing = JSON.parse(JSON.stringify(schema.spacing));
   }
+  if (schema.columns !== undefined) {
+    abstraction.columns = JSON.parse(JSON.stringify(schema.columns));
+  }
   if (schema.width !== undefined) {
     abstraction.width = JSON.parse(JSON.stringify(schema.width));
   }

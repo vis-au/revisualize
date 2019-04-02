@@ -9,6 +9,8 @@ export default abstract class CompositionTemplate extends Template {
   public resolve: Resolve;
   public center: boolean | RowCol<boolean>;
   public align: LayoutAlign | RowCol<LayoutAlign>;
+  public columns: number;
+  public spacing: number;
 
   constructor(composition: Composition, visualElements: Template[], parent: Template = null) {
     super(visualElements, composition, parent);

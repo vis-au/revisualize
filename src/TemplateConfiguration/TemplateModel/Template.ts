@@ -1,6 +1,5 @@
 import { Config } from 'vega-lite';
 import { Data } from 'vega-lite/build/src/data';
-import { BarBinSpacingMixins } from 'vega-lite/build/src/mark';
 import { Transform } from 'vega-lite/build/src/transform';
 
 import GraphNode from '../VegaLiteData/GraphNode';
@@ -15,7 +14,6 @@ export default abstract class Template {
 
   public description: string;
   public bounds: any;
-  public spacing: BarBinSpacingMixins;
   public width: number;
   public height: number;
   public config: Config;

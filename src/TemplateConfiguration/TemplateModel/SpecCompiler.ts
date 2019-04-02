@@ -8,7 +8,7 @@ import LayerTemplate from './LayerTemplate';
 import { Composition } from './LayoutType';
 import PlotTemplate from './PlotTemplate';
 import RepeatTemplate from './RepeatTemplate';
-import { getAbstraction } from './SpecUtils';
+import { getAbstraction, isCompositionSchema } from './SpecUtils';
 import Template from './Template';
 
 
@@ -27,15 +27,23 @@ export default class SpecCompiler {
     };
   }
 
+  private setCompositionProperties(schema: any, template: CompositionTemplate) {
+    if (template.columns !== undefined) {
+      schema.columns = template.columns;
+    }
+    if (template.spacing !== undefined) {
+      schema.spacing = template.spacing;
+    }
+
+    return schema;
+  }
+
   private setToplevelProperties(schema: any, template: Template, includeData: boolean = true) {
     if (includeData && template.data !== null) {
       schema.data = template.data;
     }
     if (template.bounds !== undefined) {
       schema.bounds = template.bounds;
-    }
-    if (template.spacing !== undefined) {
-      schema.spacing = template.spacing;
     }
     if (template.height !== undefined) {
       schema.height = template.height;
@@ -48,6 +56,10 @@ export default class SpecCompiler {
     }
 
     schema.transform = template.transform;
+
+    if (template instanceof CompositionTemplate) {
+      schema = this.setCompositionProperties(schema, template);
+    }
 
     return schema;
   }
