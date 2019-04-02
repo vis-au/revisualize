@@ -65,7 +65,7 @@ export default class SpecCompiler {
   private abstractCompositions(schema: any, compositionProperty: string): TopLevelSpec {
     const abstraction: any = getAbstraction(schema, compositionProperty);
 
-    if (compositionProperty === 'spec') {
+    if (compositionProperty === 'spec' || compositionProperty === 'facet') {
       schema[compositionProperty] = abstraction;
     } else {
       schema[compositionProperty] =  [ abstraction ];
@@ -74,11 +74,28 @@ export default class SpecCompiler {
     return schema;
   }
 
-  private applyRepeatLayout(template: Template, schema: any): TopLevelSpec {
+  private applyRepeatLayout(template: RepeatTemplate, schema: any): TopLevelSpec {
     schema = this.abstractCompositions(schema, 'spec');
 
     // parent must be repeat template to reach this branch
     schema.repeat = (template.parent as RepeatTemplate).repeat;
+
+    return schema;
+  }
+
+  private applyFacetLayout(template: Template, schema: any): TopLevelSpec {
+    const parentTemplate = template.parent as FacetTemplate;
+
+    if (parentTemplate.isInlineFacetted) {
+      if (schema.encoding === undefined) {
+        schema.encoding = {};
+      }
+
+      schema.encoding.facet = parentTemplate.facet;
+    } else {
+      schema = this.abstractCompositions(schema, 'spec');
+      schema.facet = parentTemplate.facet;
+    }
 
     return schema;
   }
@@ -93,13 +110,13 @@ export default class SpecCompiler {
 
   private applyCompositionLayout(template: Template, schema: any, composition: Composition): TopLevelSpec {
     if (composition === 'repeat') {
-      this.applyRepeatLayout(template, schema);
+      this.applyRepeatLayout(template as RepeatTemplate, schema);
+    } else if (composition === 'facet') {
+      this.applyFacetLayout(template as FacetTemplate, schema);
     } else if (composition === 'concatenate') {
       this.applyConcatLayout(schema);
     } else if (composition === 'overlay') {
       this.applyOverlayLayout(schema);
-    } else if (composition === 'facet') {
-      // TODO
     }
 
     return schema;
@@ -143,6 +160,18 @@ export default class SpecCompiler {
     if (schema !== null) {
       schema = this.applyCompositionLayout(template, schema, layout as Composition);
     }
+
+    return schema;
+  }
+
+  private getFacetSpec(parentTemplate: FacetTemplate): TopLevelSpec {
+    const encodingTemplate = parentTemplate.visualElements[0];
+    let schema: any = null;
+
+    // use the encodings from the child template, then apply facetting properties
+    schema = this.getVegaSpecification(encodingTemplate, false);
+
+    schema = this.applyCompositionLayout(encodingTemplate, schema, 'facet');
 
     return schema;
   }
@@ -223,8 +252,7 @@ export default class SpecCompiler {
     } else if (template instanceof RepeatTemplate) {
       schema = this.getRepeatSpec(template);
     } else if (template instanceof FacetTemplate) {
-      // TODO
-      schema = this.getBasicSchema(template);
+      schema = this.getFacetSpec(template);
     } else {
       schema = this.getMultiViewSpec(template, useOverwrittenEncodings);
     }

@@ -1,9 +1,10 @@
 import { isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec';
 
-import { Data, isInlineData, isNamedData, isUrlData } from 'vega-lite/build/src/data';
+import { isInlineData, isNamedData, isUrlData } from 'vega-lite/build/src/data';
 import { isFieldDef, isRepeatRef } from 'vega-lite/build/src/fielddef';
 import { isConcatSpec } from 'vega-lite/build/src/spec/concat';
 import { Transform } from 'vega-lite/build/src/transform';
+
 import DatasetNode from '../VegaLiteData/Datasets/DatasetNode';
 import InlineDatasetNode from '../VegaLiteData/Datasets/InlineDatasetNode';
 import NamedDataSourceNode from '../VegaLiteData/Datasets/NamedDataSourceNode';
@@ -99,6 +100,26 @@ export default class SchemaParser {
     return template;
   }
 
+  private getFacetTemplate(schema: any) {
+    const template = new FacetTemplate([]);
+    const visualElements: Template[] = [];
+
+    if (schema.facet !== undefined) {
+      template.facet = JSON.parse(JSON.stringify(schema.facet));
+      delete schema.facet;
+      visualElements.push(this.parse(schema.spec));
+    } else if (schema.encoding.facet !== undefined) {
+      template.isInlineFacetted = true;
+      template.facet = JSON.parse(JSON.stringify(schema.encoding.facet));
+      delete schema.encoding.facet;
+      visualElements.push(this.parse(schema));
+    }
+
+    template.visualElements = visualElements;
+
+    return template;
+  }
+
   private getLayerTemplate(schema: any) {
     const template = new LayerTemplate([]);
 
@@ -112,15 +133,6 @@ export default class SchemaParser {
     schema.layer.forEach((layer: any) => {
       template.visualElements.push(this.parse(layer));
     });
-
-    return template;
-  }
-
-  private getFacetTemplate(schema: any) {
-    const template = new FacetTemplate([]);
-    const plot = this.getPlotTemplate(schema);
-
-    template.visualElements = [plot];
 
     return template;
   }

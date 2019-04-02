@@ -1,11 +1,11 @@
-import { ExtendedLayerSpec, GenericHConcatSpec, GenericVConcatSpec, isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, NormalizedConcatSpec, NormalizedLayerSpec, NormalizedRepeatSpec, NormalizedUnitSpec } from 'vega-lite/build/src/spec';
+import { ExtendedLayerSpec, isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, NormalizedConcatSpec, NormalizedFacetSpec, NormalizedLayerSpec, NormalizedRepeatSpec, NormalizedUnitSpec } from 'vega-lite/build/src/spec';
 import { isConcatSpec, isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec/concat';
 import { Composition, Plot } from './LayoutType';
 import { MarkEncoding, markEncodings } from './MarkEncoding';
 
 
 export function isAtomicSchema(schema: any): boolean {
-  return isUnitSpec(schema);
+  return isUnitSpec(schema) && !isFacetSchema(schema);
 };
 
 export function isOverlaySchema(schema: any): boolean {
@@ -20,8 +20,11 @@ export function isConcatenateSchema(schema: any): boolean {
   return isAnyConcatSpec(schema) || isConcatSpec(schema);
 };
 
+export function isInlineFacetSchema(schema: any): boolean {
+  return (schema.encoding !== undefined && schema.encoding.facet !== undefined);
+}
 export function isFacetSchema(schema: any): boolean {
-  return isFacetSpec(schema);
+  return isFacetSpec(schema) || isInlineFacetSchema(schema);
 };
 
 export function isCompositionSchema(schema: any): boolean {
@@ -47,10 +50,6 @@ export function getCompositionType(schema: any): Composition {
   }
 
   return null;
-};
-
-export function getPlotType(schema: any): Plot {
-  return 'histogram';
 };
 
 export function getLayerAbstraction(schema: ExtendedLayerSpec) {
@@ -86,6 +85,21 @@ export function getRepeatAbstraction(schema: NormalizedRepeatSpec) {
 
   delete schema.spec;
   delete schema.repeat;
+
+  return abstraction;
+};
+
+export function getFacetAbstraction(schema: NormalizedFacetSpec) {
+  const currentSpec = JSON.parse(JSON.stringify(schema.spec));
+  const currentFacet = JSON.parse(JSON.stringify(schema.facet));
+
+  const abstraction = {
+    spec: currentSpec,
+    facet: currentFacet
+  };
+
+  delete schema.spec;
+  delete schema.facet;
 
   return abstraction;
 };
@@ -126,7 +140,7 @@ export function getMarkPropertiesAsMap(mark: any): Map<MarkEncoding, any> {
   return properties;
 };
 
-export function getAtomicAbstraction(schema: any, compositionProperty: string) {
+export function getAtomicAbstraction(schema: any) {
   const abstraction: any = {
     mark: JSON.parse(JSON.stringify(schema.mark)),
   };
@@ -149,7 +163,7 @@ export function getAtomicAbstraction(schema: any, compositionProperty: string) {
   delete schema.encoding;
   delete schema.selection;
 
-  if (compositionProperty === 'spec' && abstraction.encoding !== undefined) {
+  if (isRepeatSchema(schema) && abstraction.encoding !== undefined) {
     if (abstraction.encoding.x !== undefined) {
       abstraction.encoding.x = {
           field: { repeat: 'column' },
@@ -161,6 +175,10 @@ export function getAtomicAbstraction(schema: any, compositionProperty: string) {
           field: { repeat: 'row' },
           type: abstraction.encoding.y.type
       };
+    }
+  } else if (isFacetSchema(schema)) {
+    if (abstraction.encoding.facet !== undefined) {
+      delete abstraction.encoding.facet;
     }
   }
 
@@ -202,13 +220,19 @@ export function getAbstraction(schema: any, compositionProperty?: string): any {
   if (isAtomicSchema(schema)) {
     // atomic can either be content of a plot or repeat, indicated by the compositionpropety being
     // set to 'spec'
-    abstraction = getAtomicAbstraction(schema, compositionProperty);
+    abstraction = getAtomicAbstraction(schema);
   } else if (isOverlaySchema(schema)) {
     abstraction = getLayerAbstraction(schema);
   } else if (isRepeatSchema(schema)) {
     abstraction = getRepeatAbstraction(schema);
   } else if (isConcatenateSchema(schema)) {
     abstraction = getConcatAbstraction(schema);
+  } else if (isFacetSchema(schema)) {
+    if (isInlineFacetSchema(schema)) {
+      abstraction = getAtomicAbstraction(schema);
+    } else {
+      abstraction = getFacetAbstraction(schema);
+    }
   }
 
   abstraction = setSingleViewProperties(schema, abstraction);
@@ -227,8 +251,13 @@ export function setSchemaSize(schema: any, width: number, height: number) {
     schema.spec.width = width;
     schema.spec.height = height;
   } else if (isFacetSchema(schema)) {
-    schema.spec.width = width;
-    schema.spec.height = height;
+    if (isInlineFacetSchema(schema)) {
+      schema.width = width;
+      schema.height = height;
+    } else {
+      schema.spec.width = width;
+      schema.spec.height = height;
+    }
   }
 
   return schema;
