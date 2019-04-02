@@ -1,5 +1,6 @@
 import { csvParse } from 'd3';
 
+import { string } from 'prop-types';
 import { DatasetPreset } from '../../DataConfiguration/Toolbar/DatasetPreset';
 import DatasetNode from './Datasets/DatasetNode';
 import URLDatasetNode from './Datasets/URLDatasetNode';
@@ -8,9 +9,11 @@ import TransformNode from './Transforms/TranformNode';
 
 export default class DataImporter {
   public onNewDataset: (d?: DatasetNode) => void;
+  private datasets: Map<string, DatasetNode>; // url -> dataset
 
   constructor() {
     this.onNewDataset = null;
+    this.datasets = new Map();
   }
 
   private getFileNameFromURL(url: string) {
@@ -67,6 +70,8 @@ export default class DataImporter {
       node.name = this.getFileNameFromURL(preset.url);
       node.url = preset.url;
 
+      this.datasets.set(node.url, node);
+
       if (this.onNewDataset !== null) {
         this.onNewDataset(node);
       }
@@ -88,6 +93,8 @@ export default class DataImporter {
         node.url = preset.url;
         node.format = preset.format;
 
+        this.datasets.set(node.url, node);
+
         if (this.onNewDataset !== null) {
           this.onNewDataset(node);
         }
@@ -95,6 +102,10 @@ export default class DataImporter {
   }
 
   public importPreset(preset: DatasetPreset, node?: URLDatasetNode) {
+    if (this.datasets.get(preset.url) !== undefined) {
+      return;
+    }
+
     if (preset.url.includes('.json')) {
       this.fetchJSON(preset, node);
     } else if (preset.url.includes('.csv')) {
