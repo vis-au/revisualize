@@ -1,0 +1,12 @@
+.vegaRenderer {
+  display: flex;
+  justify-content: center;
+}
+.vegaRenderer a {
+  text-decoration: none;
+  color: #888;
+  margin-right: 0.5rem;
+}
+.vegaRenderer a:hover {
+  color: steelblue;
+}
