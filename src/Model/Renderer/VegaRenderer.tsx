@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Spec } from 'vega';
 import vegaEmbed, { Actions, Result } from 'vega-embed';
 
-import { isRepeatSchema } from '../../TemplateConfiguration/TemplateModel/SpecUtils';
+import { isFacetSchema, isInlineFacetSchema, isRepeatSchema } from '../../TemplateConfiguration/TemplateModel/SpecUtils';
 import './VegaRenderer.css';
 
 interface Props {
@@ -29,8 +29,7 @@ export default class VegaRenderer extends React.Component<Props, {}> {
     );
   }
 
-  private embed() {
-
+  private getSize() {
     let width = this.props.width || 600;
     let height = this.props.height || 400;
 
@@ -42,7 +41,23 @@ export default class VegaRenderer extends React.Component<Props, {}> {
       if ((this.props.schema as any).repeat.row !== undefined) {
         height = height / (this.props.schema as any).repeat.row.length;
       }
+    } else if (isInlineFacetSchema(this.props.schema)) {
+      // TODO: is it possible to calculate, how many facetted plots there will be?
+      if ((this.props.schema as any).columns !== undefined) {
+        width = width / (this.props.schema as any).columns;
+      }
+    } else if (isFacetSchema(this.props.schema)) {
+      // TODO: is it possible to calculate, how many facetted plots there will be?
     }
+
+    return {
+      width,
+      height
+    }
+  }
+
+  private embed() {
+    const size = this.getSize();
 
     const exportActions: Actions = {
       export: {
@@ -53,10 +68,11 @@ export default class VegaRenderer extends React.Component<Props, {}> {
       compiled: false,
       editor: false,
     };
+
     vegaEmbed(`#vegaContainer${ this.props.id }` , this.props.schema, {
       actions: exportActions,
-      width,
-      height
+      width: size.width,
+      height: size.height
     }).then((value: Result) => {
       if (this.props.onRenderComplete !== undefined) {
         this.props.onRenderComplete();
