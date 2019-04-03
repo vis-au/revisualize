@@ -1,7 +1,9 @@
 import { ExtendedLayerSpec, isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, NormalizedConcatSpec, NormalizedFacetSpec, NormalizedLayerSpec, NormalizedRepeatSpec, NormalizedUnitSpec } from 'vega-lite/build/src/spec';
 import { isConcatSpec, isHConcatSpec, isVConcatSpec } from 'vega-lite/build/src/spec/concat';
+import { Datasets } from 'vega-lite/build/src/spec/toplevel';
 import { Composition, Plot } from './LayoutType';
 import { MarkEncoding, markEncodings } from './MarkEncoding';
+import Template from './Template';
 
 
 export function isAtomicSchema(schema: any): boolean {
@@ -219,6 +221,42 @@ export function setSingleViewProperties(schema: any, abstraction: any) {
 
   return abstraction;
 };
+
+export function getJoinedDatasetsOfChildNodes(template: Template): Datasets {
+  const joinedDatasets: Datasets = {};
+
+  const visualElements = template.getFlatHierarchy();
+  const childDatasets = visualElements
+    .map(d => d.datasets)
+    .filter(d => d !== undefined && d !== null);
+
+  childDatasets.forEach(datasets => {
+    const datasetKeys = Object.keys(datasets);
+    datasetKeys.forEach(datasetKey => {
+      joinedDatasets[datasetKey] = datasets[datasetKey];
+    });
+  });
+
+  return joinedDatasets;
+};
+
+export function getAllDatasetsInHierarchy(template: Template) {
+  const allDatasetsInHierarchy: Datasets = getJoinedDatasetsOfChildNodes(template);
+  let rootTemplate: Template = template;
+
+  // only get datasets that are direct ancestors of the template, as siblings are not relevant
+  while (rootTemplate.parent !== null) {
+    rootTemplate = rootTemplate.parent;
+
+    if (rootTemplate.datasets) {
+      Object.keys(rootTemplate.datasets).forEach(key => {
+        allDatasetsInHierarchy[key] = rootTemplate.datasets[key];
+      });
+    }
+  }
+
+  return allDatasetsInHierarchy;
+}
 
 export function getAbstraction(schema: any): any {
   let abstraction: any = null;

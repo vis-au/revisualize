@@ -18,7 +18,7 @@ import LayerTemplate from './LayerTemplate';
 import { MarkEncoding } from './MarkEncoding';
 import PlotTemplate from './PlotTemplate';
 import RepeatTemplate from './RepeatTemplate';
-import { getMarkPropertiesAsMap, isCompositionSchema, isConcatenateSchema, isFacetSchema, isOverlaySchema, isPlotSchema, isRepeatSchema } from './SpecUtils';
+import { getJoinedDatasetsOfChildNodes, getMarkPropertiesAsMap, isCompositionSchema, isConcatenateSchema, isFacetSchema, isOverlaySchema, isPlotSchema, isRepeatSchema } from './SpecUtils';
 import Template from './Template';
 
 export default class SchemaParser {
@@ -181,8 +181,17 @@ export default class SchemaParser {
       template = this.getConcatTemplate(schema);
     }
 
+    const encodings = this.getEncodingsMapFromPlotSchema(schema);
+    template.encodings = encodings;
+
     template.resolve = schema.resolve;
     template.visualElements.forEach(t => t.parent = template);
+
+    template.encodings.forEach((value, key) => {
+      template.visualElements.forEach(t => {
+        t.overwrittenEncodings.set(key, value);
+      });
+    })
 
     return template;
   }
@@ -270,6 +279,8 @@ export default class SchemaParser {
 
     const dataTransformation = this.parseDataTransformation(schema);
     template.dataTransformationNode = dataTransformation;
+
+    const datasets = getJoinedDatasetsOfChildNodes(template);
 
     if (template instanceof PlotTemplate) {
       template.selection = schema.selection;

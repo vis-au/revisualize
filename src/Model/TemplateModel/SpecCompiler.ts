@@ -10,7 +10,7 @@ import LayerTemplate from './LayerTemplate';
 import { Composition } from './LayoutType';
 import PlotTemplate from './PlotTemplate';
 import RepeatTemplate from './RepeatTemplate';
-import { getAbstraction } from './SpecUtils';
+import { getAbstraction, getAllDatasetsInHierarchy, getJoinedDatasetsOfChildNodes } from './SpecUtils';
 import Template from './Template';
 
 
@@ -41,7 +41,7 @@ export default class SpecCompiler {
   }
 
   private setToplevelProperties(schema: any, template: Template, includeData: boolean = true) {
-    if (includeData && template.data !== null) {
+    if (includeData && !!template.data) {
       schema.data = template.data;
     }
     if (includeData && !!template.datasets) {
@@ -278,12 +278,9 @@ export default class SpecCompiler {
 
     template.encodings.forEach((value, key) => {
       schema.encoding[key] = value;
-
-      const overwrittenValue = template.overwrittenEncodings.get(key);
-
-      if (useOverwrittenEncodings && overwrittenValue !== undefined) {
-        schema.encoding[key] = overwrittenValue;
-      }
+    });
+    template.overwrittenEncodings.forEach((value, key) => {
+      schema.encoding[key] = value;
     });
 
     return schema;
@@ -306,14 +303,15 @@ export default class SpecCompiler {
 
     if (inferData) {
       data = this.getDataInHierarchy(template);
-      datasets = this.getDatasetsInAncestry(template);
+      datasets = getAllDatasetsInHierarchy(template);
     } else {
       data = template.data;
       datasets = template.datasets;
     }
 
-    schema.data = data;
-
+    if (data !== undefined && data !== null) {
+      schema.data = data;
+    }
     if (datasets !== undefined && datasets !== null) {
       schema.datasets = datasets;
     }
