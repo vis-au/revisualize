@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Toolbar from '../../Widgets/Toolbar';
 
-import './TemplateConfigurationToolbar.css';
+  import './TemplateConfigurationToolbar.css';
 
 interface Props {
   plumbingVisible: boolean;
@@ -48,6 +48,9 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
   public render() {
     return (
       <Toolbar id="templateToolbar">
+        <div className="column logo">
+          <h2>ReVis</h2>
+        </div>
         <div className="column" id="templateImport">
           <h2>Import</h2>
           <button className="toggleExampleOverlay" onClick={ this.onExampleToggleClicked }>
