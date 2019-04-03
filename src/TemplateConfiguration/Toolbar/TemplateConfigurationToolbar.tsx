@@ -52,18 +52,12 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
           <h2>ReVis</h2>
         </div>
         <div className="column" id="templateImport">
-          <h2>Import</h2>
           <button className="toggleExampleOverlay" onClick={ this.onExampleToggleClicked }>
             Pick from Examples
           </button>
-        </div>
-        <div className="column">
-          <h2>Vega-lite JSON</h2>
           <button className="toggleExampleOverlay" onClick={ this.onVegaLiteInputToggleClicked }>
             Enter Custom JSON
           </button>
-        </div>
-        <div className="column">
           { this.renderPlumbingToggle() }
         </div>
       </Toolbar>

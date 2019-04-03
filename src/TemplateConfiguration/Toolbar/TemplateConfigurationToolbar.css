@@ -23,6 +23,22 @@
   font-family: 'Roboto Condensed';
   font-size: 15px;
 }
+#templateToolbar .column button {
+  background: rgb(0, 128, 128);
+  border: 1px solid teal;
+  color: #fff;
+  padding: 0.25rem 0.75rem 0.3rem;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+  font-family: 'Roboto Condensed';
+  font-size: 15px;
+  box-shadow: 0 2px 4px #ccc;
+  cursor: pointer;
+  transition: background 0.25s ease-in-out;
+}
+#templateToolbar .column button:hover {
+  background: rgb(0, 175, 175);
+}
 #templateToolbar .column.logo h2 {
   font-size: 20px;
 }
