@@ -40,25 +40,26 @@
   font-size: 15px;
 }
 
-#templateConfigurationSidebar .previewContainer {
-  border: 1px solid #ccc;
-  margin: 2rem 0;
-  padding: 1rem;
-  overflow: auto;
-}
-
 #templateConfigurationSidebar button.JSONToggle {
   color: teal;
   background: transparent;
   border: none;
   cursor: pointer;
+  margin-bottom: 2rem;
 }
 #templateConfigurationSidebar button.JSONToggle:hover {
   text-decoration: underline
 }
+
+#templateConfigurationSidebar .previewContainer {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  overflow: auto;
+}
+
 textarea#templateConfigurationSidebarVegaPreview {
   width: 95%;
-  min-height: 350px;
+  min-height: 450px;
   background: url(http://i.imgur.com/2cOaJ.png);
   background-attachment: local;
   background-repeat: no-repeat;
