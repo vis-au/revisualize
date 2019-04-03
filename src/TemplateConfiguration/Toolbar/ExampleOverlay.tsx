@@ -84,8 +84,8 @@ export default class ExampleOverlay extends React.Component<Props, State> {
     const isHidden = this.props.hidden ? 'hidden' : '';
 
     return (
-      <div className={ `exampleOverlay ${isHidden}` }>
-        <div className="examplesContainer">
+      <div className={ `exampleOverlay ${isHidden}` } onClick={ this.props.hide }>
+        <div className="examplesContainer" onClick={ (e: any) => e.stopPropagation() }>
           <h2 className="vegaLiteExamples">
             <span>Example Vega-Lite Specs</span>
             <span onClick={ this.props.hide } className="delete"></span>

@@ -77,8 +77,8 @@ export default class VegaInputOverlay extends React.Component<Props, State> {
     const isHidden = this.props.hidden ? 'hidden' : '';
 
     return (
-      <div className={ `overlayWrapper ${isHidden}` }>
-        <div className="inputWrapper">
+      <div className={ `overlayWrapper ${isHidden}` } onClick={ this.props.hide }>
+        <div className="inputWrapper" onClick={ (e: any) => e.stopPropagation() }>
           <div className="row">
             <h2>Enter Custom Vega-lite JSON</h2>
             <button onClick={ this.props.hide } className="delete"></button>

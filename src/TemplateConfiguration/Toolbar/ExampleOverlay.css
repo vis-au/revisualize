@@ -12,7 +12,7 @@
   justify-content: center;
   visibility: visible;
   opacity: 1.0;
-  transition: visibility 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
 }
 .exampleOverlay.hidden {
   opacity: 0;
