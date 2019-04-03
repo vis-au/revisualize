@@ -90,7 +90,7 @@ export default class ExampleOverlay extends React.Component<Props, State> {
             <span>Example Vega-Lite Specs</span>
             <span onClick={ this.props.hide } className="delete"></span>
             </h2>
-          <p className="message">These are some examples source from the <a target="_blank" rel="noopener noreferrer" href="https://vega.github.io/vega-lite/examples/">Vega Example page<i className="material-icons icon">open_in_new</i></a>, ready for you to use.</p>
+          <p className="message">These are some examples sourced from the <a target="_blank" rel="noopener noreferrer" href="https://vega.github.io/vega-lite/examples/">Vega Example page<i className="material-icons icon">open_in_new</i></a>, ready for you to use.</p>
           { this.renderExamples() }
         </div>
       </div>

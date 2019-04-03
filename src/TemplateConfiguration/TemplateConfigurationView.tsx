@@ -9,6 +9,7 @@ import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar
 
 import './TemplateConfigurationView.css';
 import ExampleOverlay from './Toolbar/ExampleOverlay';
+import VegaInputOverlay from './Toolbar/VegaInputOverlay';
 
 interface Props {
   className: string;
@@ -20,6 +21,7 @@ interface State {
   focusedTemplate: Template;
   plumbingVisible: boolean;
   exampleOverlayVisible: boolean;
+  vegaInputOverlayVisible: boolean;
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -34,6 +36,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.focusTemplate = this.focusTemplate.bind(this);
     this.togglePlumbingVisible = this.togglePlumbingVisible.bind(this);
     this.toggleExampleOverlayVisible = this.toggleExampleOverlayVisible.bind(this);
+    this.toggleVegaInputOverlayVisible = this.toggleVegaInputOverlayVisible.bind(this);
 
     this.dataImporter = new DataImporter();
     this.dataImporter.onNewDataset = this.props.onDatasetsChanged;
@@ -41,7 +44,8 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.state = {
       focusedTemplate: null,
       plumbingVisible: true,
-      exampleOverlayVisible: false
+      exampleOverlayVisible: false,
+      vegaInputOverlayVisible: false,
     };
   }
 
@@ -135,6 +139,18 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     }
   }
 
+  private toggleVegaInputOverlayVisible(visible?: boolean) {
+    if (visible !== undefined) {
+      this.setState({
+        vegaInputOverlayVisible: visible
+      });
+    } else {
+      this.setState({
+        vegaInputOverlayVisible: !this.state.vegaInputOverlayVisible
+      });
+    }
+  }
+
   public render() {
     return (
       <ViewContainer
@@ -147,8 +163,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           plumbingVisible={ this.state.plumbingVisible }
           togglePlumbingVisible={ this.togglePlumbingVisible }
           toggleExampleOverlayVisible={ this.toggleExampleOverlayVisible }
-          addTemplate={ this.addTemplate }
-          addTemplates={ this.addTemplates } />
+          toggleVegaLiteInput={ this.toggleVegaInputOverlayVisible } />
 
         <div id="templateConfigurationBody">
           <TemplatePlumbingWrapper
@@ -169,6 +184,11 @@ export default class TemplateConfigurationView extends React.Component<Props, St
           hidden={ !this.state.exampleOverlayVisible }
           addTemplates={this.addTemplates}
           hide={ () => this.toggleExampleOverlayVisible(false) }/>
+
+        <VegaInputOverlay
+          hidden={ !this.state.vegaInputOverlayVisible }
+          addTemplates={ this.addTemplates }
+          hide={ () => this.toggleVegaInputOverlayVisible(false) } />
 
       </ViewContainer>
     );

@@ -1,28 +1,33 @@
 import * as React from 'react';
-import { BaseSpec } from 'vega-lite/build/src/spec';
 
-import './VegaJSONInput.css';
+import SchemaParser from '../../Model/TemplateModel/SpecParser';
+import Template from '../../Model/TemplateModel/Template';
+
+import './VegaInputOverlay.css';
 
 interface Props {
-  loadSpec: (spec: BaseSpec) => void
+  hidden: boolean,
+  addTemplates: (templates: Template[]) => void,
+  hide: () => void
 }
 interface State {
-  hidden: boolean,
   currentInput: string;
   message: string;
   inputValid: boolean;
 }
 
-export default class VegaJSONInput extends React.Component<Props, State> {
+export default class VegaInputOverlay extends React.Component<Props, State> {
+  private schemaParser: SchemaParser;
+
   constructor(props: Props) {
     super(props);
 
     this.onInputChange = this.onInputChange.bind(this);
-    this.toggleHidden = this.toggleHidden.bind(this);
     this.loadInputIntoApp = this.loadInputIntoApp.bind(this);
 
+    this.schemaParser = new SchemaParser();
+
     this.state = {
-      hidden: true,
       currentInput: '',
       message: null,
       inputValid: null
@@ -34,12 +39,6 @@ export default class VegaJSONInput extends React.Component<Props, State> {
       currentInput: event.target.value,
       message: null,
       inputValid: null
-    });
-  }
-
-  private toggleHidden() {
-    this.setState({
-      hidden: !this.state.hidden
     });
   }
 
@@ -57,17 +56,13 @@ export default class VegaJSONInput extends React.Component<Props, State> {
       return;
     }
 
-    this.props.loadSpec(inputAsSpec)
+    const parsedTemplate = this.schemaParser.parse(inputAsSpec);
+    this.props.addTemplates(parsedTemplate.getFlatHierarchy());
+    this.props.hide();
+
     this.setState({
-      hidden: true,
       currentInput: ''
     });
-  }
-
-  private renderInlineToggleButton() {
-    return (
-      <button className="toggleInputVisible" onClick={ this.toggleHidden }>show</button>
-    );
   }
 
   private renderLoadingWidgets() {
@@ -79,14 +74,14 @@ export default class VegaJSONInput extends React.Component<Props, State> {
   }
 
   private renderTextArea() {
-    const isHidden = this.state.hidden ? 'hidden' : '';
+    const isHidden = this.props.hidden ? 'hidden' : '';
 
     return (
       <div className={ `overlayWrapper ${isHidden}` }>
         <div className="inputWrapper">
           <div className="row">
             <h2>Enter Custom Vega-lite JSON</h2>
-            <button onClick={ () => this.setState({ hidden: true })} className="delete"></button>
+            <button onClick={ this.props.hide } className="delete"></button>
           </div>
           <span className="notice">
             When copying example specs from <a target="_blank" rel="noopener noreferrer" href="https://vega.github.io/vega-lite/examples/">the Vega Example page<i className="material-icons icon">open_in_new</i></a>, make sure to point any data urls to "https://vega.github.io/editor/[PATH]", where [PATH] needs to be replaced with the original url.</span>
@@ -101,7 +96,6 @@ export default class VegaJSONInput extends React.Component<Props, State> {
   public render() {
     return (
       <div className="vegaJSONinput">
-        { this.renderInlineToggleButton() }
         { this.renderTextArea() }
       </div>
     );
