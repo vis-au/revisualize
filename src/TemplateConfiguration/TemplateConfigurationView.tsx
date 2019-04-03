@@ -78,6 +78,51 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.props.onTemplatesChanged();
   }
 
+  private storeDataInParentAndChildren(template: Template) {
+    if (template.dataTransformationNode === null || template.dataTransformationNode === undefined) {
+      return;
+    }
+
+    if (template.parent !== null) {
+      if (!!template.parent.dataTransformationNode) {
+        // template.parent.data = JSON.parse(JSON.stringify(template.data));
+        template.parent.dataTransformationNode = template.dataTransformationNode;
+      }
+    }
+
+    template.visualElements
+      .filter(t => t.dataTransformationNode === null || t.dataTransformationNode === undefined)
+      .forEach(t => {
+        // t.data = JSON.parse(JSON.stringify(template.data));
+        t.dataTransformationNode = template.dataTransformationNode;
+    });
+  }
+
+  private storeDatasetsInParentAndChildren(template: Template) {
+    if (template.datasets === null || template.datasets === undefined) {
+      return;
+    }
+
+    if (template.parent !== null) {
+      if (!!template.parent.datasets) {
+        Object.keys(template.datasets).forEach(datasetID => {
+          template.parent.datasets[datasetID] = template.datasets[datasetID];
+        });
+      }
+    }
+
+    template.visualElements
+      .forEach(t => {
+        if (t.datasets === null || t.datasets === undefined) {
+          t.datasets = {};
+        }
+
+        Object.keys(template.datasets).forEach(datasetID => {
+          t.datasets[datasetID] = template.datasets[datasetID];
+        });
+      });
+  }
+
   private deleteTemplate(template: Template) {
     const templates = this.props.templates;
     const indexInTemplates = templates.indexOf(template);
@@ -86,21 +131,8 @@ export default class TemplateConfigurationView extends React.Component<Props, St
       return;
     }
 
-    if (template.data !== null || template.data !== undefined) {
-      if (template.parent !== null) {
-        if (template.parent.data === null || template.parent.data === undefined) {
-          // template.parent.data = JSON.parse(JSON.stringify(template.data));
-          template.parent.dataTransformationNode = template.dataTransformationNode;
-        }
-      }
-
-      template.visualElements.forEach(t => {
-        if (t.data === null || t.data === undefined) {
-          // t.data = JSON.parse(JSON.stringify(template.data));
-          t.dataTransformationNode = template.dataTransformationNode;
-        }
-      });
-    }
+    this.storeDataInParentAndChildren(template);
+    this.storeDatasetsInParentAndChildren(template);
 
     // TODO: when the template is deleted from the connection map in the template editor, the
     // ondetachedconnection event is triggered, which sets the parent of the deleted template to
