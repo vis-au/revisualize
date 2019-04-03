@@ -8,6 +8,7 @@ import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateCon
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
 
 import './TemplateConfigurationView.css';
+import ExampleOverlay from './Toolbar/ExampleOverlay';
 
 interface Props {
   className: string;
@@ -18,6 +19,7 @@ interface Props {
 interface State {
   focusedTemplate: Template;
   plumbingVisible: boolean;
+  exampleOverlayVisible: boolean;
 }
 
 export default class TemplateConfigurationView extends React.Component<Props, State> {
@@ -31,13 +33,15 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     this.deleteTemplate = this.deleteTemplate.bind(this);
     this.focusTemplate = this.focusTemplate.bind(this);
     this.togglePlumbingVisible = this.togglePlumbingVisible.bind(this);
+    this.toggleExampleOverlayVisible = this.toggleExampleOverlayVisible.bind(this);
 
     this.dataImporter = new DataImporter();
     this.dataImporter.onNewDataset = this.props.onDatasetsChanged;
 
     this.state = {
       focusedTemplate: null,
-      plumbingVisible: true
+      plumbingVisible: true,
+      exampleOverlayVisible: false
     };
   }
 
@@ -119,6 +123,18 @@ export default class TemplateConfigurationView extends React.Component<Props, St
     }
   }
 
+  private toggleExampleOverlayVisible(visible?: boolean) {
+    if (visible !== undefined) {
+      this.setState({
+        exampleOverlayVisible: visible
+      });
+    } else {
+      this.setState({
+        exampleOverlayVisible: !this.state.exampleOverlayVisible
+      });
+    }
+  }
+
   public render() {
     return (
       <ViewContainer
@@ -130,6 +146,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         <TemplateConfigurationToolbar
           plumbingVisible={ this.state.plumbingVisible }
           togglePlumbingVisible={ this.togglePlumbingVisible }
+          toggleExampleOverlayVisible={ this.toggleExampleOverlayVisible }
           addTemplate={ this.addTemplate }
           addTemplates={ this.addTemplates } />
 
@@ -146,8 +163,12 @@ export default class TemplateConfigurationView extends React.Component<Props, St
 
         <TemplateConfigurationSidebar
           onTemplateChanged={ this.props.onTemplatesChanged }
-          focusedTemplate={ this.state.focusedTemplate }
-        />
+          focusedTemplate={ this.state.focusedTemplate } />
+
+        <ExampleOverlay
+          hidden={ !this.state.exampleOverlayVisible }
+          addTemplates={this.addTemplates}
+          hide={ () => this.toggleExampleOverlayVisible(false) }/>
 
       </ViewContainer>
     );

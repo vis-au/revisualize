@@ -1,0 +1,76 @@
+.exampleOverlay {
+  background: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  visibility: visible;
+  opacity: 1.0;
+  transition: visibility 0.25s ease-in-out, opacity 0.25s ease-in-out;
+}
+.exampleOverlay.hidden {
+  opacity: 0;
+}
+
+.exampleOverlay .examplesContainer {
+  width: 400px;
+  max-height: 300px;
+  background: #fff;
+  box-shadow: 0 4px 4px #ccc;
+  padding: 2rem 2rem 2.5rem;
+  border-radius: 2px;
+}
+
+.exampleOverlay .examplesContainer h2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0;
+}
+
+.exampleOverlay .examplesContainer p.message {
+  font-size: 14px;
+  margin: 2rem 0;
+}
+.exampleOverlay .examplesContainer p.message a {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  text-decoration: none;
+  color: teal;
+}
+.exampleOverlay .examplesContainer p.message a:hover {
+  text-decoration: underline;
+}
+.exampleOverlay .examplesContainer p.message a i.icon {
+  font-size: 14px;
+}
+
+.exampleOverlay .examplesContainer .examples {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.exampleOverlay .examplesContainer .examples .example {
+  margin: 0.25rem 0.75rem;
+  margin-left: 0;
+}
+.exampleOverlay .examplesContainer .examples .example button {
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  color: teal;
+  text-transform: capitalize;
+  padding: 0;
+}
+.exampleOverlay .examplesContainer .examples .example button:hover {
+  text-decoration: underline;
+}

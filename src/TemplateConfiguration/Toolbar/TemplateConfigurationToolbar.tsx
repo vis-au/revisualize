@@ -4,7 +4,6 @@ import { BaseSpec } from 'vega-lite/build/src/spec';
 import SpecParser from '../../Model/TemplateModel/SpecParser';
 import Template from '../../Model/TemplateModel/Template';
 import Toolbar from '../../Widgets/Toolbar';
-import { barchartSpec as barchartPreset, bubbleChartAltairPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, facettedBarchartsPreset, londonTube as londonTubePrest, mosaicPreset, moviesAltairPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
 import VegaJSONInput from './VegaJSONInput';
 
 import './TemplateConfigurationToolbar.css';
@@ -14,10 +13,10 @@ interface Props {
   addTemplate: (template: Template) => void;
   addTemplates: (templates: Template[]) => void;
   togglePlumbingVisible: (visible?: boolean) => void;
+  toggleExampleOverlayVisible: (visible?: boolean) => void;
 }
 
 export default class TemplateConfigurationToolbar extends React.Component<Props, {}> {
-  private specPresets: Map<string, any>;
   private specParser: SpecParser;
 
   constructor(props: Props) {
@@ -25,27 +24,7 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
 
     this.addTemplateFromSpec = this.addTemplateFromSpec.bind(this);
     this.onPlumbingToggleClicked = this.onPlumbingToggleClicked.bind(this);
-
-    this.specParser = new SpecParser();
-
-    this.specPresets = new Map();
-    this.specPresets.set('population', populationLayerChartPreset);
-    this.specPresets.set('barchart', barchartPreset);
-    this.specPresets.set('scattMatrx', scatterplotMatrixPreset);
-    this.specPresets.set('candlestick', candlestickPreset);
-    this.specPresets.set('concat', concatenatePreset);
-    this.specPresets.set('stackedBC', stackedBarchartPreset);
-    this.specPresets.set('parallelCoords', parallelCoordinatesPreset);
-    this.specPresets.set('repeatOverlay', repeatOverlayPreset);
-    this.specPresets.set('mosaic', mosaicPreset);
-    this.specPresets.set('streamGraph', streamGraphPreset);
-    this.specPresets.set('stackedArea', stackedAreaPreset);
-    this.specPresets.set('CO2', carbonDioxidePreset);
-    this.specPresets.set('londonTube', londonTubePrest);
-    this.specPresets.set('trellisBarley', trellisBarleyPreset);
-    this.specPresets.set('facettedBarchart', facettedBarchartsPreset);
-    this.specPresets.set('bubblechart', bubbleChartAltairPreset);
-    this.specPresets.set('movies', moviesAltairPreset);
+    this.onExampleToggleClicked = this.onExampleToggleClicked.bind(this);
   }
 
   private addTemplateFromSpec(spec: BaseSpec) {
@@ -57,20 +36,8 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
     this.props.togglePlumbingVisible(event.target.checked);
   }
 
-  private renderPresetSpec(label: string) {
-    return (
-      <button key={ label } onClick={ () => this.addTemplateFromSpec(this.specPresets.get(label)) }>{ label }</button>
-    );
-  }
-
-  private renderPresetSpecs(): JSX.Element[] {
-    const specs: JSX.Element[] = [];
-
-    this.specPresets.forEach((preset, key) => {
-      specs.push(this.renderPresetSpec(key));
-    });
-
-    return specs;
+  private onExampleToggleClicked(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    this.props.toggleExampleOverlayVisible();
   }
 
   private renderPlumbingToggle() {
@@ -91,7 +58,9 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
       <Toolbar id="templateToolbar">
         <div className="column" id="templateImport">
           <h2>Import</h2>
-          { this.renderPresetSpecs() }
+          <button className="toggleExampleOverlay" onClick={ this.onExampleToggleClicked }>
+            Show Examples
+          </button>
         </div>
         <div className="column">
           <h2>Vega-lite JSON</h2>
