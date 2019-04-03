@@ -58,7 +58,7 @@ export default class ExampleOverlay extends React.Component<Props, State> {
 
   private renderExample(exampleSchema: any, exampleKey: string) {
     return (
-      <div className="example">
+      <div key={ exampleKey } className="example">
         <button className="addExample" onClick={ () => this.onAddButtonClicked(exampleSchema) }>
           { exampleKey }
         </button>
