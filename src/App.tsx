@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { GraphNode, Template, URLDatasetNode } from 'toolkitmodel';
 
-import DataflowSidepanel from './TemplateConfiguration/Sidebars/DataflowPanel';
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import MainView from './ToolkitView/MainView';
 
-import { GraphNode, Template, URLDatasetNode } from 'toolkitmodel';
 import './App.css';
 
 interface State {
@@ -78,11 +77,6 @@ export default class App extends React.Component<{}, State> {
     return (
       <div className="App">
         <MainView>
-          <DataflowSidepanel
-            onToggle={ this.onDataflowPanelToggle.bind(this) }
-            hidden={ !this.state.dataflowVisible }>
-
-          </DataflowSidepanel>
           <TemplateConfigurationView
             className={ this.state.dataflowVisible ? 'faded' : '' }
             templates={ this.state.templates }
