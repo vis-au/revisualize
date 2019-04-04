@@ -1,10 +1,6 @@
 import * as React from 'react';
+import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, PlotTemplate, positionEncodings, textTooltipChannelEncodings } from 'toolkitmodel';
 
-import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings,
-  keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup,
-  markPropertiesChannelEncodings, orderChannelEncodings, positionEncodings,
-  textTooltipChannelEncodings } from '../../../Model/TemplateModel/MarkEncoding';
-import PlotTemplate from '../../../Model/TemplateModel/PlotTemplate';
 import EncodingBlock from './EncodingBlock';
 
 import './EncodingGroup.css';

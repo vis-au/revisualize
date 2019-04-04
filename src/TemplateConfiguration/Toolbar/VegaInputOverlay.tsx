@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-import SchemaParser from '../../Model/TemplateModel/SpecParser';
-import Template from '../../Model/TemplateModel/Template';
+import { SpecParser, Template } from 'toolkitmodel';
 
 import './VegaInputOverlay.css';
 
@@ -17,7 +15,7 @@ interface State {
 }
 
 export default class VegaInputOverlay extends React.Component<Props, State> {
-  private schemaParser: SchemaParser;
+  private schemaParser: SpecParser;
 
   constructor(props: Props) {
     super(props);
@@ -25,7 +23,7 @@ export default class VegaInputOverlay extends React.Component<Props, State> {
     this.onInputChange = this.onInputChange.bind(this);
     this.loadInputIntoApp = this.loadInputIntoApp.bind(this);
 
-    this.schemaParser = new SchemaParser();
+    this.schemaParser = new SpecParser();
 
     this.state = {
       currentInput: '',

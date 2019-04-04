@@ -1,14 +1,7 @@
 import * as React from 'react';
+import { Composition, COMPOSITION_TYPES, ConcatTemplate, FacetTemplate, LayerTemplate, MARK_TYPES, Plot, PlotTemplate, RepeatTemplate, Template } from 'toolkitmodel';
 import { Mark } from 'vega-lite/build/src/mark';
 
-import ConcatTemplate from '../../Model/TemplateModel/ConcatTemplate';
-import FacetTemplate from '../../Model/TemplateModel/FacetTemplate';
-import LayerTemplate from '../../Model/TemplateModel/LayerTemplate';
-import { Composition, COMPOSITION_TYPES, Plot } from '../../Model/TemplateModel/LayoutType';
-import { MARK_TYPES } from '../../Model/TemplateModel/MarkType';
-import PlotTemplate from '../../Model/TemplateModel/PlotTemplate';
-import RepeatTemplate from '../../Model/TemplateModel/RepeatTemplate';
-import Template from '../../Model/TemplateModel/Template';
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';
 
 import './AddTemplateButton.css';

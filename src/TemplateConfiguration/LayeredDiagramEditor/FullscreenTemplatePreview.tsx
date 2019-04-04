@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { SpecCompiler, Template } from 'toolkitmodel';
 
-import SpecCompiler from '../../Model/TemplateModel/SpecCompiler';
-import Template from '../../Model/TemplateModel/Template';
 import VegaRenderer from '../../Widgets/Renderer/VegaRenderer';
 
 import './FullscreenTemplatePreview.css';

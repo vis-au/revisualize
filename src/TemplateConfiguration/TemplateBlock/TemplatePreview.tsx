@@ -2,12 +2,11 @@ import * as $ from 'jquery';
 import 'jquery-ui/themes/base/resizable.css';
 import 'jquery-ui/ui/widgets/resizable';
 import * as React from 'react';
+import { SpecCompiler, Template } from 'toolkitmodel';
 
-import SpecCompiler from '../../Model/TemplateModel/SpecCompiler';
-import { setSchemaSize } from '../../Model/TemplateModel/SpecUtils';
-import Template from '../../Model/TemplateModel/Template';
 import VegaRenderer from '../../Widgets/Renderer/VegaRenderer';
 
+import { setSchemaSize } from 'toolkitmodel/src/TemplateModel/SpecUtils';
 import './TemplatePreview.css';
 
 interface Props {

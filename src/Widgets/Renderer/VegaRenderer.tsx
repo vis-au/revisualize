@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { isFacetSchema, isInlineFacetSchema, isRepeatSchema } from 'toolkitmodel/src/TemplateModel/SpecUtils';
 import { Spec } from 'vega';
 import vegaEmbed, { Actions, Result } from 'vega-embed';
-import { isFacetSchema, isInlineFacetSchema, isRepeatSchema } from '../../Model/TemplateModel/SpecUtils';
 
 import './VegaRenderer.css';
 

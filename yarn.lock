@@ -61,7 +61,7 @@
   dependencies:
     "@types/d3-selection" "*"
 
-"@types/d3-dsv@*":
+"@types/d3-dsv@*", "@types/d3-dsv@^1.0.36":
   version "1.0.36"
   resolved "https://registry.yarnpkg.com/@types/d3-dsv/-/d3-dsv-1.0.36.tgz#e91129d7c02b1b814838d001e921e8b9a67153d0"
   integrity sha512-jbIWQ27QJcBNMZbQv0NSQMHnBDCmxghAxePxgyiPH1XPCRkOsTBei7jcdi3fDrUCGpCV3lKrSZFSlOkhUQVClA==
@@ -8971,6 +8971,16 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+"toolkitmodel@https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git":
+  version "1.0.0"
+  resolved "https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git#ae0038a6c0f58fc7dc94e284cae5f5497867a751"
+  dependencies:
+    "@types/d3-dsv" "^1.0.36"
+    d3-dsv "^1.1.1"
+    typescript "^3.4.1"
+    vega "5.3.2"
+    vega-lite "^3.0.2"
+
 topojson-client@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/topojson-client/-/topojson-client-3.0.0.tgz#1f99293a77ef42a448d032a81aa982b73f360d2f"
@@ -9065,6 +9075,11 @@ typescript@^3.0.1:
   version "3.3.4000"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
   integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
+
+typescript@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.1.tgz#b6691be11a881ffa9a05765a205cb7383f3b63c6"
+  integrity sha512-3NSMb2VzDQm8oBTLH6Nj55VVtUEpe/rgkIzMir0qVoLyjDZlnMBva0U6vDiV3IH+sl/Yu6oP5QwsAQtHPmDd2Q==
 
 typings-for-css-modules-loader@^1.7.0:
   version "1.7.0"

@@ -1,7 +1,7 @@
 import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
+import { Template } from 'toolkitmodel';
 
-import Template from '../../Model/TemplateModel/Template';
 import LayeredDiagramEditor from './LayeredDiagramEditor';
 
 interface Props {

@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { SpecParser, Template } from 'toolkitmodel';
 
-import SchemaParser from '../../Model/TemplateModel/SpecParser';
-import Template from '../../Model/TemplateModel/Template';
 import { barchartSpec as barchartPreset, bubbleChartAltairPreset, candlestickSpec as candlestickPreset, carbonDioxide as carbonDioxidePreset, concatenateSpec as concatenatePreset, facettedBarchartsPreset, londonTube as londonTubePrest, mosaicPreset, moviesAltairPreset, parallelCoordinatesPreset, populationLayerChart as populationLayerChartPreset, repeatOverlayPreset, scatterplotMatrixSpec as scatterplotMatrixPreset, stackedAreaPreset, stackedBarchartPreset, streamGraphPreset, trellisBarleyPreset } from './SpecPresets';
 
 import './ExampleOverlay.css';
@@ -16,13 +15,13 @@ interface State {
 
 export default class ExampleOverlay extends React.Component<Props, State> {
   private vegaLiteExamples: Map<string, any>;
-  private schemaParser: SchemaParser;
+  private schemaParser: SpecParser;
 
   constructor(props: Props) {
     super(props);
 
     this.vegaLiteExamples = new Map();
-    this.schemaParser = new SchemaParser();
+    this.schemaParser = new SpecParser();
 
     this.renderExample = this.renderExample.bind(this);
     this.onAddButtonClicked = this.onAddButtonClicked.bind(this);

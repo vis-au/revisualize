@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { DatasetNode, GraphNode } from 'toolkitmodel';
 
-import DatasetNode from '../Model/DataModel/Datasets/DatasetNode';
-import GraphNode from '../Model/DataModel/GraphNode';
 import { plumbingProvider } from '../PlumbingProvider';
 import BuildingBlock from './BuildingBlock';
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { DataImporter, Template } from 'toolkitmodel';
 
-import DataImporter from '../Model/DataModel/DataImporter';
-import Template from '../Model/TemplateModel/Template';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
