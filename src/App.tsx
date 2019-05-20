@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { GraphNode, Template, URLDatasetNode } from 'toolkitmodel';
+import { GraphNode, InlineDatasetNode, Template, URLDatasetNode } from 'toolkitmodel';
+import { Data, isInlineData, isUrlData } from 'vega-lite/build/src/data';
 
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';
 import MainView from './ToolkitView/MainView';
@@ -26,10 +27,6 @@ export default class App extends React.Component<{}, State> {
       dataflowVisible: false,
       templates: [],
     };
-  }
-
-  private onDataflowPanelToggle() {
-    this.setState({ dataflowVisible: !this.state.dataflowVisible });
   }
 
   private onTemplatesChanged() {
@@ -67,6 +64,28 @@ export default class App extends React.Component<{}, State> {
 
       if (dataset !== null) {
         datasets.push(...dataset.getFullAncestry())
+      } else {
+        if (template.datasets === undefined) {
+          return;
+        }
+
+        const datasetKeys = Object.keys(template.datasets);
+        datasetKeys.forEach(key => {
+          const node = template.datasets[key] as Data;
+
+          if (isUrlData(node)) {
+            const d = new URLDatasetNode();
+            d.url = node.url;
+            d.format = node.format;
+            d.name = node.name;
+            datasets.push(d)
+          } else if (isInlineData(node)) {
+            const d = new InlineDatasetNode();
+            d.values = node.values;
+            d.name = node.name;
+            datasets.push(dataset);
+          }
+        })
       }
     });
 
@@ -83,6 +102,7 @@ export default class App extends React.Component<{}, State> {
             onDatasetsChanged={ this.onDatasetsChanged }
             onTemplatesChanged={ this.onTemplatesChanged }
           />
+          {/* <DatasetPanel datasets={ this.state.datasets } /> */}
         </MainView>
       </div>
     );

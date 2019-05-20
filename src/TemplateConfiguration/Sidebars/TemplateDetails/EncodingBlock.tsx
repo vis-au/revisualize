@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isFieldDef, isValueDef } from 'vega-lite/build/src/fielddef';
+import { isFieldDef, isValueDef } from 'vega-lite/build/src/channeldef';
 
 import './EncodingBlock.css';
 

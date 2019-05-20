@@ -4,11 +4,11 @@ import { DataImporter, Template } from 'toolkitmodel';
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
 import TemplateConfigurationSidebar from './Sidebars/TemplateDetails/TemplateConfigurationSidebar';
+import ExampleOverlay from './Toolbar/ExampleOverlay';
 import TemplateConfigurationToolbar from './Toolbar/TemplateConfigurationToolbar';
+import VegaInputOverlay from './Toolbar/VegaInputOverlay';
 
 import './TemplateConfigurationView.css';
-import ExampleOverlay from './Toolbar/ExampleOverlay';
-import VegaInputOverlay from './Toolbar/VegaInputOverlay';
 
 interface Props {
   className: string;
