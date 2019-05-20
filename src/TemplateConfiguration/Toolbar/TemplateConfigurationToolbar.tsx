@@ -53,10 +53,10 @@ export default class TemplateConfigurationToolbar extends React.Component<Props,
         </div>
         <div className="column" id="templateImport">
           <button className="toggleExampleOverlay" onClick={ this.onExampleToggleClicked }>
-            Pick from Examples
+            Examples
           </button>
           <button className="toggleExampleOverlay" onClick={ this.onVegaLiteInputToggleClicked }>
-            Enter Custom JSON
+            Vega-Lite
           </button>
           { this.renderPlumbingToggle() }
         </div>
