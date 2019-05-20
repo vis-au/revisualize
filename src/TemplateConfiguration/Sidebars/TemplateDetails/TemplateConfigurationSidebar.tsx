@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CompositionTemplate, PlotTemplate, SpecCompiler, Template } from 'toolkitmodel';
+import { CompositionTemplate, GraphNode, PlotTemplate, SpecCompiler, Template } from 'toolkitmodel';
 
 import VegaRenderer from '../../../Widgets/Renderer/VegaRenderer';
 import Sidebar from '../../../Widgets/Sidebar';
@@ -11,6 +11,7 @@ import './TemplateConfigurationSidebar.css';
 interface Props {
   onTemplateChanged: () => void;
   focusedTemplate: Template;
+  datasets: GraphNode[];
 }
 interface State {
   hidden: boolean;
@@ -24,6 +25,8 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     super(props);
 
     this.onToggle = this.onToggle.bind(this);
+    this.onDatasetOptionChanged = this.onDatasetOptionChanged.bind(this);
+    this.renderDatasetDropdownOption = this.renderDatasetDropdownOption.bind(this);
 
     this.specCompiler = new SpecCompiler();
     this.state = {
@@ -34,6 +37,30 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
 
   public onToggle() {
     this.setState({ hidden: !this.state.hidden });
+  }
+
+  private onDatasetOptionChanged(event: React.ChangeEvent<HTMLSelectElement>) {
+    const newOptionName = event.target.value;
+    const newOption = this.props.datasets.find(d => d.name === newOptionName);
+
+    if (newOption === undefined) {
+      return;
+    }
+
+    this.props.focusedTemplate.dataTransformationNode = newOption;
+
+    this.props.onTemplateChanged();
+  }
+
+  private renderDatasetDropdownOption(datasetOption: GraphNode) {
+    return (
+      <option
+        value={ datasetOption.name }
+        className="dataset">
+
+        { datasetOption.name }
+      </option>
+    );
   }
 
   private renderDatasetSection() {
@@ -51,7 +78,15 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     return (
       <div className={ `datasetSection ${hasDataClassName}` }>
         <h2>Dataset</h2>
-        <div className="dataset">{ label }</div>
+        {/* <div className="dataset">{ label }</div> */}
+        <select
+          name="dataset"
+          id="datasetSelection"
+          className="datasetSelection"
+          value={ label }
+          onChange={ this.onDatasetOptionChanged }>
+          { this.props.datasets.map(this.renderDatasetDropdownOption) }
+        </select>
       </div>
     );
   }

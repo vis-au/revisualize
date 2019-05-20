@@ -99,6 +99,7 @@ export default class App extends React.Component<{}, State> {
           <TemplateConfigurationView
             className={ this.state.dataflowVisible ? 'faded' : '' }
             templates={ this.state.templates }
+            datasets={ this.state.datasets }
             onDatasetsChanged={ this.onDatasetsChanged }
             onTemplatesChanged={ this.onTemplatesChanged }
           />

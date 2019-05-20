@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataImporter, Template } from 'toolkitmodel';
+import { DataImporter, GraphNode, Template } from 'toolkitmodel';
 
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';
@@ -13,6 +13,7 @@ import './TemplateConfigurationView.css';
 interface Props {
   className: string;
   templates: Template[];
+  datasets: GraphNode[];
   onTemplatesChanged: () => void;
   onDatasetsChanged: () => void;
 }
@@ -208,6 +209,7 @@ export default class TemplateConfigurationView extends React.Component<Props, St
         </div>
 
         <TemplateConfigurationSidebar
+          datasets={ this.props.datasets }
           onTemplateChanged={ this.props.onTemplatesChanged }
           focusedTemplate={ this.state.focusedTemplate } />
 
