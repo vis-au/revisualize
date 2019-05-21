@@ -33,6 +33,7 @@ div.template .templateHeader h2 {
   margin: 0;
   font-family: 'Roboto Condensed';
   font-size: 1.15rem;
+  text-transform: capitalize;
 }
 div.template .templateHeader .dataSource {
   margin: 0 0.25rem;
