@@ -18,7 +18,7 @@ export default class PlotTemplateProperties extends React.Component<Props, State
   constructor(props: Props) {
     super(props);
 
-    this.renderEncoding = this.renderEncoding.bind(this);
+    this.renderEncodingGroup = this.renderEncodingGroup.bind(this);
     this.setMarkType = this.setMarkType.bind(this);
   }
 
@@ -44,15 +44,15 @@ export default class PlotTemplateProperties extends React.Component<Props, State
     );
   }
 
-  private renderEncoding(encoding: MarkEncodingGroup) {
+  private renderEncodingGroup(encodingGroupType: MarkEncodingGroup) {
     if (this.props.template === null) {
       return null;
     }
 
     return (
       <EncodingGroupBlock
-        key={ encoding }
-        groupType={ encoding }
+        key={ encodingGroupType }
+        groupType={ encodingGroupType }
         template={ this.props.template }
         onTemplateChanged={ this.props.onTemplateChanged }
       />
@@ -62,7 +62,7 @@ export default class PlotTemplateProperties extends React.Component<Props, State
   private renderEncodings() {
     return (
       <div className="encodings">
-        { markEncodingGroups.map(this.renderEncoding)}
+        { markEncodingGroups.map(this.renderEncodingGroup)}
       </div>
     );
   }

@@ -22,9 +22,9 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     super(props);
 
     this.onTemporaryFieldChange = this.onTemporaryFieldChange.bind(this);
-    this.onTemporaryFieldKeyPress = this.onTemporaryFieldKeyPress.bind(this);
+    this.onTemporaryFieldEnterKeyPress = this.onTemporaryFieldEnterKeyPress.bind(this);
     this.onTemporaryValueChange = this.onTemporaryValueChange.bind(this);
-    this.onTemporaryValueKeyPress = this.onTemporaryValueKeyPress.bind(this);
+    this.onTemporaryValueEnterKeyPress = this.onTemporaryValueEnterKeyPress.bind(this);
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.showEncodingInput = this.showEncodingInput.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
@@ -108,13 +108,13 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     });
   }
 
-  private onTemporaryFieldKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  private onTemporaryFieldEnterKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Enter') {
       return;
     }
 
     const newField = {
-      field: this.state.temporaryValue,
+      field: this.state.temporaryField,
       type: 'ordinal'
     };
 
@@ -128,7 +128,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.props.onTemplateChanged();
   }
 
-  private onTemporaryValueKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  private onTemporaryValueEnterKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Enter') {
       return;
     }
@@ -148,7 +148,11 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   private onDeleteEncoding(encoding: MarkEncoding) {
-    this.props.template.setEncodedValue(encoding, null);
+    if (this.props.template.overwrittenEncodings.get(encoding) !== null) {
+      this.props.template.overwrittenEncodings.set(encoding, null);
+    } else {
+      this.props.template.setEncodedValue(encoding, null);
+    }
     this.props.onTemplateChanged();
   }
 
@@ -231,7 +235,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
           type="text"
           value={ this.state.temporaryField || '' }
           onChange={ this.onTemporaryFieldChange }
-          onKeyPress={ this.onTemporaryFieldKeyPress }
+          onKeyPress={ this.onTemporaryFieldEnterKeyPress }
           placeholder="enter field" />
       </div>
     );
@@ -248,7 +252,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
           type="text"
           value={ this.state.temporaryValue || '' }
           onChange={ this.onTemporaryValueChange }
-          onKeyPress={ this.onTemporaryValueKeyPress }
+          onKeyPress={ this.onTemporaryValueEnterKeyPress }
           placeholder="enter value" />
       </div>
     );
