@@ -8973,13 +8973,13 @@ to-regex@^3.0.1, to-regex@^3.0.2:
 
 "toolkitmodel@https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git":
   version "1.0.0"
-  resolved "https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git#69b2fd75c6bf283b92a762f9764ecd511bfdb51b"
+  resolved "https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git#3d05b6f40da2b7eab3f5a9e918ec96e20af75651"
   dependencies:
     "@types/d3-dsv" "^1.0.36"
     d3-dsv "^1.1.1"
     typescript "^3.4.1"
     vega "5.3.2"
-    vega-lite "^3.0.2"
+    vega-lite "^3.2.1"
 
 topojson-client@^3.0.0:
   version "3.0.0"
@@ -9077,9 +9077,9 @@ typescript@^3.0.1:
   integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
 
 typescript@^3.4.1:
-  version "3.4.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
-  integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.1.tgz#ba72a6a600b2158139c5dd8850f700e231464202"
+  integrity sha512-64HkdiRv1yYZsSe4xC1WVgamNigVYjlssIoaH2HcZF0+ijsk5YK2g0G34w9wJkze8+5ow4STd22AynfO6ZYYLw==
 
 typings-for-css-modules-loader@^1.7.0:
   version "1.7.0"
@@ -9438,7 +9438,7 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite@^3.0.2, vega-lite@^3.2.1:
+vega-lite@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.2.1.tgz#d9aa3edbfd0886cedebe606f070bbf5c33998ba7"
   integrity sha512-Q8ZWodSo5Q3ovLrtqHt9nR7ooRnN9rJzT74JKDPcyGTwqV6kpqFApQxyHYfIj4s4CAZs4pGdpBQaa2M4pKVeyw==
