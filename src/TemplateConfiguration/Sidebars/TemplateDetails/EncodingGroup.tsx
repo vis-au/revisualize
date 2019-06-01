@@ -148,10 +148,10 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
   }
 
   private onDeleteEncoding(encoding: MarkEncoding) {
-    if (this.props.template.overwrittenEncodings.get(encoding) !== null) {
-      this.props.template.overwrittenEncodings.set(encoding, null);
+    if (this.props.template.overwrittenEncodings.get(encoding) !== undefined) {
+      this.props.template.overwrittenEncodings.delete(encoding);
     } else {
-      this.props.template.setEncodedValue(encoding, null);
+      this.props.template.deleteEncodedValue(encoding);
     }
     this.props.onTemplateChanged();
   }
