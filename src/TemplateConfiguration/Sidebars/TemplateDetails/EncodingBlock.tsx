@@ -8,6 +8,7 @@ interface Props {
   value: any;
   isInferred: boolean;
   delete: () => void;
+  onClick: (event: any) => void;
 }
 interface State {
 }
@@ -56,7 +57,7 @@ export default class EncodingBlock extends React.Component<Props, State> {
     const titlePrefix = this.props.isInferred ? 'inferred from parent: ': '';
 
     return (
-      <div className={`encoding ${isInferred}`} title={ `${titlePrefix} ${title}` }>
+      <div className={`encoding ${isInferred}`} title={ `${titlePrefix} ${title}` } onClick={ this.props.onClick }>
         { this.renderIcon() }
         { this.renderEncodedProperty() }
         { this.renderValue() }

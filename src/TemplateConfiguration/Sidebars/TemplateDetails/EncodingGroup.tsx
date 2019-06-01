@@ -168,6 +168,31 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.setState({ temporaryEncodingType });
   }
 
+  private selectEncodingForEdit(encoding: MarkEncoding) {
+    const currentlyEncodedValue = this.props.template.getEncodedValue(encoding);
+    let emptyEncoding = encoding;
+    let currentType = currentlyEncodedValue.type || null;
+    let currentField = currentlyEncodedValue.field || '';
+    let currentValue = currentlyEncodedValue.value || '';
+    let areEncodingsHidden = false;
+
+    if (this.state.emptyEncoding === encoding) {
+      emptyEncoding = null;
+      currentType = null;
+      currentField = '';
+      currentValue = '';
+      areEncodingsHidden = true;
+    }
+
+    this.setState({
+      areEncodingsHidden,
+      emptyEncoding,
+      temporaryEncodingType: currentType,
+      temporaryField: currentField,
+      temporaryValue: currentValue
+    });
+  }
+
   private renderEncoding(encoding: MarkEncoding) {
     let value = this.props.template.getEncodedValue(encoding);
     const overwrittenValue = this.props.template.overwrittenEncodings.get(encoding);
@@ -186,6 +211,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
         isInferred={ overwrittenValue !== undefined && overwrittenValue !== null }
         value={ value as any }
         delete={ () => this.onDeleteEncoding(encoding)}
+        onClick={ () => this.selectEncodingForEdit(encoding) }
       />
     );
   }
@@ -324,5 +350,14 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
         { this.renderAddEncodingWidget() }
       </div>
     );
+  }
+
+  public componentDidUpdate(previousProps: Props) {
+    if (previousProps.template !== this.props.template) {
+      this.setState({
+        areEncodingsHidden: true,
+        emptyEncoding: null
+      });
+    }
   }
 }
