@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, PlotTemplate, positionEncodings, textTooltipChannelEncodings } from 'toolkitmodel';
+import { GEOJSON, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type } from 'vega-lite/build/src/type';
 
 import EncodingBlock from './EncodingBlock';
 
@@ -15,6 +16,7 @@ interface State {
   emptyEncoding: MarkEncoding;
   temporaryValue: string;
   temporaryField: string;
+  temporaryEncodingType: Type;
 }
 
 export default class EncodingGroupBlock extends React.Component<Props, State> {
@@ -25,6 +27,7 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.onTemporaryFieldEnterKeyPress = this.onTemporaryFieldEnterKeyPress.bind(this);
     this.onTemporaryValueChange = this.onTemporaryValueChange.bind(this);
     this.onTemporaryValueEnterKeyPress = this.onTemporaryValueEnterKeyPress.bind(this);
+    this.onTemporaryEncodingTypeChanged = this.onTemporaryEncodingTypeChanged.bind(this);
     this.getEncodingsForGroup = this.getEncodingsForGroup.bind(this);
     this.showEncodingInput = this.showEncodingInput.bind(this);
     this.renderEncoding = this.renderEncoding.bind(this);
@@ -32,13 +35,15 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     this.renderAddEncodingWidget = this.renderAddEncodingWidget.bind(this);
     this.renderUnsetEncodings = this.renderUnsetEncodings.bind(this);
     this.renderUnsetEncoding = this.renderUnsetEncoding.bind(this);
+    this.renderEmptyEncodingTypeRadioButton = this.renderEmptyEncodingTypeRadioButton.bind(this);
     this.toggleEncodingsHidden = this.toggleEncodingsHidden.bind(this);
 
     this.state = {
       areEncodingsHidden: true,
       emptyEncoding: null,
       temporaryValue: '',
-      temporaryField: ''
+      temporaryField: '',
+      temporaryEncodingType: null
     };
   }
 
@@ -115,14 +120,15 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
 
     const newField = {
       field: this.state.temporaryField,
-      type: 'ordinal'
+      type: this.state.temporaryEncodingType
     };
 
     this.props.template.setEncodedValue(this.state.emptyEncoding, newField as any);
 
     this.setState({
       emptyEncoding: null,
-      temporaryField: ''
+      temporaryField: '',
+      temporaryEncodingType: null
     });
 
     this.props.onTemplateChanged();
@@ -154,6 +160,12 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
       this.props.template.deleteEncodedValue(encoding);
     }
     this.props.onTemplateChanged();
+  }
+
+  private onTemporaryEncodingTypeChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    const temporaryEncodingType = event.target.value as Type;
+
+    this.setState({ temporaryEncodingType });
   }
 
   private renderEncoding(encoding: MarkEncoding) {
@@ -200,30 +212,6 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
     );
   }
 
-  private renderUnsetEncodings() {
-    if (this.state.areEncodingsHidden) {
-      return null;
-    }
-
-    const unsetEncodings = this.getEncodingsForGroup()
-      .filter(encoding => {
-        const value = this.props.template.getEncodedValue(encoding);
-        return value === null || value === undefined;
-      });
-
-    return (
-      <div className="unsetEncodings">
-        <div className="addUnsetEncodingsWidget">
-          { this.renderEmptyEncodingValueInput() }
-          { this.renderEmptyEncodingFieldInput() }
-        </div>
-        <ul>
-          { unsetEncodings.map(this.renderUnsetEncoding) }
-        </ul>
-      </div>
-    );
-  }
-
   private renderEmptyEncodingFieldInput() {
     if (this.state.emptyEncoding === null || this.state.areEncodingsHidden) {
       return false;
@@ -254,6 +242,61 @@ export default class EncodingGroupBlock extends React.Component<Props, State> {
           onChange={ this.onTemporaryValueChange }
           onKeyPress={ this.onTemporaryValueEnterKeyPress }
           placeholder="enter value" />
+      </div>
+    );
+  }
+
+  private renderEmptyEncodingTypeRadioButton(encodingType: Type) {
+    return (
+      <div className="encodingTypeGroup">
+        <input
+          key={ encodingType }
+          type="radio"
+          name="encodingType"
+          id={ encodingType }
+          value={ encodingType }
+          checked={ this.state.temporaryEncodingType === encodingType }
+          onChange={ this.onTemporaryEncodingTypeChanged } />
+        <label htmlFor={ encodingType } className="encodingType">{ encodingType }</label>
+      </div>
+    );
+  }
+
+  private renderEmptyEncodingTypeRadioButtons() {
+    if (this.state.areEncodingsHidden || this.state.emptyEncoding === null) {
+      return null;
+    }
+
+    const ENCODING_TYPES = [QUANTITATIVE, ORDINAL, TEMPORAL, NOMINAL, GEOJSON];
+
+    return (
+      <div className="encodingTypeSelection">
+        { ENCODING_TYPES.map(this.renderEmptyEncodingTypeRadioButton) }
+      </div>
+    );
+  }
+
+  private renderUnsetEncodings() {
+    if (this.state.areEncodingsHidden) {
+      return null;
+    }
+
+    const unsetEncodings = this.getEncodingsForGroup()
+      .filter(encoding => {
+        const value = this.props.template.getEncodedValue(encoding);
+        return value === null || value === undefined;
+      });
+
+    return (
+      <div className="unsetEncodings">
+        <div className="addUnsetEncodingsWidget">
+          { this.renderEmptyEncodingValueInput() }
+          { this.renderEmptyEncodingFieldInput() }
+          { this.renderEmptyEncodingTypeRadioButtons() }
+        </div>
+        <ul>
+          { unsetEncodings.map(this.renderUnsetEncoding) }
+        </ul>
       </div>
     );
   }
