@@ -6,6 +6,7 @@ import Sidebar from '../../../Widgets/Sidebar';
 import CompositionTemplateProperties from './CompositionTemplateProperties';
 import PlotTemplateProperties from './PlotTemplateProperties';
 
+import SizeConfiguration from './SizeConfiguration';
 import './TemplateConfigurationSidebar.css';
 
 interface Props {
@@ -107,6 +108,19 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
     }
   }
 
+  private renderSizeConfiguration() {
+    if (this.props.focusedTemplate === null) {
+      return null;
+    }
+
+    return (
+      <SizeConfiguration
+        template={ this.props.focusedTemplate }
+        onTemplateChanged={ this.props.onTemplateChanged }
+      />
+    );
+  }
+
   private renderPreview() {
     if (this.props.focusedTemplate === null) {
       return null;
@@ -165,6 +179,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
         <div className="sidebarContainer">
           { this.renderDatasetSection() }
           { this.renderFocusedTemplateProperties() }
+          { this.renderSizeConfiguration() }
 
           <button className="JSONToggle" onClick={() => this.setState({ JSONHidden: !this.state.JSONHidden })}>
             { label }
