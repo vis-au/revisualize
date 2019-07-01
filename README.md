@@ -1,4 +1,4 @@
-# Toolkit Protoype
+# ReVis Editor
 ## Prerequisites
 * ```nodeJS ``` (v10.15.3 or newer) and ```npm ```(6.4.1 or newer) installed
 * Global installation of latest versions of [yarn](https://github.com/yarnpkg/yarn) and [TypeScript](https://typescript.com)
