@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, PlotTemplate, positionEncodings, textTooltipChannelEncodings } from 'toolkitmodel';
+import { facetChannelEncodings, geographicPositionEncodings, hyperLinkChannelEncodings, keyChannelEncodings, loDChannelEncodings, MarkEncoding, MarkEncodingGroup, markPropertiesChannelEncodings, orderChannelEncodings, PlotTemplate, positionEncodings, textTooltipChannelEncodings } from 'remodel-vis';
 import { GEOJSON, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type } from 'vega-lite/build/src/type';
 
 import EncodingBlock from './EncodingBlock';

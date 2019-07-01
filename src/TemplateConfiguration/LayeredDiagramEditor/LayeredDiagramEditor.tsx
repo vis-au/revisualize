@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
-import { Template } from 'toolkitmodel';
+import { Template } from 'remodel-vis';
 
 import TemplateBlock from '../TemplateBlock/TemplateBlock';
 import AddTemplateButton from './AddTemplateButton';

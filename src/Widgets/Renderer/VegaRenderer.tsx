@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isFacetSchema, isInlineFacetSchema, isRepeatSchema } from 'toolkitmodel/src/TemplateModel/SpecUtils';
+import { isFacetSchema, isInlineFacetSchema, isRepeatSchema } from 'remodel-vis/src/TemplateModel/SpecUtils';
 import { Spec } from 'vega';
 import vegaEmbed, { Actions, Result } from 'vega-embed';
 

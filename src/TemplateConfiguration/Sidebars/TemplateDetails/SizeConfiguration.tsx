@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Template } from 'toolkitmodel';
+import { Template } from 'remodel-vis';
 
 import './SizeConfiguration.css';
 

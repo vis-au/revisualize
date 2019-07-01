@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SpecCompiler, Template } from 'toolkitmodel';
+import { SpecCompiler, Template } from 'remodel-vis';
 
 import VegaRenderer from '../../Widgets/Renderer/VegaRenderer';
 

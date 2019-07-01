@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CompositionTemplate, PlotTemplate, Template } from 'toolkitmodel';
+import { CompositionTemplate, PlotTemplate, Template } from 'remodel-vis';
 
 import TemplatePreview from './TemplatePreview';
 import VisualElementBlock from './VisualElementBlock';

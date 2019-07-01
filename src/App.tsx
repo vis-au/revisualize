@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphNode, InlineDatasetNode, Template, URLDatasetNode } from 'toolkitmodel';
+import { GraphNode, InlineDatasetNode, Template, URLDatasetNode } from 'remodel-vis';
 import { Data, isInlineData, isUrlData } from 'vega-lite/build/src/data';
 
 import TemplateConfigurationView from './TemplateConfiguration/TemplateConfigurationView';

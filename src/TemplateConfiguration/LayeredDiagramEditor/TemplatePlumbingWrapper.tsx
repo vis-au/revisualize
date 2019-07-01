@@ -1,6 +1,6 @@
 import { Connection, jsPlumb, jsPlumbInstance } from 'jsplumb';
 import * as React from 'react';
-import { Template } from 'toolkitmodel';
+import { Template } from 'remodel-vis';
 
 import LayeredDiagramEditor from './LayeredDiagramEditor';
 

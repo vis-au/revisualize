@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MARK_TYPES, MarkEncodingGroup, markEncodingGroups, PlotTemplate } from 'toolkitmodel';
+import { MARK_TYPES, MarkEncodingGroup, markEncodingGroups, PlotTemplate } from 'remodel-vis';
 
 import { Mark } from 'vega-lite/build/src/mark';
 import EncodingGroupBlock from './EncodingGroup';

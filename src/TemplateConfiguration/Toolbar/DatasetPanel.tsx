@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DatasetNode, GraphNode } from 'toolkitmodel';
+import { DatasetNode, GraphNode } from 'remodel-vis';
 
 import './DatasetPanel.css';
 

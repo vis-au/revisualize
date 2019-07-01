@@ -7879,6 +7879,17 @@ relateurl@0.2.x:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
+remodel-vis@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/remodel-vis/-/remodel-vis-1.0.0.tgz#d7e32c37e626f0959ac04b14975ed89fa8c1132d"
+  integrity sha512-o7PaKJU+N45fFb+aUXav4pwTh2j7/ooXJINfbYaLKQvKwChcefcPHtKNpDNaYeL/4cWU8AnP73/KPdAEctGRbA==
+  dependencies:
+    "@types/d3-dsv" "^1.0.36"
+    d3-dsv "^1.1.1"
+    typescript "^3.4.1"
+    vega "5.3.2"
+    vega-lite "^3.2.1"
+
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
@@ -8970,16 +8981,6 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
-
-"toolkitmodel@https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git":
-  version "1.0.0"
-  resolved "https://oauth2:aNyzmxMH2KYQNL6ck8bF@gitlab.au.dk/au629923/toolkitmodel.git#43fa6542bac4f93e030b622ae5f528f42bb10ad7"
-  dependencies:
-    "@types/d3-dsv" "^1.0.36"
-    d3-dsv "^1.1.1"
-    typescript "^3.4.1"
-    vega "5.3.2"
-    vega-lite "^3.2.1"
 
 topojson-client@^3.0.0:
   version "3.0.0"

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataImporter, GraphNode, Template } from 'toolkitmodel';
+import { DataImporter, GraphNode, Template } from 'remodel-vis';
 
 import ViewContainer from '../ToolkitView/ViewContainer';
 import TemplatePlumbingWrapper from './LayeredDiagramEditor/TemplatePlumbingWrapper';

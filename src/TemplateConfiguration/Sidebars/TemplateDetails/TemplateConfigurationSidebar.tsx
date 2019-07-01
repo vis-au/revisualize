@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CompositionTemplate, GraphNode, PlotTemplate, SpecCompiler, Template } from 'toolkitmodel';
+import { CompositionTemplate, GraphNode, PlotTemplate, SpecCompiler, Template } from 'remodel-vis';
 
 import VegaRenderer from '../../../Widgets/Renderer/VegaRenderer';
 import Sidebar from '../../../Widgets/Sidebar';

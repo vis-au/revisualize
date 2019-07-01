@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Composition, COMPOSITION_TYPES, ConcatTemplate, FacetTemplate, LayerTemplate, MARK_TYPES, Plot, PlotTemplate, RepeatTemplate, Template } from 'toolkitmodel';
+import { Composition, COMPOSITION_TYPES, ConcatTemplate, FacetTemplate, LayerTemplate, MARK_TYPES, Plot, PlotTemplate, RepeatTemplate, Template } from 'remodel-vis';
 import { Mark } from 'vega-lite/build/src/mark';
 
 import AddTemplateButtonObserver from './AddTemplateButtonObserver';

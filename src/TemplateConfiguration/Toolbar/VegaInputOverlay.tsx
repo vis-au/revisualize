@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SpecParser, Template } from 'toolkitmodel';
+import { SpecParser, Template } from 'remodel-vis';
 
 import './VegaInputOverlay.css';
 

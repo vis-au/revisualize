@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import * as React from 'react';
-import { ConcatTemplate, DatasetNode, FacetTemplate, LayerTemplate, RepeatTemplate, Template, TransformNode } from 'toolkitmodel';
+import { ConcatTemplate, DatasetNode, FacetTemplate, LayerTemplate, RepeatTemplate, Template, TransformNode } from 'remodel-vis';
 
 import './CompositionTemplateProperties.css';
 

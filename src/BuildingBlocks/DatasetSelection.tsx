@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DatasetBuildingBlock from './DatasetBuildingBlock';
 
-import { DatasetNode, GraphNode, TransformNode } from 'toolkitmodel';
+import { DatasetNode, GraphNode, TransformNode } from 'remodel-vis';
 
 import './DatasetSelection.css';
 
