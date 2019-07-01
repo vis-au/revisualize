@@ -1,7 +1,7 @@
 {
-  "name": "reactapp",
+  "name": "revis",
+  "description": "Graphical Editor for Creating and Modifying Composite Visualizations",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@types/d3": "^5.0.0",
     "@types/jqueryui": "^1.12.4",
@@ -19,20 +19,21 @@
     "typings-for-css-modules-loader": "^1.7.0",
     "vega": "5.3.2",
     "vega-embed": "^4.0.0",
-    "vega-lite": "^3.2.1",
-    "webpack": "^4.17.1",
-    "webpack-dev-server": "^3.1.6"
+    "vega-lite": "^3.2.1"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.0",
     "source-map-loader": "^0.2.4",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.1",
-    "webpack-cli": "^3.1.0"
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.6"
   },
   "scripts": {
-    "test": "",
     "build": "webpack",
     "start": "webpack-dev-server --port 9090"
-  }
+  },
+  "author": "Marius Hogräfer <mhograefer@cs.au.dk",
+  "license": "BSD-3-Clause"
 }
