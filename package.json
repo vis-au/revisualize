@@ -2,6 +2,10 @@
   "name": "revis",
   "description": "Graphical Editor for Creating and Modifying Composite Visualizations",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vis-au/revis.git"
+  },
   "dependencies": {
     "@types/d3": "^5.0.0",
     "@types/jqueryui": "^1.12.4",
