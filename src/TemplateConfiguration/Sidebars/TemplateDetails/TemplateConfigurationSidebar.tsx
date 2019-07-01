@@ -56,6 +56,7 @@ export default class TemplateConfigurationSidebar extends React.Component<Props,
   private renderDatasetDropdownOption(datasetOption: GraphNode) {
     return (
       <option
+        key={ datasetOption.name }
         value={ datasetOption.name }
         className="dataset">
 
