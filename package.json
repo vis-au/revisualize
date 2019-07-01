@@ -36,7 +36,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --port 9090"
+    "start": "webpack-dev-server --port 8181"
   },
   "author": "Marius Hogräfer <mhograefer@cs.au.dk",
   "license": "BSD-3-Clause"
